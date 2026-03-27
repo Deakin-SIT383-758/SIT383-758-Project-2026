@@ -1,4 +1,4 @@
-# SIT383-758-Project-2026
+# SIT383-758-Project-2026 - OUTBACK ENGINEERS
 
 The official project repository for SIT383-SIT758 2026 T1 Trimester Projects for Assembling Virtual And Augmented Reality Experiences
 
