@@ -8,5 +8,7 @@ public class HUDPosition : MonoBehaviour
     void LateUpdate()
     {
         transform.rotation = hmd.rotation; // match HMD rotation
+        Vector3 newPos = hmd.TransformPoint(hmd.localPosition + posOffset); // apply posOffset relative to HMD's transform space
+        transform.position = newPos; // set new position
     }
 }
