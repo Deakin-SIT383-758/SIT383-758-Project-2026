@@ -106,7 +106,7 @@ A pre-flight summary of flight information.
   "dest_alt": 43.3,  
   "sched_dep": 1712582400,  
   "sched_arr": 1712587800,  
-  "route_points": \[  
+  "route_points": [  
     {  
       "lat": -34.521,  
       "lon": 150.123,  
@@ -125,7 +125,7 @@ A pre-flight summary of flight information.
       "alt": 5000.0,  
       "eta_offset": 3600  
     }  
-  \]  
+  ]  
 }
 ```
 
