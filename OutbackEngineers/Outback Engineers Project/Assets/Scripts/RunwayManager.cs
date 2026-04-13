@@ -14,9 +14,14 @@ public class RunwayManager : MonoBehaviour
     {
         // Phase 1: simulate runway detection with placeholder data
 
-        currentRunwayID = "Runway_A"; // Will update based of company data specifications
+        int random = Random.Range(0, 2);
 
-        Debug.Log("Current Runway Detected: " + currentRunwayID); // Ensure Runway Detection is working correctly
+        if (random == 0)
+            currentRunwayID = "Runway_A";
+        else
+            currentRunwayID = "Runway_B";
+
+        Debug.Log("Current Runway Detected: " + currentRunwayID); // Ensure Runway Detection is working correctly, should switch between Runway_A and Runway_B randomly each time the game starts
     }
 
     public string GetRunwayID()
