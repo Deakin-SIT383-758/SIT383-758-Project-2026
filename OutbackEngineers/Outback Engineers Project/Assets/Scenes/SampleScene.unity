@@ -526,6 +526,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RunwayManager
   currentRunwayID: 
+  hazardManager: {fileID: 1583339669}
 --- !u!4 &752031391
 Transform:
   m_ObjectHideFlags: 0
@@ -620,8 +621,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HazardManager
   hazardPrefab: {fileID: 3010166113982053755, guid: d429a8733e42b11498ef415e95050a7c, type: 3}
-  runwayAHazards: []
-  runwayBHazards: []
+  runwayAHazards:
+  - type: SampleHazard1
+    position: {x: 0, y: 0.2, z: 2}
+    severity: 3
+  - type: SampleHazard2
+    position: {x: 1, y: 0.2, z: 3}
+    severity: 2
+  runwayBHazards:
+  - type: SampleHazard3
+    position: {x: 1, y: 0.2, z: 3}
+    severity: 1
 --- !u!4 &1583339670
 Transform:
   m_ObjectHideFlags: 0

@@ -3,11 +3,14 @@ using UnityEngine;
 public class RunwayManager : MonoBehaviour
 {
     public string currentRunwayID;
+    public HazardManager hazardManager; // Reference to the HazardManager to load hazards for the detected runway
 
 
     void Start()
     {
         DetectRunway();   
+
+        hazardManager.LoadHazards(currentRunwayID); // Load hazards for the detected runway
     }
 
     void DetectRunway()
