@@ -688,6 +688,67 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82ebaa2f14805874b81dade0b1b9610f, type: 3}
+--- !u!1001 &2014710485
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: b9151090150f96a43a575646e83e360c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.588
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b9151090150f96a43a575646e83e360c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.1386254
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b9151090150f96a43a575646e83e360c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5.476
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b9151090150f96a43a575646e83e360c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b9151090150f96a43a575646e83e360c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b9151090150f96a43a575646e83e360c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b9151090150f96a43a575646e83e360c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b9151090150f96a43a575646e83e360c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b9151090150f96a43a575646e83e360c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b9151090150f96a43a575646e83e360c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -467950155278293809, guid: b9151090150f96a43a575646e83e360c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b9151090150f96a43a575646e83e360c, type: 3}
+      propertyPath: m_Name
+      value: CockpitBlockout
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b9151090150f96a43a575646e83e360c, type: 3}
 --- !u!1001 &2056403061
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -757,3 +818,4 @@ SceneRoots:
   - {fileID: 2056403061}
   - {fileID: 1630220340}
   - {fileID: 1830513892}
+  - {fileID: 2014710485}
