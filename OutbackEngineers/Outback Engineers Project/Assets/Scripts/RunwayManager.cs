@@ -4,6 +4,7 @@ public class RunwayManager : MonoBehaviour
 {
     public string currentRunwayID;
     public HazardManager hazardManager; // Reference to the HazardManager to load hazards for the detected runway
+    public MetadataManager metadataManager; // Reference to the MetadataManager to display runway metadata
 
 
     void Start()
@@ -11,6 +12,7 @@ public class RunwayManager : MonoBehaviour
         DetectRunway();   
 
         hazardManager.LoadHazards(currentRunwayID); // Load hazards for the detected runway
+        metadataManager.DisplayMetadata(currentRunwayID); // Display metadata for the detected runway
     }
 
     void DetectRunway()
