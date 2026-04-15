@@ -3,16 +3,23 @@ using UnityEngine;
 public class RunwayManager : MonoBehaviour
 {
     public string currentRunwayID;
+
     public HazardManager hazardManager; // Reference to the HazardManager to load hazards for the detected runway
     public MetadataManager metadataManager; // Reference to the MetadataManager to display runway metadata
+    //RunwayLoader runwayLoader - Teshan
+    //HUDManager hudManager - Lochlan 
 
 
     void Start()
     {
-        DetectRunway();   
+        DetectRunway();
+        //runwayLoader.LoadRunway(currentRunwayID); - teshan contribution
 
         hazardManager.LoadHazards(currentRunwayID); // Load hazards for the detected runway
         metadataManager.DisplayMetadata(currentRunwayID); // Display metadata for the detected runway
+
+        //int hazardCount = hazardManager.GetHazardCount(currentRunwayID); Must implement this line for hudManager to update 
+        //hudManager.UpdateHUD(currentRunwayID, hazardCount); - lochlan contribution
     }
 
     void DetectRunway()
