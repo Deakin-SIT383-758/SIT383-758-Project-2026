@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public class RunwayData
 {
     public string runwayID;
+    public string runwayName;
     public float latitude;
     public float longitude;
     public string timestamp;

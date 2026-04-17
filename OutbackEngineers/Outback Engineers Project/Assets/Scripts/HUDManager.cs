@@ -6,7 +6,6 @@ public class HUDManager : MonoBehaviour
 {
     public TextMeshProUGUI hazardDisplay;
     public TextMeshProUGUI runwayName;
-    public List<string> runwayNames;
     MetadataManager metaManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -28,7 +27,7 @@ public class HUDManager : MonoBehaviour
         {
             if (data.runwayID == runwayID)
             {
-                runwayName.text = "Current Runway is: " + runwayID;
+                runwayName.text = data.runwayName + " Runway";
                 hazardDisplay.text = "Hazards: " + hazardCount;
             }
         }
