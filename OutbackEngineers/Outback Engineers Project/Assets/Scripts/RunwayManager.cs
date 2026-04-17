@@ -7,7 +7,7 @@ public class RunwayManager : MonoBehaviour
     public HazardManager hazardManager; // Reference to the HazardManager to load hazards for the detected runway
     public MetadataManager metadataManager; // Reference to the MetadataManager to display runway metadata
     //RunwayLoader runwayLoader - Teshan
-    //HUDManager hudManager - Lochlan 
+    public HUDManager hudManager; // Reference to the HUDManager to update the HUD with hazard count and runway information
 
 
     void Start()
@@ -18,8 +18,8 @@ public class RunwayManager : MonoBehaviour
         hazardManager.LoadHazards(currentRunwayID); // Load hazards for the detected runway
         metadataManager.DisplayMetadata(currentRunwayID); // Display metadata for the detected runway
 
-        //int hazardCount = hazardManager.GetHazardCount(currentRunwayID); Must implement this line for hudManager to update 
-        //hudManager.UpdateHUD(currentRunwayID, hazardCount); - lochlan contribution
+        int hazardCount = hazardManager.GetHazardCount(currentRunwayID); // Must implement this line for hudManager to update 
+        hudManager.UpdateHUD(currentRunwayID, hazardCount); 
     }
 
     void DetectRunway()
@@ -40,7 +40,4 @@ public class RunwayManager : MonoBehaviour
     {
         return currentRunwayID;
     }
-
-
-
 }

@@ -67,5 +67,11 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Outback Engineers Project.slnx"
+    "dotnet.defaultSolution": "Outback Engineers Project.slnx",
+    "chat.agent.enabled": true,
+    "github.copilot.nextEditSuggestions.allowWhitespaceOnlyChanges": false,
+    "github.copilot.nextEditSuggestions.enabled": false,
+    "github.copilot.nextEditSuggestions.fixes": false,
+    "github.copilot.chat.backgroundAgent.enabled": false,
+    "github.copilot.renameSuggestions.triggerAutomatically": false
 }
