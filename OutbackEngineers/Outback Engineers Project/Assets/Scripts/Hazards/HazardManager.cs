@@ -3,12 +3,18 @@ using System.Collections.Generic;
 
 public class HazardManager : MonoBehaviour
 {
+    //Accessing the Meta Data Manager
+    MetadataManager metaManager;
+
     // Prefab used to visually represent a hazard in the scene
     public GameObject hazardPrefab;
 
     // List of hazards for the associated runway
     public List<Hazard> runwayAHazards;
     public List<Hazard> runwayBHazards;
+
+    //Array to dynamically store all the hazards in the scene
+    Hazard[] hazards;
 
     // Instantiates hazards for the specified runway and sets their color based on severity
     public void LoadHazards(string runwayID)
@@ -38,5 +44,20 @@ public class HazardManager : MonoBehaviour
             else
                 rend.material.color = Color.green;
         }
+    }
+
+    // Returns the hazard total for each runway
+    public int GetHazardCount(string runwayID)
+    {
+        foreach (RunwayData data in metaManager.runwayDatabase)
+        {
+            if (data.runwayID == runwayID)
+            {
+                hazards = Object.FindObjectsByType<Hazard>(FindObjectsSortMode.None);                
+            }
+        }
+        
+        //Returns the count of hazards for the specified runway
+        return hazards.Length;
     }
 }
