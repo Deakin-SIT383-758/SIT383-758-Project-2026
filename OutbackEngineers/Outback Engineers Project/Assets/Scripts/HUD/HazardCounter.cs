@@ -3,7 +3,6 @@ using TMPro;
 
 public class HazardCounter : MonoBehaviour
 {
-
     public TextMeshProUGUI hazardCounter;
     Hazard[] hazards;
 
@@ -17,6 +16,6 @@ public class HazardCounter : MonoBehaviour
     void Update()
     {
         hazards = Object.FindObjectsByType<Hazard>(FindObjectsSortMode.None);
-        hazardCounter.text = "Number ofHazards: " + hazards.Length;
+        hazardCounter.text = "Hazards: " + hazards.Length;
     }
 }
