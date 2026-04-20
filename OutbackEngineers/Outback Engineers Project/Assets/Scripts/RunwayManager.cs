@@ -6,16 +6,27 @@ public class RunwayManager : MonoBehaviour
 
     public HazardManager hazardManager; // Reference to the HazardManager to load hazards for the detected runway
     public MetadataManager metadataManager; // Reference to the MetadataManager to display runway metadata
-    //RunwayLoader runwayLoader - Teshan
+    public RunwayLandManager runwaylandManager; // Reference to the RunwayLandManager to load runway terrain and objects for the detected runway
     public HUDManager hudManager; // Reference to the HUDManager to update the HUD with hazard count and runway information
+
 
 
     void Start()
     {
         DetectRunway();
-        //runwayLoader.LoadRunway(currentRunwayID); - teshan contribution
 
-        hazardManager.LoadHazards(currentRunwayID); // Load hazards for the detected runway
+        runwaylandManager.LoadRunway(currentRunwayID); // Load runway terrain and objects for the detected runway
+
+        GameObject runwayObj = runwaylandManager.GetCurrentRunway(); // Load hazards for the detected runway
+            if (runwayObj != null)
+            {
+                hazardManager.LoadHazards(currentRunwayID, runwayObj.transform);
+            }
+            else
+            {
+                Debug.LogError("Runway object is NULL — cannot spawn hazards!");
+            }
+
         metadataManager.DisplayMetadata(currentRunwayID); // Display metadata for the detected runway
 
         int hazardCount = hazardManager.GetHazardCount(currentRunwayID); // Must implement this line for hudManager to update 
@@ -40,4 +51,6 @@ public class RunwayManager : MonoBehaviour
     {
         return currentRunwayID;
     }
+
+
 }

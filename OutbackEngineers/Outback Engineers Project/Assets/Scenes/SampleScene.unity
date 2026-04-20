@@ -149,7 +149,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HUDManager
   hazardDisplay: {fileID: 219980888}
-  runwayName: {fileID: 0}
+  runwayName: {fileID: 1964509658}
+  metaManager: {fileID: 646123141}
 --- !u!4 &182652445
 Transform:
   m_ObjectHideFlags: 0
@@ -951,7 +952,8 @@ MonoBehaviour:
   currentRunwayID: 
   hazardManager: {fileID: 1583339669}
   metadataManager: {fileID: 646123141}
-  hudManager: {fileID: 0}
+  runwaylandManager: {fileID: 1895814744}
+  hudManager: {fileID: 182652444}
 --- !u!4 &752031391
 Transform:
   m_ObjectHideFlags: 0
@@ -1398,12 +1400,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7af71ef83567b0469f27cc72daf8939, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HazardManager
+  metaManager: {fileID: 646123141}
   hazardPrefab: {fileID: 3010166113982053755, guid: d429a8733e42b11498ef415e95050a7c, type: 3}
   runwayAHazards:
-  - {fileID: 0}
-  - {fileID: 0}
+  - type: Gravel
+    position: {x: 0, y: 0, z: 5}
+    severity: 3
+  - type: Water
+    position: {x: 0, y: 0, z: 2}
+    severity: 2
   runwayBHazards:
-  - {fileID: 0}
+  - type: 'Animal '
+    position: {x: 1, y: 0, z: 4}
+    severity: 1
 --- !u!4 &1583339670
 Transform:
   m_ObjectHideFlags: 0
@@ -1414,6 +1423,54 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1895814743
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1895814745}
+  - component: {fileID: 1895814744}
+  m_Layer: 0
+  m_Name: RunwayLandManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1895814744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895814743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59fbd13337d947d43a0e1b094c385a12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RunwayLandManager
+  RunwayA: {fileID: 5724897542535753249, guid: 673bd07b4cfade04b95934785bb8dc3f, type: 3}
+  RunwayB: {fileID: 961520000116646105, guid: e397c516f3d9f2d4ea671b1b106072cb, type: 3}
+  spawnDistance: 10
+  defaultRunwayID: Runway_A
+--- !u!4 &1895814745
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895814743}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.01352, y: 0, z: 0.33173}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1707,3 +1764,4 @@ SceneRoots:
   - {fileID: 826608687}
   - {fileID: 646123142}
   - {fileID: 182652445}
+  - {fileID: 1895814745}

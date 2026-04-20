@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class RunwayManager : MonoBehaviour
+public class RunwayLandManager : MonoBehaviour
 {
     [Header("Runway Prefabs")]
     public GameObject RunwayA;
@@ -9,35 +9,35 @@ public class RunwayManager : MonoBehaviour
 
     [Header("Spawn Settings")]
     public float spawnDistance = 10f;
-    public string defaultRunwayID = "A";
+    public string defaultRunwayID = "Runway_A";
 
     private GameObject currentRunway;
     private Dictionary<string, GameObject> RunwayDict;
 
-    void Start()
+    void Awake()
     {
         RunwayDict = new Dictionary<string, GameObject>()
         {
-            { "A", RunwayA },
-            { "B", RunwayB }
+            { "Runway_A", RunwayA },
+            { "Runway_B", RunwayB }
         };
 
-        if (!string.IsNullOrEmpty(defaultRunwayID))
-        {
-            LoadRunway(defaultRunwayID);
-        }
+        //if (!string.IsNullOrEmpty(defaultRunwayID))
+        //{
+          //  LoadRunway(defaultRunwayID);
+        //}
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            LoadRunway("A");
+            LoadRunway("Runway_A");
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            LoadRunway("B");
+            LoadRunway("Runway_B");
         }
     }
     public void LoadRunway(string runwayID)
@@ -75,5 +75,10 @@ public class RunwayManager : MonoBehaviour
 
         runway.transform.position = cam.position + forward * spawnDistance;
         runway.transform.rotation = Quaternion.LookRotation(forward);
+    }
+
+    public GameObject GetCurrentRunway()
+    {
+        return currentRunway;
     }
 }

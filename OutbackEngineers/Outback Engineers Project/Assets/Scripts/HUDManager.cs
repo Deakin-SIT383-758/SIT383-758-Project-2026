@@ -6,7 +6,7 @@ public class HUDManager : MonoBehaviour
 {
     public TextMeshProUGUI hazardDisplay;
     public TextMeshProUGUI runwayName;
-    MetadataManager metaManager;
+    public MetadataManager metaManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

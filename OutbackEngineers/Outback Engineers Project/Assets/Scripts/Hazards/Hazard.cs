@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class Hazard : MonoBehaviour// Phase 1: Simple Hazard class created - can expand later with more properties and methods as needed
+public class Hazard // Phase 1: Simple Hazard class created - can expand later with more properties and methods as needed
 {
     public string type;
     public Vector3 position;
