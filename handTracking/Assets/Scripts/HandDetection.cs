@@ -133,12 +133,36 @@ public class HandDetection : MonoBehaviour
         Vector3 wrist = joints[0];
         Vector3 indexBase = joints[5];
         Vector3 pinkyBase = joints[17];
+        Vector3 middleBase = joints[9];
         
+        // Detect if it's left or right hand
+        // For right hand, thumb is on the left side of the palm when facing palm
+        // For left hand, thumb is on the right side
+        Vector3 thumbDir = joints[2] - wrist; // Direction to thumb base
+        Vector3 pinkyDir = pinkyBase - wrist; // Direction to pinky base
+        Vector3 indexDir = indexBase - wrist; // Direction to index base
+        
+        // Cross product to determine handedness
+        Vector3 handPlane = Vector3.Cross(indexDir, pinkyDir);
+        float handednessSign = Vector3.Dot(handPlane, thumbDir);
+        
+        // Calculate normal based on hand orientation
         Vector3 v1 = indexBase - wrist;
         Vector3 v2 = pinkyBase - wrist;
         
         // Cross product gives normal to palm plane
-        Vector3 normal = Vector3.Cross(v1, v2).normalized;
+        Vector3 normal;
+        if (handednessSign > 0)
+        {
+            // Right hand - reverse cross product order
+            normal = Vector3.Cross(v2, v1).normalized;
+        }
+        else
+        {
+            // Left hand - standard cross product
+            normal = Vector3.Cross(v1, v2).normalized;
+        }
+        
         return normal;
     }
     
