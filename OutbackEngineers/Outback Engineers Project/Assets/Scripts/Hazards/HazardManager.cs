@@ -40,26 +40,29 @@ public class HazardManager : MonoBehaviour
 
         foreach (Hazard h in selectedHazards)
         {
-            if (h == null) continue; // Skip null hazards to prevent errors
+            if (h == null) continue;
 
-            Vector3 worldPos = runwayTransform.TransformPoint(h.position);
+            Transform hazardParent = runwayTransform.Find("HazardContainer"); // Ensure there is a child object named "HazardContainer" under the runway in the hierarchy to serve as the parent for hazards
+            GameObject obj = Instantiate(hazardPrefab, hazardParent);
 
-            GameObject obj = Instantiate(hazardPrefab, runwayTransform); // Parent the hazard to the runway for easier management and cleanup
+            // Use LOCAL position (relative to runway)
+            obj.transform.localPosition = h.position;
 
-            obj.transform.localPosition = h.position; // Set local position relative to the runway, so it moves with the runway if it is repositioned
+            obj.transform.localScale = Vector3.one;
 
-            HazardObject hazardObj = obj.GetComponent<HazardObject>(); // apply data to component
+            // Apply data to component
+            HazardObject hazardObj = obj.GetComponent<HazardObject>();
 
             if (hazardObj != null)
             {
-                hazardObj.SetSeverity(h.severity); // or SetSeverity(h.severity)
+                hazardObj.SetSeverity(h.severity);
             }
             else
             {
                 Debug.LogWarning("HazardObject component missing!");
             }
 
-            Debug.Log("Spawning hazard at: " + worldPos); // Debug log to verify hazard positions are being calculated and hazards are spawning correctly
+            Debug.Log("Spawning hazard at LOCAL position: " + h.position);
         }
 
     }
