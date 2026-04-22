@@ -9,10 +9,6 @@ public class HazardManager : MonoBehaviour
     // Prefab used to visually represent a hazard in the scene
     public GameObject hazardPrefab;
 
-    // List of hazards for the associated runway
-    public List<Hazard> runwayAHazards;
-    public List<Hazard> runwayBHazards;
-
     //Array to dynamically store all the hazards in the scene
     Hazard[] hazards;
 
@@ -31,14 +27,10 @@ public class HazardManager : MonoBehaviour
             Destroy(obj);
         }
 
-        List<Hazard> selectedHazards = new List<Hazard>();
+        //Locates each of the hazard empties stored in the runway prefab, and stores them in an array
+        hazards = Object.FindObjectsByType<Hazard>(FindObjectsSortMode.None);
 
-        if (runwayID == "Runway_A")
-            selectedHazards = runwayAHazards;
-        else if (runwayID == "Runway_B")
-            selectedHazards = runwayBHazards;
-
-        foreach (Hazard h in selectedHazards)
+        foreach (Hazard h in hazards)
         {
             if (h == null) continue; // Skip null hazards to prevent errors
 
@@ -68,15 +60,11 @@ public class HazardManager : MonoBehaviour
 
     }
 
-    // Returns the hazard total for each runway
-    public int GetHazardCount(string runwayID)
+    // Returns the hazard total for the active runway.
+    public int GetHazardCount()
     {
-        if (runwayID == "Runway_A")
-            return runwayAHazards.Count;
-        else if (runwayID == "Runway_B")
-            return runwayBHazards.Count;
-
-        return 0;
+        hazards = Object.FindObjectsByType<Hazard>(FindObjectsSortMode.None);
+        return hazards.Length;
     }
 
 }
