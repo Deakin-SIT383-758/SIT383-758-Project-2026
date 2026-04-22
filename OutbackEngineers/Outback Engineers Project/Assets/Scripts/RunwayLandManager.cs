@@ -11,11 +11,14 @@ public class RunwayLandManager : MonoBehaviour
     public float spawnDistance = 10f;
     public string defaultRunwayID = "Runway_A";
 
+    public Transform playerTransform;
     private GameObject currentRunway;
     private Dictionary<string, GameObject> RunwayDict;
 
     void Awake()
     {
+        Transform cam = playerTransform;
+
         RunwayDict = new Dictionary<string, GameObject>()
         {
             { "Runway_A", RunwayA },
@@ -61,19 +64,28 @@ public class RunwayLandManager : MonoBehaviour
 
     void PositionRunway(GameObject runway)
     {
-        if (Camera.main == null)
+        if (playerTransform == null)
         {
-            Debug.LogWarning("No Main Camera found in the scene.");
+            Debug.LogWarning("Player Transform not assigned.");
             return;
         }
 
-        Transform cam = Camera.main.transform;
+        Transform cam = playerTransform;
 
         Vector3 forward = cam.forward;
         forward.y = 0f;
+
+        if (forward == Vector3.zero)
+        {
+            forward = Vector3.forward; // fallback safety
+        }
+
         forward.Normalize();
 
-        runway.transform.position = cam.position + forward * spawnDistance;
+        Vector3 spawnPosition = cam.position + forward * spawnDistance;
+        spawnPosition.y = Mathf.Max(0f, cam.position.y - 1.5f); //Keep runway near "ground level" relative to player height
+
+        runway.transform.position = spawnPosition;
         runway.transform.rotation = Quaternion.LookRotation(forward);
     }
 
