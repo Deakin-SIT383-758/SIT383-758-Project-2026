@@ -3,10 +3,14 @@ using Fusion;
 
 public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
 {
-    public GameObject PlayerPrefab;
+    //public GameObject PlayerPrefab;
+    public NetworkPrefabRef PlayerPrefab;
 
     public void PlayerJoined(PlayerRef player)
     {
-        Runner.Spawn(PlayerPrefab, new Vector3(0, 1, 3), Quaternion.identity);
+        if (player == Runner.LocalPlayer)
+        {
+            Runner.Spawn(PlayerPrefab, new Vector3(0, 0, 3), Quaternion.identity, player);
+        }
     }
 }
