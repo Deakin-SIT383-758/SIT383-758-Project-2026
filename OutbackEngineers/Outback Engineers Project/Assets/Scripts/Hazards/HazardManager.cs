@@ -12,37 +12,39 @@ public class HazardManager : MonoBehaviour
     //Array to dynamically store all the hazards in the scene
     Hazard[] hazards;
 
+    // Returns the hazard total for the active runway.
+    public int GetHazardCount()
+    {
+        hazards = Object.FindObjectsByType<Hazard>(FindObjectsSortMode.None);
+        return hazards.Length;
+    }
+
     // Instantiates hazards for the specified runway and sets their color based on severity
     public void LoadHazards(string runwayID, Transform runwayTransform)
     {
-        // Debug logs to verify that the correct runway ID is being passed and that the hazard prefab and runway transform are not null
-        Debug.Log("HazardPrefab: " + hazardPrefab);
-        Debug.Log("RunwayTransform: " + runwayTransform);
+        Debug.Log("Loading hazards for: " + runwayID);
 
-        // Clear existing hazards before spawning new ones
-        GameObject[] existingHazards = GameObject.FindGameObjectsWithTag("Hazard");
-
-        foreach (GameObject obj in existingHazards)
-        {
-            Destroy(obj);
-        }
-
-        //Locates each of the hazard empties stored in the runway prefab, and stores them in an array
-        hazards = Object.FindObjectsByType<Hazard>(FindObjectsSortMode.None);
+        // Get ALL hazard components that are children of this runway ONLY
+        Hazard[] hazards = runwayTransform.GetComponentsInChildren<Hazard>();
 
         foreach (Hazard h in hazards)
         {
             if (h == null) continue;
 
-            Transform hazardParent = runwayTransform.Find("HazardContainer"); // Ensure there is a child object named "HazardContainer" under the runway in the hierarchy to serve as the parent for hazards
+            // Add visual prefab to each hazard point
+            Transform hazardParent = runwayTransform.Find("HazardContainer");
+
+            if (hazardParent == null)
+            {
+                Debug.LogError("HazardContainer not found!");
+                return;
+            }
+
             GameObject obj = Instantiate(hazardPrefab, hazardParent);
 
-            // Use LOCAL position (relative to runway)
-            obj.transform.localPosition = h.position;
+            obj.transform.SetParent(h.transform); 
+            obj.transform.localPosition = Vector3.zero;
 
-            obj.transform.localScale = Vector3.one;
-
-            // Apply data to component
             HazardObject hazardObj = obj.GetComponent<HazardObject>();
 
             if (hazardObj != null)
@@ -53,17 +55,10 @@ public class HazardManager : MonoBehaviour
             {
                 Debug.LogWarning("HazardObject component missing!");
             }
-
-            Debug.Log("Spawning hazard at LOCAL position: " + h.position);
         }
-
     }
-
-    // Returns the hazard total for the active runway.
-    public int GetHazardCount()
-    {
-        hazards = Object.FindObjectsByType<Hazard>(FindObjectsSortMode.None);
-        return hazards.Length;
-    }
-
 }
+           
+
+
+

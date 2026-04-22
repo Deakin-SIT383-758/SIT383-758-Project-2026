@@ -1680,17 +1680,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HazardManager
   metaManager: {fileID: 646123141}
   hazardPrefab: {fileID: 3010166113982053755, guid: d429a8733e42b11498ef415e95050a7c, type: 3}
-  runwayAHazards:
-  - type: Gravel
-    position: {x: 0, y: 0, z: 5}
-    severity: 3
-  - type: Water
-    position: {x: 0, y: 0, z: 2}
-    severity: 2
-  runwayBHazards:
-  - type: 'Animal '
-    position: {x: 1, y: 0, z: 4}
-    severity: 1
 --- !u!4 &1583339670
 Transform:
   m_ObjectHideFlags: 0
@@ -1767,10 +1756,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59fbd13337d947d43a0e1b094c385a12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RunwayLandManager
-  RunwayA: {fileID: 5724897542535753249, guid: 673bd07b4cfade04b95934785bb8dc3f, type: 3}
-  RunwayB: {fileID: 961520000116646105, guid: e397c516f3d9f2d4ea671b1b106072cb, type: 3}
+  RunwayA: {fileID: 1830425812766502979, guid: 1d8ebda2fc8cadf4394cdfe1542095f4, type: 3}
+  RunwayB: {fileID: 3403949094466598108, guid: fafba5e83e3b84c4db9e477878e4de06, type: 3}
   spawnDistance: 10
-  defaultRunwayID: Runway_A
+  defaultRunwayID: Runway_B
   playerTransform: {fileID: 297776069}
 --- !u!4 &1895814745
 Transform:
@@ -2061,19 +2050,77 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2025916234}
   m_CullTransparentMesh: 1
+--- !u!1001 &2880500092290128912
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3403949094466598108, guid: fafba5e83e3b84c4db9e477878e4de06, type: 3}
+      propertyPath: m_Name
+      value: Runway_B
+      objectReference: {fileID: 0}
+    - target: {fileID: 5377265449508485488, guid: fafba5e83e3b84c4db9e477878e4de06, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5377265449508485488, guid: fafba5e83e3b84c4db9e477878e4de06, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5377265449508485488, guid: fafba5e83e3b84c4db9e477878e4de06, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5377265449508485488, guid: fafba5e83e3b84c4db9e477878e4de06, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5377265449508485488, guid: fafba5e83e3b84c4db9e477878e4de06, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5377265449508485488, guid: fafba5e83e3b84c4db9e477878e4de06, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5377265449508485488, guid: fafba5e83e3b84c4db9e477878e4de06, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5377265449508485488, guid: fafba5e83e3b84c4db9e477878e4de06, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5377265449508485488, guid: fafba5e83e3b84c4db9e477878e4de06, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5377265449508485488, guid: fafba5e83e3b84c4db9e477878e4de06, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fafba5e83e3b84c4db9e477878e4de06, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 297776069}
-  - {fileID: 410087041}
-  - {fileID: 832575519}
-  - {fileID: 253490701}
   - {fileID: 752031391}
   - {fileID: 1583339670}
-  - {fileID: 826608687}
   - {fileID: 646123142}
+  - {fileID: 410087041}
   - {fileID: 182652445}
   - {fileID: 1895814745}
+  - {fileID: 832575519}
+  - {fileID: 253490701}
+  - {fileID: 826608687}
   - {fileID: 301686734}
   - {fileID: 80527966}
+  - {fileID: 2880500092290128912}
