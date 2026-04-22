@@ -24,12 +24,12 @@ public class RunwayManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Runway object is NULL — cannot spawn hazards!");
+                Debug.LogError("Runway object is NULL ï¿½ cannot spawn hazards!");
             }
 
         metadataManager.DisplayMetadata(currentRunwayID); // Display metadata for the detected runway
 
-        int hazardCount = hazardManager.GetHazardCount(currentRunwayID); // Must implement this line for hudManager to update 
+        int hazardCount = hazardManager.GetHazardCount(); // Must implement this line for hudManager to update 
         hudManager.UpdateHUD(currentRunwayID, hazardCount); 
     }
 
