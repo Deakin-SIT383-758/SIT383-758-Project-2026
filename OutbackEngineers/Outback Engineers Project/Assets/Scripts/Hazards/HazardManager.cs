@@ -47,20 +47,15 @@ public class HazardManager : MonoBehaviour
             GameObject obj = Instantiate(hazardPrefab, worldPos, Quaternion.identity);
             obj.transform.SetParent(runwayTransform);
 
-            Renderer rend = obj.GetComponentInChildren<Renderer>();
+            HazardObject hazardObj = obj.GetComponent<HazardObject>(); // Phase 2: Get the HazardObject component to set the severity and update the visual representation based on severity
 
-            if (rend != null)
+            if (hazardObj != null)
             {
-                if (h.severity == 3)
-                    rend.material.color = Color.red;
-                else if (h.severity == 2)
-                    rend.material.color = Color.yellow;
-                else
-                    rend.material.color = Color.green;
+                hazardObj.SetSeverity(h.severity);
             }
             else
             {
-                Debug.LogWarning("No Renderer found on hazard prefab!");
+                Debug.LogWarning("HazardObject component missing!");
             }
 
             Debug.Log("Spawning hazard at: " + worldPos); // Debug log to verify hazard positions are being calculated and hazards are spawning correctly
