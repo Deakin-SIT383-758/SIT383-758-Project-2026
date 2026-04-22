@@ -44,14 +44,15 @@ public class HazardManager : MonoBehaviour
 
             Vector3 worldPos = runwayTransform.TransformPoint(h.position);
 
-            GameObject obj = Instantiate(hazardPrefab, worldPos, Quaternion.identity);
-            obj.transform.SetParent(runwayTransform);
+            GameObject obj = Instantiate(hazardPrefab, runwayTransform); // Parent the hazard to the runway for easier management and cleanup
 
-            HazardObject hazardObj = obj.GetComponent<HazardObject>(); // Phase 2: Get the HazardObject component to set the severity and update the visual representation based on severity
+            obj.transform.localPosition = h.position; // Set local position relative to the runway, so it moves with the runway if it is repositioned
+
+            HazardObject hazardObj = obj.GetComponent<HazardObject>(); // apply data to component
 
             if (hazardObj != null)
             {
-                hazardObj.SetSeverity(h.severity);
+                hazardObj.SetSeverity(h.severity); // or SetSeverity(h.severity)
             }
             else
             {
