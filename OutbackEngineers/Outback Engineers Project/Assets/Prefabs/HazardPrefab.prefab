@@ -126,3 +126,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HazardObject
   severity: 0
+  overlayPrefab: {fileID: 1497054557782644563, guid: 77bdee456d6f6aa4b8aed4c535b60aa5, type: 3}
