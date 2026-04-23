@@ -94,11 +94,6 @@ namespace MM.RangeInvariantMarkers
                 this.enabled = false;
                 return;
             }
-
-            foreach (var markerData in allMarkerData)
-            {
-                SetupMarker(markerData);
-            }
         }
 
         public void AddMarker(MarkerData markerData)
@@ -117,6 +112,11 @@ namespace MM.RangeInvariantMarkers
 
         private void SetupMarker(MarkerData markerData)
         {
+            if (markers.ContainsKey(markerData))
+            {
+                Debug.LogError($"Dictionary already contains key for {markerData.Name}. Skipping");
+                return;
+            }
             var markerObject = Instantiate(markerPrefab);
             markerObject.name = markerData.Name;
 
@@ -132,7 +132,6 @@ namespace MM.RangeInvariantMarkers
             markerVisualsInterface.SetTimers(visualEffectTimers);
             markers.Add(markerData, markerVisualsInterface);
             markerGOs.Add(markerData, markerObject);
-
         }
 
 
