@@ -15,7 +15,7 @@ namespace MM.RangeInvariantMarkers
 
         private void Update()
         {
-            gazeRay = new Ray(gazeObject.transform.position, gazeObject.transform.forward);
+            gazeRay = new Ray(gazeObject.position, gazeObject.forward);
             rayOrigin = gazeRay.origin;
             rayDirection = gazeRay.direction;
             rayHit = Physics.Raycast(gazeRay, out RaycastHit hitInfo, 10000f, markerLayer);
