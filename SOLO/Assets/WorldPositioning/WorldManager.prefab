@@ -47,7 +47,7 @@ MonoBehaviour:
   playerPosition:
     Latitude: -33.87261508492854
     Longitude: 151.20627287453982
-    HeightASL: 200
+    HeightASL: 500
   PointsOfInterest:
   - name: Sydney Harbour Bridge
     position:
@@ -67,3 +67,4 @@ MonoBehaviour:
       Longitude: 151.20078624827704
       HeightASL: 20
     description: A very sweet harbour
+  playerBaseTransform: {fileID: 0}
