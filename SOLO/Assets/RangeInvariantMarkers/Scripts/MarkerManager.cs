@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace MM.RangeInvariantMarkers
 {
@@ -44,18 +45,23 @@ namespace MM.RangeInvariantMarkers
         public double X { get => x; }
         public double Y { get => y; }
         public double Alt { get => alt; }
+        public string Name { get => name; }
+        public string Info { get => info; }
 
 
+        [SerializeField]
+        private string name;
         [SerializeField]
         private string info;
 
         public string MarkerInfo { get => info; }
 
-        public MarkerData(double x, double y, double alt, string info)
+        public MarkerData(double x, double y, double alt, string name, string info="")
         {
             this.x = x;
             this.y = y;
             this.alt = alt;
+            this.name = name;
             this.info = info;
         }
         public MarkerData(double x, double y, double alt)
@@ -63,20 +69,15 @@ namespace MM.RangeInvariantMarkers
             this.x = x;
             this.y = y;
             this.alt = alt;
+            this.name = "POI Marker";
             this.info = "";
         }
-
-        public void SetMarkerinfo(string info)
-        { 
-            this.info = info; 
-        }
-
     }
 
     public class MarkerManager : MonoBehaviour
     {
         public GameObject playerObject;
-        public MarkerData[] allMarkerData;
+        public List<MarkerData> allMarkerData;
         private System.Collections.Generic.Dictionary<MarkerData, IMarkerVisuals> markers = new System.Collections.Generic.Dictionary<MarkerData, IMarkerVisuals>();
         private System.Collections.Generic.Dictionary<MarkerData, GameObject> markerGOs = new System.Collections.Generic.Dictionary<MarkerData, GameObject>();
         [SerializeField] private GameObject markerPrefab;
@@ -100,10 +101,24 @@ namespace MM.RangeInvariantMarkers
             }
         }
 
+        public void AddMarker(MarkerData markerData)
+        {
+            allMarkerData.Add(markerData);
+            SetupMarker(markerData);
+        }
+
+        public void AddMarkers(List<MarkerData> markerDatas)
+        {
+            foreach (var markerData in markerDatas)
+            {
+                AddMarker(markerData);
+            }
+        }
+
         private void SetupMarker(MarkerData markerData)
         {
             var markerObject = Instantiate(markerPrefab);
-            markerObject.name = "Marker!";
+            markerObject.name = markerData.Name;
 
             IMarkerVisuals markerVisualsInterface = markerObject.GetComponent<IMarkerVisuals>();
             if (markerVisualsInterface == null)
@@ -112,8 +127,8 @@ namespace MM.RangeInvariantMarkers
                 Destroy(markerObject);
                 return;
             }
-
-            markerVisualsInterface.SetMessage(markerData.MarkerInfo);
+            string visualsMessage = markerData.Name + ":\n" + markerData.Info;
+            markerVisualsInterface.SetMessage(visualsMessage);
             markerVisualsInterface.SetTimers(visualEffectTimers);
             markers.Add(markerData, markerVisualsInterface);
             markerGOs.Add(markerData, markerObject);
