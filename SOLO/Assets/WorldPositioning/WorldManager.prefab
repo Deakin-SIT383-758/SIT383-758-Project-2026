@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5188299058371235383
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8340065230601581298}
+  - component: {fileID: 977066452509154547}
+  m_Layer: 0
+  m_Name: WorldManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8340065230601581298
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5188299058371235383}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &977066452509154547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5188299058371235383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 628ae9f2e1493f94ab9349bc140b1e23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MM.WorldInteraction.WorldManager
+  playerPosition:
+    Latitude: -33.87261508492854
+    Longitude: 151.20627287453982
+    HeightASL: 200
+  PointsOfInterest:
+  - name: Sydney Harbour Bridge
+    position:
+      Latitude: -33.85266958345332
+      Longitude: 151.21026508173753
+      HeightASL: 140
+    description: A big famous bridge
+  - name: Sydney Opera House
+    position:
+      Latitude: -33.85684933060164
+      Longitude: 151.21516705112717
+      HeightASL: 70
+    description: A big famous house!
+  - name: Darling Harbour
+    position:
+      Latitude: -33.8738584964656
+      Longitude: 151.20078624827704
+      HeightASL: 20
+    description: A very sweet harbour
