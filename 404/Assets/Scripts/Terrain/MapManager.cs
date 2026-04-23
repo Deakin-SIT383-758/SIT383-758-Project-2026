@@ -9,6 +9,7 @@ using UnityEngine.Rendering;
 using TMPro;
 using System.IO;
 using System.Buffers.Text;
+using Unity.Mathematics;
 
 public class MapManager : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class MapManager : MonoBehaviour
 
     private float longitude = 0.0f;
     private float latitude = 0.0f;
-    private int zoom = 0;
+    private int zoom = 1;
 
     private static bool TrustCertificate(object sender, X509Certificate x509Certificate, X509Chain x509Chain, SslPolicyErrors sslPolicyErrors)
     {
@@ -92,7 +93,7 @@ public class MapManager : MonoBehaviour
         int triangleIndex = 0;
         for (int y = 0; y < mHeight; y++)
         {
-            for (int x = 0; x > mWidth; x++)
+            for (int x = 0; x < mWidth; x++)
             {
                 float xc = (float)x / mWidth;
                 float zc = (float)y / mHeight;
@@ -144,6 +145,7 @@ public class MapManager : MonoBehaviour
         mapMaterial.mainTexture = tex;
     }
 
+    [ContextMenu("Update map")]
     private void updateMapView()
     {
         int x;
@@ -181,10 +183,16 @@ public class MapManager : MonoBehaviour
         updateMapView();
     }
 
+    [ContextMenu("Left")]
     public void leftButton() { onButtonEvent(-1.0f, 0.0f, 0); }
+    [ContextMenu("Right")]
     public void rightButton() { onButtonEvent(1.0f, 0.0f, 0); }
+    [ContextMenu("Up")]
     public void upButton() { onButtonEvent(0.0f, 1.0f, 0); }
+    [ContextMenu("Down")]
     public void downButton() { onButtonEvent(0.0f, -1.0f, 0); }
+    [ContextMenu("In")]
     public void inButton() { onButtonEvent(0.0f, -1.0f, 1); }
+    [ContextMenu("Out")]
     public void outButton() { onButtonEvent(0.0f, -1.0f, -1); }
 }
