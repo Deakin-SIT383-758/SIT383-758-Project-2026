@@ -399,6 +399,10 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 961739752}
+    - target: {fileID: 2097876710197721255, guid: a39724a00284fa841ab6d1a0d3622a7a, type: 3}
+      propertyPath: gazeObject
+      value: 
+      objectReference: {fileID: 961739753}
     - target: {fileID: 4717748812165488579, guid: a39724a00284fa841ab6d1a0d3622a7a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.38525
@@ -443,6 +447,42 @@ PrefabInstance:
       propertyPath: playerObject
       value: 
       objectReference: {fileID: 961739749}
+    - target: {fileID: 6877218487968632736, guid: a39724a00284fa841ab6d1a0d3622a7a, type: 3}
+      propertyPath: allMarkerData.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6877218487968632736, guid: a39724a00284fa841ab6d1a0d3622a7a, type: 3}
+      propertyPath: allMarkerData.Array.data[0].y
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6877218487968632736, guid: a39724a00284fa841ab6d1a0d3622a7a, type: 3}
+      propertyPath: allMarkerData.Array.data[1].x
+      value: 5000
+      objectReference: {fileID: 0}
+    - target: {fileID: 6877218487968632736, guid: a39724a00284fa841ab6d1a0d3622a7a, type: 3}
+      propertyPath: allMarkerData.Array.data[1].y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6877218487968632736, guid: a39724a00284fa841ab6d1a0d3622a7a, type: 3}
+      propertyPath: allMarkerData.Array.data[0].alt
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6877218487968632736, guid: a39724a00284fa841ab6d1a0d3622a7a, type: 3}
+      propertyPath: allMarkerData.Array.data[0].info
+      value: North marker is what you see first!
+      objectReference: {fileID: 0}
+    - target: {fileID: 6877218487968632736, guid: a39724a00284fa841ab6d1a0d3622a7a, type: 3}
+      propertyPath: allMarkerData.Array.data[0].name
+      value: North marker
+      objectReference: {fileID: 0}
+    - target: {fileID: 6877218487968632736, guid: a39724a00284fa841ab6d1a0d3622a7a, type: 3}
+      propertyPath: allMarkerData.Array.data[1].info
+      value: Info for east marker
+      objectReference: {fileID: 0}
+    - target: {fileID: 6877218487968632736, guid: a39724a00284fa841ab6d1a0d3622a7a, type: 3}
+      propertyPath: allMarkerData.Array.data[1].name
+      value: East marker
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
