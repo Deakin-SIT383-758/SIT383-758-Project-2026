@@ -4,7 +4,7 @@ namespace MM.RangeInvariantMarkers
 {
     public class GazeManager : MonoBehaviour
     {
-        public Camera cam;
+        public Transform gazeObject;
         public LayerMask markerLayer;
         private Ray gazeRay;
 
@@ -15,7 +15,7 @@ namespace MM.RangeInvariantMarkers
 
         private void Update()
         {
-            gazeRay = new Ray(cam.transform.position, cam.transform.forward);
+            gazeRay = new Ray(gazeObject.position, gazeObject.forward);
             rayOrigin = gazeRay.origin;
             rayDirection = gazeRay.direction;
             rayHit = Physics.Raycast(gazeRay, out RaycastHit hitInfo, 10000f, markerLayer);
