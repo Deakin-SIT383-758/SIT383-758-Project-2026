@@ -168,6 +168,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9048403617078189468, guid: eceeb18c229ff2e4b85bdb529d6d3b22, type: 3}
+      propertyPath: verticalOffset
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9048403617078189468, guid: eceeb18c229ff2e4b85bdb529d6d3b22, type: 3}
+      propertyPath: playerTransform
+      value: 
+      objectReference: {fileID: 806179187}
+    - target: {fileID: 9048403617078189468, guid: eceeb18c229ff2e4b85bdb529d6d3b22, type: 3}
       propertyPath: passthroughLayer
       value: 
       objectReference: {fileID: 891613226}
@@ -180,6 +188,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eceeb18c229ff2e4b85bdb529d6d3b22, type: 3}
+--- !u!4 &806179187 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5515231219214630687, guid: eceeb18c229ff2e4b85bdb529d6d3b22, type: 3}
+  m_PrefabInstance: {fileID: 17123052}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &891613226 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7809626439049260119, guid: 85b259d08b4def0438325cfe22db9f59, type: 3}
