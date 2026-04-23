@@ -52,9 +52,14 @@ namespace MM.WorldInteraction
                 return;
             }
         }
-
+        [SerializeField] private Transform playerBaseTransform;
         private void Start()
         {
+            playerBaseTransform.position = new Vector3(
+                    playerBaseTransform.position.x,
+                    (float)playerPosition.HeightASL,
+                    playerBaseTransform.position.z);
+            
             foreach (var poi in PointsOfInterest)
             {
                 Vector3Double position = ConvertToUnitySpace(poi.position);

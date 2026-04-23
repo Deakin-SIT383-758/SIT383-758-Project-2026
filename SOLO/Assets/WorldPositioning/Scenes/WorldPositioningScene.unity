@@ -298,6 +298,7 @@ MonoBehaviour:
       Longitude: 151.20078624827704
       HeightASL: 20
     description: A very sweet harbour
+  playerBaseTransform: {fileID: 961739753}
 --- !u!4 &228201777
 Transform:
   m_ObjectHideFlags: 0
