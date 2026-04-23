@@ -12,7 +12,7 @@ using System.Buffers.Text;
 
 public class MapManager : MonoBehaviour
 {
-    public Text statusText;
+    public TMP_Text statusText;
 
     public MeshFilter mapObject;
     public Material mapMaterial;
