@@ -44,7 +44,8 @@ namespace MM.RangeInvariantMarkers
 
         void IMarkerVisuals.UpdateVisuals(Vector3 observerPosition)
         {
-            rootUI.transform.LookAt(observerPosition);
+            //rootUI.transform.LookAt(observerPosition);
+            transform.LookAt(observerPosition);
             UpdateGazeFade();
         }
 
