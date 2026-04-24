@@ -46,5 +46,5 @@ You may need to manually swap the build to android if building to a headset.
 
 ### Cesium
 This project uses Cesium for terrain rendering. API keys are not included. To use this correctly you will need to do the following:
-- [Create a Cesium Ion account](https://ion.cesium.com/signup?). This project does not require a paid account, the basic free account is all you need.
-- [connect to Cesium Ion (step 2 only)](https://cesium.com/learn/unity/unity-quickstart/#step-2-connect-to-cesium-ion). This generates a key within your account to use in the Unity Project. (_The .gitignore file will ignore the asset created with the key in it_)
+- [Create a Cesium Ion account](https://ion.cesium.com/signup). This project does not require a paid account, the basic free account is all you need.
+- [Connect to Cesium Ion in Unity (step 2 only)](https://cesium.com/learn/unity/unity-quickstart/#step-2-connect-to-cesium-ion). This generates a key within your account to use in the Unity Project. (_The .gitignore file will ignore the asset created with the key in it_)
