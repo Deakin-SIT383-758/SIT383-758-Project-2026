@@ -39,7 +39,7 @@ namespace MM.WorldInteraction.Cesium
         public double originHeight = 50;
         private void Start()
         {
-
+            UpdateCesiumGeoreference();
         }
 
         public void UpdateCesiumGeoreference()
