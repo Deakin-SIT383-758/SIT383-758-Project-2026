@@ -102,10 +102,10 @@ public class MapManager : MonoBehaviour
                 if (yc < 0.0f) yc = 0.0f;
                 yc = heightRange * (yc - minHeight) / (maxHeight - minHeight);
 
-                vertices[y * (mWidth + 1) + x] = new Vector3(xc - 0.5f, yc, zc - 0.5f);
+                vertices[y * (mWidth + 1) + x] = new Vector3(xc - 0.5f, yc, zc - 0.5f) * 10.0f;
                 uvs[y * (mWidth + 1) + x] = new Vector3(xc, zc);
 
-                //Instantiate(marker, new Vector3(xc - 0.5f, yc, zc - 0.5f), Quaternion.identity);
+                //Instantiate(marker, new Vector3(xc - 0.5f, yc, zc - 0.5f) * 10.0f, Quaternion.identity);
 
                 // Skip last row/col
                 if ((x != mWidth) && (y != mHeight))
