@@ -147,6 +147,22 @@ public class MapManager : MonoBehaviour
         // Retreive large number of bytes, should be more than a tile texture
         ImageConversion.LoadImage(tex, new BinaryReader(response.GetResponseStream()).ReadBytes(1000000));
         updateMesh(tex, 128, 128, 0.1f);
+        //mapMaterial.mainTexture = tex;
+    }
+    private void updateColourTexture(int x, int y, int z)
+    {
+        // Elevation tiles, sourced from Mapzen (https://www.mapzen.com/blog/terrain-tile-service/)
+        string url = "https://tile.openstreetmap.org/" + z + "/" + x + "/" + y + ".png";
+        Debug.Log("Retrieving: " + url);
+        WebRequest www = WebRequest.Create(url);
+        ((HttpWebRequest)www).UserAgent = "TerrainMaps";
+
+        var response = www.GetResponse();
+
+        Texture2D tex = new Texture2D(2, 2);
+        // Retreive large number of bytes, should be more than a tile texture
+        ImageConversion.LoadImage(tex, new BinaryReader(response.GetResponseStream()).ReadBytes(1000000));
+        //updateMesh(tex, 128, 128, 0.1f);
         mapMaterial.mainTexture = tex;
     }
 
@@ -157,6 +173,7 @@ public class MapManager : MonoBehaviour
         int y;
         getTileCoordinates(longitude, latitude, zoom, out x, out y);
         updateTexture(x, y, zoom);
+        updateColourTexture(x, y, zoom);
 
         // Place a marker at current position on the tile
         float cornerLatA;
