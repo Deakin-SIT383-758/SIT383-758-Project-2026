@@ -97,10 +97,15 @@ public class MapManager : MonoBehaviour
             {
                 float xc = (float)x / mWidth;
                 float zc = (float)y / mHeight;
-                float yc = 0.0f;
+                //float yc = 0.0f;
+                float yc = heightTex[(int)(zc * (tex.height - 1)) * tex.width + (int)(xc * (tex.width - 1))];
+                if (yc < 0.0f) yc = 0.0f;
+                yc = heightRange * (yc - minHeight) / (maxHeight - minHeight);
 
                 vertices[y * (mWidth + 1) + x] = new Vector3(xc - 0.5f, yc, zc - 0.5f);
                 uvs[y * (mWidth + 1) + x] = new Vector3(xc, zc);
+
+                //Instantiate(marker, new Vector3(xc - 0.5f, yc, zc - 0.5f), Quaternion.identity);
 
                 // Skip last row/col
                 if ((x != mWidth) && (y != mHeight))
