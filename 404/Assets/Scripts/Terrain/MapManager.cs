@@ -197,7 +197,7 @@ public class MapManager : MonoBehaviour
     [ContextMenu("Down")]
     public void downButton() { onButtonEvent(0.0f, -1.0f, 0); }
     [ContextMenu("In")]
-    public void inButton() { onButtonEvent(0.0f, -1.0f, 1); }
+    public void inButton() { onButtonEvent(0.0f, 0.0f, 1); }
     [ContextMenu("Out")]
-    public void outButton() { onButtonEvent(0.0f, -1.0f, -1); }
+    public void outButton() { onButtonEvent(0.0f, 0.0f, -1); }
 }
