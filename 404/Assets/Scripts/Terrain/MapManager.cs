@@ -21,9 +21,9 @@ public class MapManager : MonoBehaviour
     public GameObject marker;
     public GameObject mapPlane;
 
-    private float longitude = 0.0f;
-    private float latitude = 0.0f;
-    private int zoom = 1;
+    public float longitude = 0.0f; // 144.96f for Melbourne
+    public float latitude = 0.0f; // 37.81f for Melbourne
+    private int zoom = 3;
 
     private static bool TrustCertificate(object sender, X509Certificate x509Certificate, X509Chain x509Chain, SslPolicyErrors sslPolicyErrors)
     {
@@ -39,8 +39,8 @@ public class MapManager : MonoBehaviour
     private void getTileCoordinates(float longitude, float latitude, int zoom, out int x, out int y)
     {
         x = (int)(Mathf.Floor((longitude + 180.0f) / 360.0f * Mathf.Pow(2.0f, zoom)));
-        y = (int)(Mathf.Floor((1.0f - Mathf.Log(Mathf.Tan(latitude * Mathf.PI / 180.0f) + 1.0f / Mathf.Cos(latitude * Mathf.PI / 180.0f
-        / 2.0f * Mathf.Pow(2.0f, zoom))))));
+        y = (int)(Mathf.Floor((1.0f - Mathf.Log(Mathf.Tan(latitude * Mathf.PI / 180.0f) + 1.0f / Mathf.Cos(latitude * Mathf.PI / 180.0f)) / Mathf.PI)
+        / 2.0f * Mathf.Pow(2.0f, zoom)));
     }
 
     private void getGeoCoordinates(int x, int y, int zoom, out float longitude, out float latitude)
