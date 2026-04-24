@@ -23,7 +23,7 @@ public class MapManager : MonoBehaviour
 
     public float longitude = 0.0f; // 144.96f for Melbourne
     public float latitude = 0.0f; // 37.81f for Melbourne
-    private int zoom = 3;
+    private int zoom = 10;
 
     private static bool TrustCertificate(object sender, X509Certificate x509Certificate, X509Chain x509Chain, SslPolicyErrors sslPolicyErrors)
     {

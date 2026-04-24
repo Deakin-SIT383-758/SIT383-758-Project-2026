@@ -687,7 +687,7 @@ MonoBehaviour:
   marker: {fileID: 278511467}
   mapPlane: {fileID: 781659152}
   longitude: 144.96
-  latitude: 37.81
+  latitude: -37.81
 --- !u!4 &631515191
 Transform:
   m_ObjectHideFlags: 0
