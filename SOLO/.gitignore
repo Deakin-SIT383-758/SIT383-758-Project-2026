@@ -13,8 +13,8 @@
 *.log
 
 #Ensure cesium key is not tracked
-/[Aa]ssets/Resources/ion.cesium.com.asset
-/[Aa]ssets/Resources/ion.cesium.com.asset.meta
+**/ion.cesium.com.asset
+**/ion.cesium.com.asset.meta
 
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be commited to version control.
 *.blend1
