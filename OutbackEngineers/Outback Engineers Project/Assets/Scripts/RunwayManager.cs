@@ -29,8 +29,17 @@ public class RunwayManager : MonoBehaviour
 
         metadataManager.DisplayMetadata(currentRunwayID); // Display metadata for the detected runway
 
-        int hazardCount = hazardManager.GetHazardCount(); // Must implement this line for hudManager to update 
-        hudManager.UpdateHUD(currentRunwayID, hazardCount); 
+        int hazardCount = hazardManager.GetHazardCount();
+        hudManager.UpdateHUD(currentRunwayID, hazardCount); //Displays hazard count and other data to the HUD
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        metadataManager.DisplayMetadata(currentRunwayID); //Updates metadata Display for current runway
+
+        int hazardCount = hazardManager.GetHazardCount(); 
+        hudManager.UpdateHUD(currentRunwayID, hazardCount); //Updates the display of current hazard count and other data
     }
 
     void DetectRunway()

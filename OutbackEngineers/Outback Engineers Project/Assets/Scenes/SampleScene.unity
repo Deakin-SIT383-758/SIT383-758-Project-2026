@@ -176,6 +176,78 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58d0a4ac86f2348deb02f3880c71378e, type: 3}
+--- !u!1 &93277078
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 93277079}
+  - component: {fileID: 93277081}
+  - component: {fileID: 93277080}
+  m_Layer: 5
+  m_Name: ClientLogo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &93277079
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 93277078}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 720295885}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 6, y: -2}
+  m_SizeDelta: {x: 2, y: 2}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &93277080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 93277078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RawImage
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 2800000, guid: 4f9c972d8cf32634b8c855c0b043e872, type: 3}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+--- !u!222 &93277081
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 93277078}
+  m_CullTransparentMesh: 1
 --- !u!1 &182652443
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,6 +280,8 @@ MonoBehaviour:
   hazardDisplay: {fileID: 219980888}
   runwayName: {fileID: 1964509658}
   metaManager: {fileID: 646123141}
+  ArrayA_Timeline: []
+  ArrayB_Timeline: []
 --- !u!4 &182652445
 Transform:
   m_ObjectHideFlags: 0
@@ -943,6 +1017,7 @@ RectTransform:
   - {fileID: 264761164}
   - {fileID: 219980887}
   - {fileID: 1964509657}
+  - {fileID: 93277079}
   m_Father: {fileID: 1182649124}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1680,17 +1755,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HazardManager
   metaManager: {fileID: 646123141}
   hazardPrefab: {fileID: 3010166113982053755, guid: d429a8733e42b11498ef415e95050a7c, type: 3}
-  runwayAHazards:
-  - type: Gravel
-    position: {x: 0, y: 0, z: 5}
-    severity: 3
-  - type: Water
-    position: {x: 0, y: 0, z: 2}
-    severity: 2
-  runwayBHazards:
-  - type: 'Animal '
-    position: {x: 1, y: 0, z: 4}
-    severity: 1
 --- !u!4 &1583339670
 Transform:
   m_ObjectHideFlags: 0
