@@ -43,6 +43,8 @@ public class RunwayLandManager : MonoBehaviour
             LoadRunway("Runway_B");
         }
     }
+
+    //Loads the latest version of a runway
     public void LoadRunway(string runwayID)
     {
         if (currentRunway != null)
@@ -62,6 +64,7 @@ public class RunwayLandManager : MonoBehaviour
         }
     }
 
+    //Positions a loaded runway at the correct position
     void PositionRunway(GameObject runway)
     {
         if (playerTransform == null)
@@ -92,5 +95,16 @@ public class RunwayLandManager : MonoBehaviour
     public GameObject GetCurrentRunway()
     {
         return currentRunway;
+    }
+
+    //Loads an older version of a runway
+    public void LoadRetroRunway(GameObject RetroRunway)
+    {
+        if (currentRunway != null)
+        {
+            Destroy(currentRunway);
+        }
+        currentRunway = Instantiate(RetroRunway);
+        PositionRunway(currentRunway);
     }
 }

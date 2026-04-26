@@ -3,6 +3,8 @@ using UnityEngine;
 public class RunwayManager : MonoBehaviour
 {
     public string currentRunwayID;
+    int activeInstance;
+    GameObject[] currentTimeline;
 
     public HazardManager hazardManager; // Reference to the HazardManager to load hazards for the detected runway
     public MetadataManager metadataManager; // Reference to the MetadataManager to display runway metadata
@@ -31,6 +33,7 @@ public class RunwayManager : MonoBehaviour
 
         int hazardCount = hazardManager.GetHazardCount();
         hudManager.UpdateHUD(currentRunwayID, hazardCount); //Displays hazard count and other data to the HUD
+        currentTimeline = hudManager.SetRunwayTimeline(currentRunwayID); //Updates the timeline slider with the values of the timeline of the current runway and stores that array
     }
 
     // Update is called once per frame
@@ -40,6 +43,19 @@ public class RunwayManager : MonoBehaviour
 
         int hazardCount = hazardManager.GetHazardCount(); 
         hudManager.UpdateHUD(currentRunwayID, hazardCount); //Updates the display of current hazard count and other data
+        
+        foreach (RunwayData data in metadataManager.runwayDatabase)
+        {
+            if (data.runwayID == currentRunwayID)
+            {
+                activeInstance = data.RunwayInstance;
+            }
+        }
+        if ((int)hudManager.timeline.value != activeInstance)
+        {
+            hudManager.GetRunwayInstance(currentTimeline);
+            runwaylandManager.LoadRetroRunway(currentTimeline[(int)hudManager.timeline.value]);
+        }
     }
 
     void DetectRunway()

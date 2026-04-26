@@ -11,6 +11,7 @@ public class RunwayData
     public float latitude;
     public float longitude;
     public string timestamp;
+    public int RunwayInstance;
 }
 
 
