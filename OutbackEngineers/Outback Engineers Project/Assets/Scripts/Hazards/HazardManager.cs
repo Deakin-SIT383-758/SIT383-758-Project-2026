@@ -49,7 +49,7 @@ public class HazardManager : MonoBehaviour
 
             if (hazardObj != null)
             {
-                hazardObj.SetSeverity(h.severity);
+                hazardObj.Initialise(h); 
             }
             else
             {

@@ -79,6 +79,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hazard
   severity: 1
+  type: Water
 --- !u!1 &1830425812766502979
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,6 +158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hazard
   severity: 3
+  type: Crack
 --- !u!1 &5875310474424673930
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,6 +204,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hazard
   severity: 2
+  type: Debris
 --- !u!1 &6386672788993409903
 GameObject:
   m_ObjectHideFlags: 0

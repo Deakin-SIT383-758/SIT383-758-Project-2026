@@ -1,10 +1,12 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 
 
 public class HazardObject : MonoBehaviour // Phase 2: HazardObject class created to represent hazards in the scene, with visual representation based on severity
 {                                         // No longer just a data class, now also handles visual representation in the scene
     public int severity;
+
+    public string hazardType;
 
     private Renderer rend;
 
@@ -16,7 +18,17 @@ public class HazardObject : MonoBehaviour // Phase 2: HazardObject class created
     {
         rend = GetComponentInChildren<Renderer>();
         CreateOverlay();
+     
+    }
+
+    public void Initialise(Hazard data) // Initializes the hazard object with data from the Hazard class, setting up its type and severity, and then updates its visual representation accordingly
+    {
+        hazardType = data.type;
+        severity = data.severity;
+
         UpdateVisual();
+
+        Debug.Log("Hazard Type: " + hazardType + " | Severity: " + severity);
     }
 
     public void SetSeverity(int value)
@@ -41,7 +53,7 @@ public class HazardObject : MonoBehaviour // Phase 2: HazardObject class created
 
     void UpdateVisual()
     {
-        if (rend == null) return;
+        if (rend != null)
         {
             if (severity == 3)
                 rend.material.color = Color.red;
@@ -51,27 +63,36 @@ public class HazardObject : MonoBehaviour // Phase 2: HazardObject class created
                 rend.material.color = Color.green;
         }
 
-        if (overlayInstance != null) // Update the overlay text and color based on severity, providing a clear visual indicator of hazard level
+        if (overlayInstance != null)
         {
             TextMeshProUGUI text = overlayInstance.GetComponentInChildren<TextMeshProUGUI>();
 
             if (text != null)
             {
+                // TYPE → SYMBOL
+                switch (hazardType)
+                {
+                    case "Crack":
+                        text.text = "#";
+                        break;
+                    case "Debris":
+                        text.text = "X";
+                        break;
+                    case "Water":
+                        text.text = "~";
+                        break;
+                    default:
+                        text.text = "!";
+                        break;
+                }
+
+                // SEVERITY → COLOUR
                 if (severity == 3)
-                {
-                    text.text = "!!!";
                     text.color = Color.red;
-                }
                 else if (severity == 2)
-                {
-                    text.text = "!!";
                     text.color = Color.yellow;
-                }
                 else
-                {
-                    text.text = "!";
                     text.color = Color.green;
-                }
             }
         }
     }
