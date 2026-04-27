@@ -27,7 +27,7 @@ public class MapManager : MonoBehaviour
 
     public float longitude = 0.0f; // 144.96f for Melbourne
     public float latitude = 0.0f; // 37.81f for Melbourne
-    private int zoom = 14;
+    public int zoom = 14;
 
     public int tileX = 0; // coordinates of tile in tile group
     public int tileY = 0;
@@ -35,10 +35,10 @@ public class MapManager : MonoBehaviour
     public int mapX = 0; // coordinates in tiles of terrain/map texture
     public int mapY = 0;
 
-    private static bool TrustCertificate(object sender, X509Certificate x509Certificate, X509Chain x509Chain, SslPolicyErrors sslPolicyErrors)
-    {
-        return true; // Bad practice
-    }
+    // private static bool TrustCertificate(object sender, X509Certificate x509Certificate, X509Chain x509Chain, SslPolicyErrors sslPolicyErrors)
+    // {
+    //     return true; // Bad practice
+    // }
 
     void Start()
     {
@@ -47,7 +47,7 @@ public class MapManager : MonoBehaviour
 
         mapMaterial = GetComponent<Renderer>().material;
 
-        ServicePointManager.ServerCertificateValidationCallback = TrustCertificate;
+        //ServicePointManager.ServerCertificateValidationCallback = TrustCertificate;
         updateMapView();
     }
 
@@ -192,7 +192,7 @@ public class MapManager : MonoBehaviour
 
             if (req.result != UnityWebRequest.Result.Success)
             {
-                Debug.Log("Web request failed: " + req.error);
+                Debug.LogError("Web request failed: " + req.error);
                 yield break;
             }
 

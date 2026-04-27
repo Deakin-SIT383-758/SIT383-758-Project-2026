@@ -588,6 +588,7 @@ MonoBehaviour:
   scale: 100
   longitude: 144.96
   latitude: -37.81
+  zoom: 14
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
