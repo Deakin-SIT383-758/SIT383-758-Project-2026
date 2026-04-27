@@ -11,6 +11,9 @@ using System.IO;
 using System.Buffers.Text;
 using Unity.Mathematics;
 using UnityEngine.Tilemaps;
+using System.Collections;
+using UnityEngine.Networking;
+using UnityEditor.PackageManager.Requests;
 
 public class MapManager : MonoBehaviour
 {
@@ -29,8 +32,8 @@ public class MapManager : MonoBehaviour
     public int tileX = 0; // coordinates of tile in tile group
     public int tileY = 0;
 
-    private int mapX = 0; // coordinates in tiles of terrain/map texture
-    private int mapY = 0;
+    public int mapX = 0; // coordinates in tiles of terrain/map texture
+    public int mapY = 0;
 
     private static bool TrustCertificate(object sender, X509Certificate x509Certificate, X509Chain x509Chain, SslPolicyErrors sslPolicyErrors)
     {
@@ -53,8 +56,8 @@ public class MapManager : MonoBehaviour
         x = (int)(Mathf.Floor((longitude + 180.0f) / 360.0f * Mathf.Pow(2.0f, zoom)));
         y = (int)(Mathf.Floor((1.0f - Mathf.Log(Mathf.Tan(latitude * Mathf.PI / 180.0f) + 1.0f / Mathf.Cos(latitude * Mathf.PI / 180.0f)) / Mathf.PI)
         / 2.0f * Mathf.Pow(2.0f, zoom)));
-        mapX = x;
-        mapY = y;
+        mapX = x + tileX;
+        mapY = y + tileY;
         Debug.Log($"Tile coordinates: {x} , {y}");
     }
 
@@ -94,6 +97,7 @@ public class MapManager : MonoBehaviour
         }
         return hTexData;
     }
+
 
     private void updateMesh(Texture2D tex, int mWidth, int mHeight, float heightRange)
     {
@@ -151,37 +155,51 @@ public class MapManager : MonoBehaviour
         GetComponent<MeshCollider>().sharedMesh = m; // update collider's mesh
     }
 
-    private void updateTexture(int x, int y, int z)
+    IEnumerator updateTexture(int x, int y, int z)
     {
         // Elevation tiles, sourced from Mapzen (https://www.mapzen.com/blog/terrain-tile-service/)
         string url = "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/" + z + "/" + x + "/" + y + ".png";
         Debug.Log("Retrieving: " + url);
-        WebRequest www = WebRequest.Create(url);
-        ((HttpWebRequest)www).UserAgent = "TerrainMaps";
 
-        var response = www.GetResponse();
+        using (UnityWebRequest req = UnityWebRequestTexture.GetTexture(url)) // use non-blocking UnityWebRequest over blocking HttpWebRequest
+        {
+            req.SetRequestHeader("User-Agent", "TerrainMaps");
 
-        Texture2D tex = new Texture2D(2, 2);
-        // Retreive large number of bytes, should be more than a tile texture
-        ImageConversion.LoadImage(tex, new BinaryReader(response.GetResponseStream()).ReadBytes(1000000));
-        updateMesh(tex, 128, 128, 0.1f);
-        //mapMaterial.mainTexture = tex;
+            yield return req.SendWebRequest();
+
+            if (req.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log("Web request failed: " + req.error);
+                yield break;
+            }
+
+            Texture2D tex = DownloadHandlerTexture.GetContent(req); // get texture data from web request
+            updateMesh(tex, 128, 128, 0.1f);
+            //mapMaterial.mainTexture = tex;
+        }
     }
-    private void updateColourTexture(int x, int y, int z)
+    IEnumerator updateColourTexture(int x, int y, int z)
     {
         // Map tiles sources from openstreetmap
         string url = "https://tile.openstreetmap.org/" + z + "/" + x + "/" + y + ".png";
         Debug.Log("Retrieving: " + url);
-        WebRequest www = WebRequest.Create(url);
-        ((HttpWebRequest)www).UserAgent = "TerrainMaps";
 
-        var response = www.GetResponse();
+        using (UnityWebRequest req = UnityWebRequestTexture.GetTexture(url)) // use non-blocking UnityWebRequest over blocking HttpWebRequest
+        {
+            req.SetRequestHeader("User-Agent", "TerrainMaps");
 
-        Texture2D tex = new Texture2D(2, 2);
-        // Retreive large number of bytes, should be more than a tile texture
-        ImageConversion.LoadImage(tex, new BinaryReader(response.GetResponseStream()).ReadBytes(1000000));
-        //updateMesh(tex, 128, 128, 0.1f);
-        mapMaterial.mainTexture = tex;
+            yield return req.SendWebRequest();
+
+            if (req.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log("Web request failed: " + req.error);
+                yield break;
+            }
+
+            Texture2D tex = DownloadHandlerTexture.GetContent(req); // get texture data from web request
+            //updateMesh(tex, 128, 128, 0.1f);
+            mapMaterial.mainTexture = tex;
+        }
     }
 
     [ContextMenu("Update map")]
@@ -194,8 +212,8 @@ public class MapManager : MonoBehaviour
         x += tileX; // offset from centre tile
         y += tileY;
 
-        updateTexture(x, y, zoom);
-        updateColourTexture(x, y, zoom);
+        StartCoroutine(updateTexture(x, y, zoom));
+        StartCoroutine(updateColourTexture(x, y, zoom));
 
         // Place a marker at current position on the tile
         float cornerLatA;
