@@ -10,10 +10,11 @@ using TMPro;
 using System.IO;
 using System.Buffers.Text;
 using Unity.Mathematics;
+using UnityEngine.Tilemaps;
 
 public class MapManager : MonoBehaviour
 {
-    public TMP_Text statusText;
+    //public TMP_Text statusText;
 
     public MeshFilter mapObject;
     public Material mapMaterial;
@@ -25,6 +26,12 @@ public class MapManager : MonoBehaviour
     public float latitude = 0.0f; // 37.81f for Melbourne
     private int zoom = 10;
 
+    public int tileX = 0; // coordinates of tile in tile group
+    public int tileY = 0;
+
+    private int mapX = 0; // coordinates in tiles of terrain/map texture
+    private int mapY = 0;
+
     private static bool TrustCertificate(object sender, X509Certificate x509Certificate, X509Chain x509Chain, SslPolicyErrors sslPolicyErrors)
     {
         return true; // Bad practice
@@ -32,6 +39,11 @@ public class MapManager : MonoBehaviour
 
     void Start()
     {
+        mapObject = this.GetComponent<MeshFilter>();
+        mapPlane = this.gameObject;
+
+        mapMaterial = GetComponent<Renderer>().material;
+
         ServicePointManager.ServerCertificateValidationCallback = TrustCertificate;
         updateMapView();
     }
@@ -41,6 +53,9 @@ public class MapManager : MonoBehaviour
         x = (int)(Mathf.Floor((longitude + 180.0f) / 360.0f * Mathf.Pow(2.0f, zoom)));
         y = (int)(Mathf.Floor((1.0f - Mathf.Log(Mathf.Tan(latitude * Mathf.PI / 180.0f) + 1.0f / Mathf.Cos(latitude * Mathf.PI / 180.0f)) / Mathf.PI)
         / 2.0f * Mathf.Pow(2.0f, zoom)));
+        mapX = x;
+        mapY = y;
+        Debug.Log($"Tile coordinates: {x} , {y}");
     }
 
     private void getGeoCoordinates(int x, int y, int zoom, out float longitude, out float latitude)
@@ -172,6 +187,10 @@ public class MapManager : MonoBehaviour
         int x;
         int y;
         getTileCoordinates(longitude, latitude, zoom, out x, out y);
+
+        x += tileX; // offset from centre tile
+        y += tileY;
+
         updateTexture(x, y, zoom);
         updateColourTexture(x, y, zoom);
 
@@ -189,7 +208,7 @@ public class MapManager : MonoBehaviour
         float d = 10.0f * ((-(latitude - cornerLatA) / (cornerLatB - cornerLatA))) + 5.0f;
         marker.transform.position = mapPlane.transform.position - mapPlane.transform.forward * d + mapPlane.transform.right * r;
 
-        statusText.text = longitude + "," + latitude + "(" + zoom + ")" + "[" + x + ", " + y + "]";
+        //statusText.text = longitude + "," + latitude + "(" + zoom + ")" + "[" + x + ", " + y + "]";
     }
 
     public void onButtonEvent(float dx, float dy, int dz)
@@ -202,6 +221,7 @@ public class MapManager : MonoBehaviour
         longitude += 360.0f * dx * step;
         latitude += 180.0f * dy * step;
 
+
         updateMapView();
     }
 
@@ -210,9 +230,9 @@ public class MapManager : MonoBehaviour
     [ContextMenu("Right")]
     public void rightButton() { onButtonEvent(1.0f, 0.0f, 0); }
     [ContextMenu("Up")]
-    public void upButton() { onButtonEvent(0.0f, 1.0f, 0); }
+    public void upButton() { onButtonEvent(0.0f, 1.0f, 0); Debug.Log("Tile moved up"); }
     [ContextMenu("Down")]
-    public void downButton() { onButtonEvent(0.0f, -1.0f, 0); }
+    public void downButton() { onButtonEvent(0.0f, -1.0f, 0); Debug.Log("Tile moved down"); }
     [ContextMenu("In")]
     public void inButton() { onButtonEvent(0.0f, 0.0f, 1); }
     [ContextMenu("Out")]
