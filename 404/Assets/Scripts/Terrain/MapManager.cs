@@ -24,7 +24,7 @@ public class MapManager : MonoBehaviour
 
     public float longitude = 0.0f; // 144.96f for Melbourne
     public float latitude = 0.0f; // 37.81f for Melbourne
-    private int zoom = 10;
+    private int zoom = 14;
 
     public int tileX = 0; // coordinates of tile in tile group
     public int tileY = 0;
@@ -115,7 +115,8 @@ public class MapManager : MonoBehaviour
                 //float yc = 0.0f;
                 float yc = heightTex[(int)(zc * (tex.height - 1)) * tex.width + (int)(xc * (tex.width - 1))];
                 if (yc < 0.0f) yc = 0.0f;
-                yc = heightRange * (yc - minHeight) / (maxHeight - minHeight);
+                //yc = heightRange * (yc - minHeight) / (maxHeight - minHeight);
+                yc *= 0.001f; //temporary height scaling for demo purposes
 
                 vertices[y * (mWidth + 1) + x] = new Vector3(xc - 0.5f, yc, zc - 0.5f) * 10.0f;
                 uvs[y * (mWidth + 1) + x] = new Vector3(xc, zc);
@@ -146,6 +147,8 @@ public class MapManager : MonoBehaviour
         m.triangles = triangles;
         m.RecalculateNormals();
         mapObject.mesh = m;
+
+        GetComponent<MeshCollider>().sharedMesh = m; // update collider's mesh
     }
 
     private void updateTexture(int x, int y, int z)
@@ -166,7 +169,7 @@ public class MapManager : MonoBehaviour
     }
     private void updateColourTexture(int x, int y, int z)
     {
-        // Elevation tiles, sourced from Mapzen (https://www.mapzen.com/blog/terrain-tile-service/)
+        // Map tiles sources from openstreetmap
         string url = "https://tile.openstreetmap.org/" + z + "/" + x + "/" + y + ".png";
         Debug.Log("Retrieving: " + url);
         WebRequest www = WebRequest.Create(url);

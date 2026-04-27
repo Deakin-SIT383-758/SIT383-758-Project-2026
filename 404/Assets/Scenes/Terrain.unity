@@ -584,6 +584,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   tilePrefab: {fileID: 2134515328075823430, guid: a50407972a8e77a4a817ad4e3098a5d7, type: 3}
+  trackedObject: {fileID: 1574875518}
   scale: 100
   longitude: 144.96
   latitude: -37.81
