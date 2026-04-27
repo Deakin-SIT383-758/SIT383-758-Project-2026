@@ -106,9 +106,9 @@ public class MapManager : MonoBehaviour
         int[] triangles = new int[6 * mWidth * mHeight];
 
         int triangleIndex = 0;
-        for (int y = 0; y < mHeight; y++)
+        for (int y = 0; y <= mHeight; y++)
         {
-            for (int x = 0; x < mWidth; x++)
+            for (int x = 0; x <= mWidth; x++)
             {
                 float xc = (float)x / mWidth;
                 float zc = (float)y / mHeight;
