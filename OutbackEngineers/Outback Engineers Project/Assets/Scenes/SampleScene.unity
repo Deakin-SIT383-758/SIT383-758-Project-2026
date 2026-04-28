@@ -851,7 +851,7 @@ Transform:
   m_GameObject: {fileID: 297776066}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2327,10 +2327,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59fbd13337d947d43a0e1b094c385a12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RunwayLandManager
-  RunwayA: {fileID: 5724897542535753249, guid: 673bd07b4cfade04b95934785bb8dc3f, type: 3}
-  RunwayB: {fileID: 961520000116646105, guid: e397c516f3d9f2d4ea671b1b106072cb, type: 3}
+  RunwayA: {fileID: 1830425812766502979, guid: 1d8ebda2fc8cadf4394cdfe1542095f4, type: 3}
+  RunwayB: {fileID: 3403949094466598108, guid: fafba5e83e3b84c4db9e477878e4de06, type: 3}
   spawnDistance: 10
-  defaultRunwayID: Runway_A
+  defaultRunwayID: Runway_B
   playerTransform: {fileID: 297776069}
 --- !u!4 &1895814745
 Transform:
@@ -2662,14 +2662,14 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 297776069}
-  - {fileID: 410087041}
-  - {fileID: 832575519}
-  - {fileID: 253490701}
   - {fileID: 752031391}
   - {fileID: 1583339670}
-  - {fileID: 826608687}
   - {fileID: 646123142}
+  - {fileID: 410087041}
   - {fileID: 182652445}
   - {fileID: 1895814745}
+  - {fileID: 832575519}
+  - {fileID: 253490701}
+  - {fileID: 826608687}
   - {fileID: 301686734}
   - {fileID: 80527966}
