@@ -1343,13 +1343,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Fusion.Unity::Fusion.FusionBootstrap
   RunnerPrefab: {fileID: 611332478}
-  StartMode: 0
+  StartMode: 1
   AutoStartAs: 2
   AutoHideGUI: 1
   AutoClients: 1
   ClientStartDelay: 0.1
   ServerPort: 0
-  DefaultRoomName: 
+  DefaultRoomName: Elite4
   InitialScenePath: 
   _currentStage: 0
   AutoConnectVirtualInstances: 1
