@@ -39,7 +39,7 @@ public class HUDManager : MonoBehaviour
             {
                 runwayName.text = data.runwayName + " Runway";
                 hazardDisplay.text = "Hazards: " + hazardCount;
-                dateUpdated.text = "Instance of Runway: " + data.RunwayInstance;
+                dateUpdated.text = "Version: " + data.RunwayInstance;
             }
         }
     }
