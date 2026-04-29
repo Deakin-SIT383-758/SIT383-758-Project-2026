@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEditor.Rendering.Universal;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class AccessOpenCV : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class AccessOpenCV : MonoBehaviour
 
     private float delayTime = 0.0f;
 
-    public Text text;
+    public TMP_Text text;
 
     private string[] CLASSES = { "background", "aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat", "chair", "cow", "diningtable", "dog", "horse", "motorbike", "person", "pottedplant", "sheep", "sofa", "train", "tvmonitor" };
 
@@ -34,6 +35,7 @@ public class AccessOpenCV : MonoBehaviour
     void Start()
     {
         StartCoroutine(prepareModel());
+        cameraMaterial = markerParent.GetComponent<Renderer>().material;
     }
 
     IEnumerator prepareModel()
@@ -56,7 +58,7 @@ public class AccessOpenCV : MonoBehaviour
         GameObject g = GameObject.Instantiate(markerTemplate);
         g.transform.position = new Vector3(5.0f * (sx + ex) - 5.0f, -5.0f * (sy + ey) + 5.0f, 0);
         g.transform.localScale = new Vector3(10.0f * Mathf.Abs(sx - ex), 10.0f * Mathf.Abs(sx - ex), 1);
-        g.GetComponentInChildren<TextMesh>().text = name + "\n" + confidence;
+        g.GetComponentInChildren<TMP_Text>().text = name + "\n" + confidence;
         g.transform.SetParent(markerParent.transform, false);
     }
 
@@ -70,7 +72,9 @@ public class AccessOpenCV : MonoBehaviour
             clearVisuals();
             delayTime = 0.0f;
 
-            Texture2D image = new Texture2D(cameraMaterial.mainTexture.width, cameraMaterial.mainTexture.height, TextureFormat.ARGB32, false);
+            Debug.Log("cameraMaterial _BaseMap: " + cameraMaterial.GetTexture("_BaseMap"));
+            Debug.Log("cameraMaterial _MainTex: " + cameraMaterial.GetTexture("_MainTex"));
+            Texture2D image = new Texture2D(cameraMaterial.GetTexture("_BaseMap").width, cameraMaterial.GetTexture("_BaseMap").height, TextureFormat.ARGB32, false);
             RenderTexture renderTexture = new RenderTexture(cameraMaterial.mainTexture.width, cameraMaterial.mainTexture.height, 32);
             Graphics.Blit(cameraMaterial.mainTexture, renderTexture);
             RenderTexture.active = renderTexture;
@@ -86,9 +90,10 @@ public class AccessOpenCV : MonoBehaviour
                 int category = -1;
                 float confidence = 0.0f;
                 float sx = 0, sy = 0, ex = 0, ey = 0;
+                retrieveMatch(i, ref category, ref confidence, ref sx, ref sy, ref ex, ref ey);
                 if (confidence > 0.2f)
                 {
-                    Debug.Log($"Match: {category} {confidence} {sx} {sy} {ex} {ey}");
+                    Debug.Log($"Match: {CLASSES[category]} {confidence} {sx} {sy} {ex} {ey}");
                     addVisual(CLASSES[category], confidence, sx, sy, ex, ey);
                 }
             }
