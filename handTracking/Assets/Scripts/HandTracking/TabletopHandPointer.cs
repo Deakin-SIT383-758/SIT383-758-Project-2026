@@ -150,6 +150,8 @@ namespace OAS.HandTracking
             ClearHover(ref _lHovered);
             _rWasPinching = false;
             _lWasPinching = false;
+            SetRayVisual(rightRayLine, false);
+            SetRayVisual(leftRayLine,  false);
         }
     }
 }

@@ -80,6 +80,7 @@ namespace OAS.HandTracking.Editor
             cso.FindProperty("menuRayLine").objectReferenceValue   = rayLine;
             cso.FindProperty("palmNormalAxis").vector3Value        = Vector3.down;
             cso.FindProperty("invertPalmNormal").boolValue         = false;
+            cso.FindProperty("handPointer").objectReferenceValue   = Object.FindFirstObjectByType<TabletopHandPointer>();
             cso.ApplyModifiedPropertiesWithoutUndo();
 
             // Wire button callbacks
@@ -149,7 +150,7 @@ namespace OAS.HandTracking.Editor
             const float startY = 0.045f;
             var close = MakeButton(overlay.transform, "CloseBtn",  "Close",
                                    new Color(0.75f, 0.18f, 0.18f), startY);
-            var opt1  = MakeButton(overlay.transform, "Option1Btn","Option 1",
+            var opt1  = MakeButton(overlay.transform, "Option1Btn","Toggle Ray",
                                    new Color(0.18f, 0.38f, 0.75f), startY - (BtnH + BtnGap));
             var opt2  = MakeButton(overlay.transform, "Option2Btn","Option 2",
                                    new Color(0.18f, 0.38f, 0.75f), startY - (BtnH + BtnGap) * 2);
@@ -168,14 +169,14 @@ namespace OAS.HandTracking.Editor
             var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
             go.name = goName;
             go.transform.SetParent(parent, false);
-            go.transform.localPosition = new Vector3(0f, localY, -0.003f);
+            go.transform.localPosition = new Vector3(0f, localY, +0.003f);
             go.transform.localScale    = new Vector3(BtnW, BtnH, BtnThick);
             go.GetComponent<Renderer>().sharedMaterial =
                 new Material(Shader.Find("Universal Render Pipeline/Lit")) { color = color };
 
-            // Label
-            MakeLabel(go.transform, "Label", label,
-                      localY: 0f, canvasW: 130f, canvasH: 32f, fontSize: 14);
+            // Label — parented to overlay so scale is uniform (button scale is non-uniform)
+            MakeLabel(parent, goName + "_Label", label,
+                      localY: localY, canvasW: 130f, canvasH: 32f, fontSize: 14);
 
             return go.AddComponent<HandMenuButton>();
         }
@@ -187,7 +188,7 @@ namespace OAS.HandTracking.Editor
         {
             var go = new GameObject(goName);
             go.transform.SetParent(parent, false);
-            go.transform.localPosition = new Vector3(0f, localY, -0.0005f);
+            go.transform.localPosition = new Vector3(0f, localY, +0.006f);
             go.transform.localRotation = Quaternion.identity;
             go.transform.localScale    = Vector3.one * 0.001f;   // 1 canvas-unit = 1 mm
 

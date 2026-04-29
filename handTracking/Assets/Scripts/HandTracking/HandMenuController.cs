@@ -11,8 +11,9 @@ namespace OAS.HandTracking
         [SerializeField] private OVRHand     rightHand;
         [SerializeField] private OVRSkeleton rightSkeleton;
 
-        [SerializeField] private GameObject triggerButton;
-        [SerializeField] private GameObject overlayMenu;
+        [SerializeField] private GameObject           triggerButton;
+        [SerializeField] private GameObject           overlayMenu;
+        [SerializeField] private TabletopHandPointer  handPointer;
 
         [SerializeField] private Vector3 palmNormalAxis  = Vector3.down;
         [SerializeField] private bool    invertPalmNormal = false;
@@ -109,7 +110,7 @@ namespace OAS.HandTracking
             if (overlayMenu != null)
             {
                 overlayMenu.transform.position = _lWrist.position + palmNorm * 0.05f;
-                overlayMenu.transform.rotation = Quaternion.LookRotation(-palmNorm, Vector3.up);
+                overlayMenu.transform.rotation = Quaternion.LookRotation(palmNorm, Vector3.up);
             }
 
             if (triggerButton != null)
@@ -270,7 +271,12 @@ namespace OAS.HandTracking
             ClearRayHover();
         }
 
-        public void OnOption1Pressed() => Debug.Log("[HandMenu] Option 1 pressed.");
+        public void OnOption1Pressed()
+        {
+            if (handPointer != null)
+                handPointer.enabled = !handPointer.enabled;
+            CloseMenu();
+        }
         public void OnOption2Pressed() => Debug.Log("[HandMenu] Option 2 pressed.");
         public void OnOption3Pressed() => Debug.Log("[HandMenu] Option 3 pressed.");
 
