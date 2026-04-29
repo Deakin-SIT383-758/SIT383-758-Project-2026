@@ -56,7 +56,7 @@ public class AccessOpenCV : MonoBehaviour
     private void addVisual(string name, float confidence, float sx, float sy, float ex, float ey)
     {
         GameObject g = GameObject.Instantiate(markerTemplate);
-        g.transform.position = new Vector3((5.0f * (sx + ex) - 5.0f) / 10.0f, (-5.0f * (sy + ey) + 5.0f) / 10.0f, 0.51f);
+        g.transform.position = new Vector3((-5.0f * (sx + ex) + 5.0f) / 10.0f, (-5.0f * (sy + ey) + 5.0f) / 10.0f, 0.51f);
         g.transform.localScale = new Vector3(Mathf.Abs(sx - ex), Mathf.Abs(sx - ex), 1);
         g.GetComponentInChildren<TMP_Text>().text = name + "\n" + confidence;
         g.transform.SetParent(markerParent.transform, false);
@@ -94,8 +94,8 @@ public class AccessOpenCV : MonoBehaviour
                 if (confidence > 0.2f)
                 {
                     Debug.Log($"Match: {CLASSES[category]} {confidence} {sx} {sy} {ex} {ey}");
-                    //addVisual(CLASSES[category], confidence, sx, sy, ex, ey);
-                    addVisual(CLASSES[0], 1.0f, 0.0f, 0.0f, 0.5f, 0.5f);
+                    addVisual(CLASSES[category], confidence, sx, sy, ex, ey);
+                    //addVisual(CLASSES[0], 1.0f, 0.5f, 0.5f, 1.0f, 1.0f);
                 }
             }
         }
