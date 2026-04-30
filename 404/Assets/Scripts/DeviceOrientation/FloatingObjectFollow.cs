@@ -11,6 +11,8 @@ public class FloatingObjectFollow : MonoBehaviour
     public GameObject targetPrefab; // prefab to show target position
     private GameObject target; // prefab instantiated into scene
 
+    private bool locked = false;
+
     void Start()
     {
         target = Instantiate(targetPrefab, this.transform.position, Quaternion.identity); // instantiate target location marker
@@ -18,6 +20,8 @@ public class FloatingObjectFollow : MonoBehaviour
 
     void LateUpdate()
     {
+        if (locked) return; // don't update position if locked
+
         float frameSpeed = speed * SpeedFunction(Vector3.Distance(transform.position, target.transform.position));
         Debug.Log("Frame speed: " + frameSpeed);
         target.transform.rotation = hmd.rotation; // match target marker to HMD rotation
@@ -39,5 +43,11 @@ public class FloatingObjectFollow : MonoBehaviour
     public void NewTargetPosition()
     {
         posOffset = hmd.InverseTransformPoint(transform.position); // set offset to current position in HMD's transform space
+    }
+
+    public void ToggleLocked()
+    {
+        Debug.Log("Lock toggled");
+        locked = !locked; // invert current state of locked
     }
 }
