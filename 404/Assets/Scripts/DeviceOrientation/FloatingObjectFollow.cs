@@ -21,7 +21,7 @@ public class FloatingObjectFollow : MonoBehaviour
         float frameSpeed = speed * SpeedFunction(Vector3.Distance(transform.position, target.transform.position));
         Debug.Log("Frame speed: " + frameSpeed);
         target.transform.rotation = hmd.rotation; // match target marker to HMD rotation
-        Vector3 newPos = hmd.TransformPoint(hmd.localPosition + posOffset); // apply posOffset relative to HMD's transform space
+        Vector3 newPos = hmd.TransformPoint(posOffset); // apply posOffset relative to HMD's transform space
         target.transform.position = newPos; // set new position of target marker
 
         transform.rotation = Quaternion.Lerp(transform.rotation, target.transform.rotation, frameSpeed); //set rotation to intermediate between current and target rotations
@@ -33,5 +33,11 @@ public class FloatingObjectFollow : MonoBehaviour
         speed = Mathf.Pow((0.1f * distance), 2) + 0.2f;
         Debug.Log("Speed: " + speed);
         return speed;
+    }
+
+    [ContextMenu("New Target Position")]
+    public void NewTargetPosition()
+    {
+        posOffset = hmd.InverseTransformPoint(transform.position); // set offset to current position in HMD's transform space
     }
 }
