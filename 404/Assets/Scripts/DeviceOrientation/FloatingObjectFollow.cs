@@ -1,6 +1,7 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class FloatingObjectFollow : MonoBehaviour
 {
@@ -49,5 +50,6 @@ public class FloatingObjectFollow : MonoBehaviour
     {
         Debug.Log("Lock toggled");
         locked = !locked; // invert current state of locked
+        GetComponent<XRGrabInteractable>().enabled = !locked; // disable grabbing while locked
     }
 }
