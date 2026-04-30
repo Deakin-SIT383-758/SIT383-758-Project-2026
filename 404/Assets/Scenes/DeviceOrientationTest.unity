@@ -792,6 +792,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.1481185, y: 0.84805244, z: 2.0710433}
   m_Center: {x: -0.5911601, y: 0.005108847, z: 0.02751319}
+--- !u!114 &1683464363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416994702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd572a042c34484dbab265b86695a99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LockButtonState
+  unlockedMat: {fileID: 2100000, guid: d4a56bd63db485344b1e31a3d7341949, type: 2}
+  lockedMat: {fileID: 2100000, guid: 3ffd4fe58bd14994d88a17c30b38c292, type: 2}
 --- !u!1 &2088914561
 GameObject:
   m_ObjectHideFlags: 0
@@ -962,6 +976,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2978688309868848512, guid: d93799c05cdd12940a023f02d33b4cab, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1683464361}
+    - targetCorrespondingSourceObject: {fileID: 2978688309868848512, guid: d93799c05cdd12940a023f02d33b4cab, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1683464363}
     - targetCorrespondingSourceObject: {fileID: 1809167216567440849, guid: d93799c05cdd12940a023f02d33b4cab, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}

@@ -51,5 +51,6 @@ public class FloatingObjectFollow : MonoBehaviour
         Debug.Log("Lock toggled");
         locked = !locked; // invert current state of locked
         GetComponent<XRGrabInteractable>().enabled = !locked; // disable grabbing while locked
+        GetComponentInChildren<LockButtonState>().ChangeLockState(locked);
     }
 }
