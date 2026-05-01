@@ -5,14 +5,11 @@ using UnityEngine.XR.ARSubsystems;
 public class TrackVisibility : MonoBehaviour
 {
     public GameObject modelRoot;
-
     [Header("Fade Settings")]
     public float fadeSpeed = 2f;
     public float fadeOutDelay = 0.2f;
-
     private ARTrackedImage trackedImage;
     private Renderer[] renderers;
-
     private float currentAlpha = 0f;
     private float targetAlpha = 0f;
     private float lostTimer = 0f;
