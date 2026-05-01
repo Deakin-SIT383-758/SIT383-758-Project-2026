@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -10,8 +10,10 @@ namespace OAS.HandTracking
         [SerializeField] private TabletopFingerTouch fingerTouch;
         [SerializeField] private TMP_Text questionText;
         [SerializeField] private TMP_Text scoreText;
-        [Tooltip("Panel shown after all questions are answered.")]
+        
         [SerializeField] private GameObject completionPanel;
+
+        [SerializeField] private CabinAudioManager audioManager;
 
         [SerializeField] private float delayBetweenQuestions = 2f;
 
@@ -42,6 +44,10 @@ namespace OAS.HandTracking
         private void Start()
         {
             if (completionPanel != null) completionPanel.SetActive(false);
+
+            // Passenger chatter plays throughout the session
+            audioManager?.PlayAllPassengers();
+
             ShowCurrentQuestion();
             _awaitingInput = true;
         }
@@ -50,6 +56,10 @@ namespace OAS.HandTracking
         {
             if (!_awaitingInput) return;
             _awaitingInput = false;
+
+            // Stop alarm as soon as the user selects something (correct or not)
+            if (Questions[_questionIndex] == HotspotType.EmergencyExit)
+                audioManager?.StopAlarm();
 
             bool correct = hotspot.Type == Questions[_questionIndex];
             if (correct) _score++;
@@ -79,10 +89,15 @@ namespace OAS.HandTracking
             if (questionText != null)
                 questionText.text = QuestionPrompt(Questions[_questionIndex]);
             RefreshScore();
+
+            // Trigger alarm when asking the user to find the emergency exit
+            if (Questions[_questionIndex] == HotspotType.EmergencyExit)
+                audioManager?.TriggerAlarm();
         }
 
         private void ShowCompletion()
         {
+            audioManager?.StopAll();
             if (questionText != null)
                 questionText.text = "Training Complete!";
             RefreshScore();
@@ -97,7 +112,7 @@ namespace OAS.HandTracking
 
         private static string QuestionPrompt(HotspotType type) => type switch
         {
-            HotspotType.EmergencyExit => "Point to an Emergency Exit",
+            HotspotType.EmergencyExit => "Follow the alarm — point to the Emergency Exit",
             HotspotType.FireHydrant   => "Point to the Fire Hydrant",
             HotspotType.LifeVest      => "Point to the Life Vest storage",
             _                         => string.Empty

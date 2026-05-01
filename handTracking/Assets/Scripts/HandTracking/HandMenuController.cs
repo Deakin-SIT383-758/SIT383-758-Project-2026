@@ -14,6 +14,7 @@ namespace OAS.HandTracking
         [SerializeField] private GameObject           triggerButton;
         [SerializeField] private GameObject           overlayMenu;
         [SerializeField] private TabletopHandPointer  handPointer;
+        [SerializeField] private GameObject           teleportInteractor;
 
         [SerializeField] private Vector3 palmNormalAxis  = Vector3.down;
         [SerializeField] private bool    invertPalmNormal = false;
@@ -110,7 +111,12 @@ namespace OAS.HandTracking
             if (overlayMenu != null)
             {
                 overlayMenu.transform.position = _lWrist.position + palmNorm * 0.05f;
-                overlayMenu.transform.rotation = Quaternion.LookRotation(palmNorm, Vector3.up);
+                if (_cam != null)
+                {
+                    // Z+ points away from camera so canvas X-axis aligns with world +X → text not mirrored
+                    Vector3 awayFromCam = (overlayMenu.transform.position - _cam.transform.position).normalized;
+                    overlayMenu.transform.rotation = Quaternion.LookRotation(awayFromCam, Vector3.up);
+                }
             }
 
             if (triggerButton != null)
@@ -217,10 +223,9 @@ namespace OAS.HandTracking
         private void TouchUpdate()
         {
             bool rT = rightHand != null && rightHand.IsTracked && _rIndex3 != null;
-            bool lT = leftHand  != null && leftHand.IsTracked  && _lIndex3 != null;
 
-            DoTouch(rT, _rIndex3, ref _rTouchHov, ref _rDwell, ref _rFired);
-            DoTouch(lT, _lIndex3, ref _lTouchHov, ref _lDwell, ref _lFired);
+            DoTouch(rT,    _rIndex3, ref _rTouchHov, ref _rDwell, ref _rFired);
+            DoTouch(false, null,    ref _lTouchHov, ref _lDwell, ref _lFired);
         }
 
         private void DoTouch(bool tracked, Transform probe,
@@ -278,7 +283,12 @@ namespace OAS.HandTracking
             CloseMenu();
         }
         public void OnOption2Pressed() => Debug.Log("[HandMenu] Option 2 pressed.");
-        public void OnOption3Pressed() => Debug.Log("[HandMenu] Option 3 pressed.");
+        public void OnOption3Pressed()
+        {
+            if (teleportInteractor != null)
+                teleportInteractor.SetActive(!teleportInteractor.activeSelf);
+            CloseMenu();
+        }
 
         private void OnDisable()
         {

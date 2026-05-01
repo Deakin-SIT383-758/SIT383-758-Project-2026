@@ -60,16 +60,11 @@ namespace OAS.HandTracking.Editor
             var root       = new GameObject("HandMenu");
             var controller = root.AddComponent<HandMenuController>();
 
-            // Ray visual for menu interaction
             var rayLine = MakeRayLine(root.transform);
-
-            // Trigger button (small sphere on palm)
             var trigger = MakeTriggerButton(root.transform);
+            var (overlay, closeBtn, opt1, opt3) =
+                MakeOverlay(root.transform, leftSkeleton, rightSkeleton);
 
-            // Overlay panel with buttons
-            var (overlay, closeBtn, opt1, opt2, opt3) = MakeOverlay(root.transform);
-
-            // Wire controller serialized fields
             var cso = new SerializedObject(controller);
             cso.FindProperty("leftHand").objectReferenceValue      = leftHand;
             cso.FindProperty("leftSkeleton").objectReferenceValue  = leftSkeleton;
@@ -81,12 +76,12 @@ namespace OAS.HandTracking.Editor
             cso.FindProperty("palmNormalAxis").vector3Value        = Vector3.down;
             cso.FindProperty("invertPalmNormal").boolValue         = false;
             cso.FindProperty("handPointer").objectReferenceValue   = Object.FindFirstObjectByType<TabletopHandPointer>();
+            cso.FindProperty("teleportInteractor").objectReferenceValue =
+                GameObject.Find("TeleportHandInteractor");
             cso.ApplyModifiedPropertiesWithoutUndo();
 
-            // Wire button callbacks
             UnityEventTools.AddPersistentListener(closeBtn.onClick, controller.CloseMenu);
             UnityEventTools.AddPersistentListener(opt1.onClick,     controller.OnOption1Pressed);
-            UnityEventTools.AddPersistentListener(opt2.onClick,     controller.OnOption2Pressed);
             UnityEventTools.AddPersistentListener(opt3.onClick,     controller.OnOption3Pressed);
         }
 
@@ -113,7 +108,7 @@ namespace OAS.HandTracking.Editor
             var go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             go.name = "TriggerButton";
             go.transform.SetParent(parent, false);
-            go.transform.localScale = Vector3.one * 0.025f;   // 2.5 cm diameter
+            go.transform.localScale = Vector3.one * 0.025f;
             go.GetComponent<Renderer>().sharedMaterial =
                 new Material(Shader.Find("Universal Render Pipeline/Unlit"))
                     { color = new Color(0.25f, 0.85f, 1f) };
@@ -125,8 +120,9 @@ namespace OAS.HandTracking.Editor
 
         private static (GameObject overlay,
                          HandMenuButton close,
-                         HandMenuButton opt1, HandMenuButton opt2, HandMenuButton opt3)
-            MakeOverlay(Transform parent)
+                         HandMenuButton opt1,
+                         HandMenuButton opt3)
+            MakeOverlay(Transform parent, OVRSkeleton leftSk, OVRSkeleton rightSk)
         {
             var overlay = new GameObject("OverlayMenu");
             overlay.transform.SetParent(parent, false);
@@ -152,13 +148,87 @@ namespace OAS.HandTracking.Editor
                                    new Color(0.75f, 0.18f, 0.18f), startY);
             var opt1  = MakeButton(overlay.transform, "Option1Btn","Toggle Ray",
                                    new Color(0.18f, 0.38f, 0.75f), startY - (BtnH + BtnGap));
-            var opt2  = MakeButton(overlay.transform, "Option2Btn","Option 2",
-                                   new Color(0.18f, 0.38f, 0.75f), startY - (BtnH + BtnGap) * 2);
-            var opt3  = MakeButton(overlay.transform, "Option3Btn","Option 3",
+
+            // Option 2 slot → sound range slider
+            MakeSoundRangeSlider(overlay.transform,
+                                 centerY: startY - (BtnH + BtnGap) * 2,
+                                 leftSk, rightSk);
+
+            var opt3  = MakeButton(overlay.transform, "Option3Btn","Toggle Teleport",
                                    new Color(0.18f, 0.38f, 0.75f), startY - (BtnH + BtnGap) * 3);
 
             overlay.SetActive(false);
-            return (overlay, close, opt1, opt2, opt3);
+            return (overlay, close, opt1, opt3);
+        }
+
+        // ── Sound range slider (replaces Option 2 button slot) ───────────────────
+
+        private static void MakeSoundRangeSlider(Transform overlayParent, float centerY,
+                                                  OVRSkeleton leftSk, OVRSkeleton rightSk)
+        {
+            const float halfLen = 0.055f;
+
+            // Title label above track
+            MakeLabel(overlayParent, "SoundRange_Title", "Sound Range",
+                      localY: centerY + 0.018f, canvasW: 130f, canvasH: 20f, fontSize: 11);
+
+            // Track — keeps BoxCollider for finger detection
+            var track = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            track.name = "SoundRangeTrack";
+            track.transform.SetParent(overlayParent, false);
+            track.transform.localPosition = new Vector3(0f, centerY, -0.003f);
+            track.transform.localScale    = new Vector3(halfLen * 2f, 0.006f, 0.006f);
+            track.GetComponent<Renderer>().sharedMaterial =
+                new Material(Shader.Find("Universal Render Pipeline/Lit"))
+                    { color = new Color(0.25f, 0.25f, 0.27f) };
+
+            // Fill — cyan bar, no collider
+            var fillGO = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            fillGO.name = "SoundRangeFill";
+            fillGO.transform.SetParent(overlayParent, false);
+            fillGO.transform.localPosition = new Vector3(-halfLen, centerY, -0.002f);
+            fillGO.transform.localScale    = new Vector3(0.001f, 0.006f, 0.005f);
+            Object.DestroyImmediate(fillGO.GetComponent<Collider>());
+            fillGO.GetComponent<Renderer>().sharedMaterial =
+                new Material(Shader.Find("Universal Render Pipeline/Lit"))
+                    { color = new Color(0.18f, 0.65f, 1f) };
+
+            // Handle — white sphere, no collider
+            var handleGO = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            handleGO.name = "SoundRangeHandle";
+            handleGO.transform.SetParent(overlayParent, false);
+            handleGO.transform.localPosition = new Vector3(-halfLen, centerY, -0.001f);
+            handleGO.transform.localScale    = Vector3.one * 0.011f;
+            Object.DestroyImmediate(handleGO.GetComponent<Collider>());
+            handleGO.GetComponent<Renderer>().sharedMaterial =
+                new Material(Shader.Find("Universal Render Pipeline/Lit"))
+                    { color = Color.white };
+
+            // Value label below track
+            var valueTmp = MakeLabel(overlayParent, "SoundRange_Value", "Range: 0.30 m",
+                                     localY: centerY - 0.018f, canvasW: 130f, canvasH: 20f, fontSize: 10);
+
+            // AudioRangeSlider on the overlay — disabled when menu closed (overlay inactive)
+            var slider = overlayParent.gameObject.AddComponent<AudioRangeSlider>();
+            var sso    = new SerializedObject(slider);
+            sso.FindProperty("leftSkeleton").objectReferenceValue   = leftSk;
+            sso.FindProperty("rightSkeleton").objectReferenceValue  = rightSk;
+            sso.FindProperty("trackTransform").objectReferenceValue = track.transform;
+            sso.FindProperty("fill").objectReferenceValue           = fillGO.transform;
+            sso.FindProperty("handle").objectReferenceValue         = handleGO.transform;
+            sso.FindProperty("valueLabel").objectReferenceValue     = valueTmp;
+            sso.FindProperty("trackHalfLen").floatValue             = halfLen;
+            sso.FindProperty("minRange").floatValue                 = 0.5f;
+            sso.FindProperty("maxRange").floatValue                 = 10.0f;
+            sso.FindProperty("initialRange").floatValue             = 5.0f;
+
+            var audioMgr = Object.FindFirstObjectByType<CabinAudioManager>();
+            if (audioMgr != null)
+                sso.FindProperty("audioManager").objectReferenceValue = audioMgr;
+            else
+                Debug.LogWarning("[OAS] CabinAudioManager not found — assign it manually on the AudioRangeSlider.");
+
+            sso.ApplyModifiedPropertiesWithoutUndo();
         }
 
         // ── Button factory ────────────────────────────────────────────────────────
@@ -169,12 +239,11 @@ namespace OAS.HandTracking.Editor
             var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
             go.name = goName;
             go.transform.SetParent(parent, false);
-            go.transform.localPosition = new Vector3(0f, localY, +0.003f);
+            go.transform.localPosition = new Vector3(0f, localY, -0.003f);
             go.transform.localScale    = new Vector3(BtnW, BtnH, BtnThick);
             go.GetComponent<Renderer>().sharedMaterial =
                 new Material(Shader.Find("Universal Render Pipeline/Lit")) { color = color };
 
-            // Label — parented to overlay so scale is uniform (button scale is non-uniform)
             MakeLabel(parent, goName + "_Label", label,
                       localY: localY, canvasW: 130f, canvasH: 32f, fontSize: 14);
 
@@ -183,14 +252,14 @@ namespace OAS.HandTracking.Editor
 
         // ── TMP label helper ──────────────────────────────────────────────────────
 
-        private static void MakeLabel(Transform parent, string goName, string text,
-                                       float localY, float canvasW, float canvasH, int fontSize)
+        private static TMP_Text MakeLabel(Transform parent, string goName, string text,
+                                           float localY, float canvasW, float canvasH, int fontSize)
         {
             var go = new GameObject(goName);
             go.transform.SetParent(parent, false);
-            go.transform.localPosition = new Vector3(0f, localY, +0.006f);
+            go.transform.localPosition = new Vector3(0f, localY, -0.006f);
             go.transform.localRotation = Quaternion.identity;
-            go.transform.localScale    = Vector3.one * 0.001f;   // 1 canvas-unit = 1 mm
+            go.transform.localScale    = Vector3.one * 0.001f;
 
             var canvas = go.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.WorldSpace;
@@ -209,6 +278,8 @@ namespace OAS.HandTracking.Editor
             trt.anchorMin = Vector2.zero;
             trt.anchorMax = Vector2.one;
             trt.offsetMin = trt.offsetMax = Vector2.zero;
+
+            return tmp;
         }
     }
 }
