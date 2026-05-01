@@ -35,7 +35,7 @@ public class AccessOpenCV : MonoBehaviour
     void Start()
     {
         StartCoroutine(prepareModel());
-        cameraMaterial = markerParent.GetComponent<Renderer>().material;
+        //cameraMaterial = markerParent.GetComponent<Renderer>().material;
     }
 
     IEnumerator prepareModel()
@@ -72,13 +72,24 @@ public class AccessOpenCV : MonoBehaviour
             clearVisuals();
             delayTime = 0.0f;
 
-            Debug.Log("cameraMaterial _BaseMap: " + cameraMaterial.GetTexture("_BaseMap"));
-            Debug.Log("cameraMaterial _MainTex: " + cameraMaterial.GetTexture("_MainTex"));
-            Texture2D image = new Texture2D(cameraMaterial.GetTexture("_BaseMap").width, cameraMaterial.GetTexture("_BaseMap").height, TextureFormat.ARGB32, false);
-            RenderTexture renderTexture = new RenderTexture(cameraMaterial.mainTexture.width, cameraMaterial.mainTexture.height, 32);
-            Graphics.Blit(cameraMaterial.mainTexture, renderTexture);
+            // Debug.Log("cameraMaterial _BaseMap: " + cameraMaterial.GetTexture("_BaseMap"));
+            // Debug.Log("cameraMaterial _MainTex: " + cameraMaterial.GetTexture("_MainTex"));
+            // Texture2D image = new Texture2D(cameraMaterial.GetTexture("_BaseMap").width, cameraMaterial.GetTexture("_BaseMap").height, TextureFormat.ARGB32, false);
+            // RenderTexture renderTexture = new RenderTexture(cameraMaterial.mainTexture.width, cameraMaterial.mainTexture.height, 32);
+            // Graphics.Blit(cameraMaterial.mainTexture, renderTexture);
+            // RenderTexture.active = renderTexture;
+            // image.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
+            // image.Apply();
+
+            RenderTexture renderTexture = new RenderTexture(Camera.main.pixelWidth, Camera.main.pixelHeight, 32);
+            Graphics.Blit(Camera.main.activeTexture, renderTexture);
             RenderTexture.active = renderTexture;
-            image.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
+            Debug.Log($"Camera.main.pixelWidth/pixelHeight size: {Camera.main.pixelWidth}, {Camera.main.pixelHeight}");
+            Debug.Log($"renderTexture size: {renderTexture.width}, {renderTexture.height}");
+
+            Texture2D image = new Texture2D(Camera.main.pixelWidth, Camera.main.pixelHeight, TextureFormat.ARGB32, false);
+
+            image.ReadPixels(new Rect(0, 0, Camera.main.pixelWidth, Camera.main.pixelHeight), 0, 0);
             image.Apply();
 
             int numMatch = doRecognise(image.GetRawTextureData(), image.width, image.height);
