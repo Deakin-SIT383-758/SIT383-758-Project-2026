@@ -8,6 +8,8 @@ public class HUDManager : MonoBehaviour
     public TextMeshProUGUI runwayName;
     public MetadataManager metaManager;
 
+    public TextMeshProUGUI hazardInfo; // Phase 3: Adding Detailed Hazard Information to the HUD for enhanced player awareness
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -31,5 +33,16 @@ public class HUDManager : MonoBehaviour
                 hazardDisplay.text = "Hazards: " + hazardCount;
             }
         }
+    }
+
+    // Displays detailed information about specific hazards
+    public void ShowHazardInfo(string type, int severity)
+    {
+        hazardInfo.text = type + " | Severity: " + severity;
+    }
+
+    public void ClearHazardInfo() // Clears the hazard information from the HUD when no hazard is targeted.
+    {
+        hazardInfo.text = "";
     }
 }
