@@ -7,6 +7,8 @@ using UnityEditor.Rendering.Universal;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEditor.XR.LegacyInputHelpers;
+using Unity.Mathematics;
 
 public class AccessOpenCV : MonoBehaviour
 {
@@ -14,6 +16,9 @@ public class AccessOpenCV : MonoBehaviour
 
     public GameObject markerTemplate;
     public GameObject markerParent;
+
+    public GameObject hudTemplate;
+    public GameObject hudParent;
 
 
     private bool modelReady = false;
@@ -56,11 +61,19 @@ public class AccessOpenCV : MonoBehaviour
 
     private void addVisual(string name, float confidence, float sx, float sy, float ex, float ey)
     {
+        // Markers for demonstration view
         GameObject g = GameObject.Instantiate(markerTemplate);
         g.transform.position = new Vector3((-5.0f * (sx + ex) + 5.0f) / 10.0f, (-5.0f * (sy + ey) + 5.0f) / 10.0f, 0.51f);
         g.transform.localScale = new Vector3(Mathf.Abs(sx - ex), Mathf.Abs(sy - ey), 1);
         g.GetComponentInChildren<TMP_Text>().text = name + "\n" + confidence;
         g.transform.SetParent(markerParent.transform, false);
+
+        // Markers for user
+        Ray centreRay = Camera.main.ScreenPointToRay(new Vector3(Mathf.RoundToInt(Mathf.Abs((sx + ex) / 2.0f) * Camera.main.pixelWidth - 1), Mathf.RoundToInt(Mathf.Abs((sy + ey) / 2) * Camera.main.pixelHeight - 1), 0)); // cast ray from camera
+        Debug.Log($"Centre pixel: {Mathf.RoundToInt(Mathf.Abs((sx + ex) / 2.0f) * Camera.main.pixelWidth - 1)}, {Mathf.RoundToInt(Mathf.Abs((sy + ey) / 2) * Camera.main.pixelHeight - 1)}");
+        Debug.DrawRay(centreRay.origin, centreRay.direction * 50.0f, Color.green, 3.0f);
+        GameObject m = Instantiate(hudTemplate, centreRay.origin + (centreRay.direction * 50.0f), quaternion.identity, hudParent.transform);
+        m.GetComponent<ObjectHUDMarker>().SetText(name);
     }
 
     // Update is called once per frame
@@ -105,7 +118,7 @@ public class AccessOpenCV : MonoBehaviour
                 {
                     Debug.Log($"Match: {CLASSES[category]} {confidence} {sx} {sy} {ex} {ey}");
                     addVisual(CLASSES[category], confidence, sx, sy, ex, ey);
-                    //addVisual(CLASSES[0], 1.0f, 0.0f, 0.25f, 1.0f, 0.5f);
+                    //addVisual(CLASSES[0], 1.0f, 0.25f, 0.25f, 0.75f, 0.75f);
                 }
             }
             GetComponent<Renderer>().material.SetTexture("_BaseMap", renderTexture);
