@@ -2,7 +2,7 @@
 using TMPro;
 
 
-public class HazardObject : MonoBehaviour // Phase 2: HazardObject class created to represent hazards in the scene, with visual representation based on severity
+public class HazardObject : MonoBehaviour // Phase 3: Implementing Raycasting and Visual Feedback for Hazards for enhanced interactivity
 {                                         // No longer just a data class, now also handles visual representation in the scene
     public int severity;
 
@@ -14,12 +14,32 @@ public class HazardObject : MonoBehaviour // Phase 2: HazardObject class created
 
     private GameObject overlayInstance;
 
+    private Color originalColor;
+
     void Awake()
     {
         rend = GetComponentInChildren<Renderer>();
         CreateOverlay();
      
     }
+
+    void Start()
+    {
+        if (rend != null)
+            originalColor = rend.material.color;
+    }
+
+    public void Highlight() //Change hazards color to cyan when highlighted, providing visual feedback to the player
+    {
+        if (rend != null)
+            rend.material.color = Color.cyan;
+    }
+
+    public void Unhighlight() 
+    {
+        UpdateVisual(); // restore correct color
+    }
+
 
     public void Initialise(Hazard data) // Initializes the hazard object with data from the Hazard class, setting up its type and severity, and then updates its visual representation accordingly
     {
