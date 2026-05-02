@@ -14,37 +14,54 @@ public class HazardObject : MonoBehaviour // Phase 3: Implementing Raycasting an
 
     private GameObject overlayInstance;
 
-    private Color originalColor;
+
+    public GameObject crackMesh; // Phase 3: Adding Distinct Visual Representations for Different Hazard Types to improve player recognition and immersion
+    public GameObject waterMesh;
+    public GameObject debrisMesh;
 
     void Awake()
     {
-        rend = GetComponentInChildren<Renderer>();
         CreateOverlay();
      
     }
 
     void Start()
     {
-        if (rend != null)
-            originalColor = rend.material.color;
+        
     }
 
-    public void Highlight() //Change hazards color to cyan when highlighted, providing visual feedback to the player
+    public void Highlight() // Provides a visual highlight effect to hazard
     {
         if (rend != null)
-            rend.material.color = Color.cyan;
+        {
+            rend.material.EnableKeyword("_EMISSION");
+            rend.material.SetColor("_EmissionColor", Color.cyan * 5f);
+        }
+
+        transform.localScale *= 1.2f; // Slightly enlarge the hazard to make it more noticeable
     }
 
-    public void Unhighlight() 
+    public void Unhighlight()
     {
-        UpdateVisual(); // restore correct color
-    }
+        if (rend != null)
+        {
+            Material mat = rend.material;
 
+            mat.SetColor("_EmissionColor", Color.black);
+        }
+
+        transform.localScale /= 1.1f;
+
+        UpdateVisual();
+    }
 
     public void Initialise(Hazard data) // Initializes the hazard object with data from the Hazard class, setting up its type and severity, and then updates its visual representation accordingly
     {
         hazardType = data.type;
         severity = data.severity;
+
+        SetMeshByType();
+        rend = GetComponentInChildren<Renderer>();
 
         UpdateVisual();
 
@@ -114,6 +131,39 @@ public class HazardObject : MonoBehaviour // Phase 3: Implementing Raycasting an
                 else
                     text.color = Color.green;
             }
+        }
+    }
+
+    void SetMeshByType() // Activates the appropriate mesh based on the hazard type
+    {
+        if (crackMesh == null || waterMesh == null || debrisMesh == null)
+        {
+            Debug.LogError("Mesh references not assigned in HazardObject!");
+            return;
+        }
+
+        // Disable all first
+        crackMesh.SetActive(false);
+        waterMesh.SetActive(false);
+        debrisMesh.SetActive(false);
+
+        switch (hazardType)
+        {
+            case "Crack":
+                crackMesh.SetActive(true);
+                break;
+
+            case "Water":
+                waterMesh.SetActive(true);
+                break;
+
+            case "Debris":
+                debrisMesh.SetActive(true);
+                break;
+
+            default:
+                crackMesh.SetActive(true);
+                break;
         }
     }
 
