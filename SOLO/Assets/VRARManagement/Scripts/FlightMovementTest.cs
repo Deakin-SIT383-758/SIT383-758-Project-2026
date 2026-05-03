@@ -13,11 +13,9 @@ public class FlightMovementTest : MonoBehaviour
         MovementAction = MoveNorth;
     }
 
-    public GameObject gazeIndicator;
 
     void Update()
     {
-        gazeIndicator.SetActive(OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger));
 
         if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger))
             return;

@@ -1007,6 +1007,7 @@ GameObject:
   - component: {fileID: 7376056417321315176}
   - component: {fileID: 1478693325847837856}
   - component: {fileID: 9048403617078189468}
+  - component: {fileID: 5717757845038691039}
   m_Layer: 0
   m_Name: '[BuildingBlock] Camera Rig'
   m_TagString: Untagged
@@ -1043,7 +1044,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Meta.XR.BuildingBlocks::Meta.XR.BuildingBlocks.BuildingBlock
   blockId: e47682b9-c270-40b1-b16d-90b627a5ce1b
-  instanceId: aa6d7e85-e75c-45f1-bc59-fe6c2d026f28
+  instanceId: 9a889113-5321-4f32-b1cb-82652c943b36
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 
@@ -1186,3 +1187,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 401e7a44507f77b47bef25978ab7c5b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ControllerInputManager
+  playerTransform: {fileID: 0}
+  passthroughLayer: {fileID: 0}
+  verticalOffset: 50
+  godViewScale: 1.1
+  playerScaler: {fileID: 0}
+  vrOnlyGOs: []
+  arOnlyGOs: []
+  centreEye: {fileID: 0}
+  terrainLayer:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!114 &5717757845038691039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9140993552392005896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c8c9c4945b6e724691395631e9f3228, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GazeHinter
+  gazeIndicator: {fileID: 3565888645593705373}
+  gazeToggleButton: 2097152
