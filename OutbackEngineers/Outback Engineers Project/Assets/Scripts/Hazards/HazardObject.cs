@@ -8,7 +8,9 @@ public class HazardObject : MonoBehaviour // Phase 3: Implementing Raycasting an
 
     public string hazardType;
 
-    private Renderer rend;
+    private Renderer[] renderers;
+
+    private Vector3 originalScale;
 
     public GameObject overlayPrefab;
 
@@ -30,38 +32,34 @@ public class HazardObject : MonoBehaviour // Phase 3: Implementing Raycasting an
         
     }
 
-    public void Highlight() // Provides a visual highlight effect to hazard
+    public void Highlight()
     {
-        if (rend != null)
+        foreach (Renderer r in renderers)
         {
-            rend.material.EnableKeyword("_EMISSION");
-            rend.material.SetColor("_EmissionColor", Color.cyan * 5f);
+            r.material.color = Color.cyan;
         }
 
-        transform.localScale *= 1.2f; // Slightly enlarge the hazard to make it more noticeable
+        transform.localScale = originalScale * 1.2f;
     }
 
     public void Unhighlight()
     {
-        if (rend != null)
-        {
-            Material mat = rend.material;
+        transform.localScale = originalScale;
 
-            mat.SetColor("_EmissionColor", Color.black);
-        }
-
-        transform.localScale /= 1.1f;
-
-        UpdateVisual();
+        UpdateVisual(); // restore correct colours
     }
 
-    public void Initialise(Hazard data) // Initializes the hazard object with data from the Hazard class, setting up its type and severity, and then updates its visual representation accordingly
+    public void Initialise(Hazard data)
     {
         hazardType = data.type;
         severity = data.severity;
 
         SetMeshByType();
-        rend = GetComponentInChildren<Renderer>();
+
+        
+        renderers = GetComponentsInChildren<Renderer>();
+
+        originalScale = transform.localScale;
 
         UpdateVisual();
 
@@ -90,14 +88,14 @@ public class HazardObject : MonoBehaviour // Phase 3: Implementing Raycasting an
 
     void UpdateVisual()
     {
-        if (rend != null)
+        foreach (Renderer r in renderers)
         {
             if (severity == 3)
-                rend.material.color = Color.red;
+                r.material.color = Color.red;
             else if (severity == 2)
-                rend.material.color = Color.yellow;
+                r.material.color = Color.yellow;
             else
-                rend.material.color = Color.green;
+                r.material.color = Color.green;
         }
 
         if (overlayInstance != null)
