@@ -9,6 +9,7 @@ namespace MM.RangeInvariantMarkers
         public TMPro.TextMeshProUGUI markerInfoText;
         public GameObject rootUI;
         private bool enableMarkerVisuals = true;
+        [SerializeField] private Material pinMaterial;
         public void OnEnable()
         {
             this.GazeLingerTimeEvent += MarkerPrefab_GazeLingerTimeEvent;
@@ -59,10 +60,10 @@ namespace MM.RangeInvariantMarkers
             }
         }
 
-        public void LateUpdate()
-        {
-            UpdateGazeFade();
-        }
+        //public void LateUpdate()
+        //{
+        //    UpdateGazeFade();
+        //}
 
 
         #region GazeManagement
@@ -143,10 +144,12 @@ namespace MM.RangeInvariantMarkers
         private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
         private void UpdateVisuals()
         {
-            var _instancedMaterial = gameObject.GetComponentInChildren<Renderer>().material;
-            Color color = _instancedMaterial.GetColor(BaseColorId);
+            if (pinMaterial == null)
+                pinMaterial = gameObject.GetComponentInChildren<Renderer>().material;
+//            var _instancedMaterial = gameObject.GetComponentInChildren<Renderer>().material;
+            Color color = pinMaterial.GetColor(BaseColorId);
             color.a = visualsAlpha;
-            _instancedMaterial.SetColor(BaseColorId, color);
+            pinMaterial.SetColor(BaseColorId, color);
         }
 
         void IMarkerVisuals.SetTimers(IMarkerVisuals.VisualTimers timer)
