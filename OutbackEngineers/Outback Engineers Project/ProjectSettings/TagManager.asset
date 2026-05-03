@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 3
   tags:
   - Hazard
+  - HUDManager
+  - RLManager
+  - HazManager
+  - MetaManager
   layers:
   - Default
   - TransparentFX

@@ -335,7 +335,7 @@ GameObject:
   - component: {fileID: 182652444}
   m_Layer: 0
   m_Name: HUDManager
-  m_TagString: Untagged
+  m_TagString: HUDManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -354,13 +354,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HUDManager
   hazardDisplay: {fileID: 219980888}
   runwayName: {fileID: 1964509658}
-  dateUpdated: {fileID: 0}
+  dateUpdated: {fileID: 643847639}
   timeline: {fileID: 293900154}
   metaManager: {fileID: 646123141}
   RunwayA_Timeline:
-  - {fileID: 5724897542535753249, guid: 673bd07b4cfade04b95934785bb8dc3f, type: 3}
+  - {fileID: 1830425812766502979, guid: 1d8ebda2fc8cadf4394cdfe1542095f4, type: 3}
   RunwayB_Timeline:
-  - {fileID: 961520000116646105, guid: e397c516f3d9f2d4ea671b1b106072cb, type: 3}
+  - {fileID: 3403949094466598108, guid: fafba5e83e3b84c4db9e477878e4de06, type: 3}
 --- !u!4 &182652445
 Transform:
   m_ObjectHideFlags: 0
@@ -1180,7 +1180,7 @@ GameObject:
   - component: {fileID: 646123141}
   m_Layer: 0
   m_Name: MetadataManager
-  m_TagString: Untagged
+  m_TagString: MetaManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1335,55 +1335,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -0.117599964}
   m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &752031389
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 752031391}
-  - component: {fileID: 752031390}
-  m_Layer: 0
-  m_Name: RunwayManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &752031390
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 752031389}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 217b7975cb6d76e4785712bf6a0949cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RunwayManager
-  currentRunwayID: 
-  hazardManager: {fileID: 1583339669}
-  metadataManager: {fileID: 646123141}
-  runwaylandManager: {fileID: 1895814744}
-  hudManager: {fileID: 182652444}
---- !u!4 &752031391
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 752031389}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &826608684
 GameObject:
   m_ObjectHideFlags: 0
@@ -2121,7 +2072,7 @@ GameObject:
   - component: {fileID: 1583339669}
   m_Layer: 0
   m_Name: HazardManager
-  m_TagString: Untagged
+  m_TagString: HazManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2310,7 +2261,7 @@ GameObject:
   - component: {fileID: 1895814744}
   m_Layer: 0
   m_Name: RunwayLandManager
-  m_TagString: Untagged
+  m_TagString: RLManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2341,7 +2292,7 @@ Transform:
   m_GameObject: {fileID: 1895814743}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.01352, y: 0, z: 0.33173}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2662,7 +2613,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 297776069}
-  - {fileID: 752031391}
   - {fileID: 1583339670}
   - {fileID: 646123142}
   - {fileID: 410087041}
