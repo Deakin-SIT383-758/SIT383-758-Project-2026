@@ -2,29 +2,64 @@
 using TMPro;
 
 
-public class HazardObject : MonoBehaviour // Phase 2: HazardObject class created to represent hazards in the scene, with visual representation based on severity
+public class HazardObject : MonoBehaviour // Phase 3: Implementing Raycasting and Visual Feedback for Hazards for enhanced interactivity
 {                                         // No longer just a data class, now also handles visual representation in the scene
     public int severity;
 
     public string hazardType;
 
-    private Renderer rend;
+    private Renderer[] renderers;
+
+    private Vector3 originalScale;
 
     public GameObject overlayPrefab;
 
     private GameObject overlayInstance;
 
+
+    public GameObject crackMesh; // Phase 3: Adding Distinct Visual Representations for Different Hazard Types to improve player recognition and immersion
+    public GameObject waterMesh;
+    public GameObject debrisMesh;
+
     void Awake()
     {
-        rend = GetComponentInChildren<Renderer>();
         CreateOverlay();
      
     }
 
-    public void Initialise(Hazard data) // Initializes the hazard object with data from the Hazard class, setting up its type and severity, and then updates its visual representation accordingly
+    void Start()
+    {
+        
+    }
+
+    public void Highlight()
+    {
+        foreach (Renderer r in renderers)
+        {
+            r.material.color = Color.cyan;
+        }
+
+        transform.localScale = originalScale * 1.2f;
+    }
+
+    public void Unhighlight()
+    {
+        transform.localScale = originalScale;
+
+        UpdateVisual(); // restore correct colours
+    }
+
+    public void Initialise(Hazard data)
     {
         hazardType = data.type;
         severity = data.severity;
+
+        SetMeshByType();
+
+        
+        renderers = GetComponentsInChildren<Renderer>();
+
+        originalScale = transform.localScale;
 
         UpdateVisual();
 
@@ -53,14 +88,14 @@ public class HazardObject : MonoBehaviour // Phase 2: HazardObject class created
 
     void UpdateVisual()
     {
-        if (rend != null)
+        foreach (Renderer r in renderers)
         {
             if (severity == 3)
-                rend.material.color = Color.red;
+                r.material.color = Color.red;
             else if (severity == 2)
-                rend.material.color = Color.yellow;
+                r.material.color = Color.yellow;
             else
-                rend.material.color = Color.green;
+                r.material.color = Color.green;
         }
 
         if (overlayInstance != null)
@@ -94,6 +129,39 @@ public class HazardObject : MonoBehaviour // Phase 2: HazardObject class created
                 else
                     text.color = Color.green;
             }
+        }
+    }
+
+    void SetMeshByType() // Activates the appropriate mesh based on the hazard type
+    {
+        if (crackMesh == null || waterMesh == null || debrisMesh == null)
+        {
+            Debug.LogError("Mesh references not assigned in HazardObject!");
+            return;
+        }
+
+        // Disable all first
+        crackMesh.SetActive(false);
+        waterMesh.SetActive(false);
+        debrisMesh.SetActive(false);
+
+        switch (hazardType)
+        {
+            case "Crack":
+                crackMesh.SetActive(true);
+                break;
+
+            case "Water":
+                waterMesh.SetActive(true);
+                break;
+
+            case "Debris":
+                debrisMesh.SetActive(true);
+                break;
+
+            default:
+                crackMesh.SetActive(true);
+                break;
         }
     }
 
