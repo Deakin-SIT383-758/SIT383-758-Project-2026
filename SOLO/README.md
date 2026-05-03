@@ -14,28 +14,24 @@ The functionality provided by this experience is:
 - A VR overview allowing a user to view a rendering of the terrain they are currently over with POIs marked to aid in orientation
 
 ### Current status
-All major components have been developed. The most mature example of the integrated capabilities is the [Real World Cesium component test scene](https://github.com/Deakin-SIT383-758/SIT383-758-Project-2026/tree/MickM-dev/SOLO/Assets/RealWorldCesium/Scenes).
+All major components have been developed. The most mature example of the integrated capabilities is the [Real World Cesium component test scene](https://github.com/Deakin-SIT383-758/SIT383-758-Project-2026/tree/MickM-dev/SOLO/Assets/RealWorldCesium/Scenes). This includes an emulated flight over an area with multiple POIs.
+
+The [Project Demo Scene](https://github.com/Deakin-SIT383-758/SIT383-758-Project-2026/tree/MickM-dev/SOLO/Assets/Scenes) is a static scene which will be used to generate the demonstration with real world AR POI in location.
 
 
 
 ### Bugs/Issues
 
-In no particular order, some of the key issues are:
-- (UX) The information panel for POI info is still a placeholder and needs polish. The text is also hard to read.
-- (UX) POI markers can be hard to activate
-- (Feature refinement) The VR overview is too high currently
-- (Feature refinement) Currently the AR view has the VR terrain as an indicator. This is not the final functionality.
-
-A full list of issues can be found on the [Project Kanban](https://miro.com/app/board/uXjVG4V7RDI=/?focusWidget=3458764661957056680) under team "Lemon Fizzy Drink", specifically cards with the "Issue:" prefix in the To Do Backlog, In Progress and On Hold/Blocked columns.
+There are no known outstanding bugs however there are a list of WONT DO issues and refinements that are considered out of scope for this phase but should be considered in subsequent development of the experience. Thse can be found on the [Project Kanban](https://miro.com/app/board/uXjVG4V7RDI=/?focusWidget=3458764661957056680) under team "Lemon Fizzy Drink", specifically cards with the "Issue:" prefix in the On Hold/Blocked columns.
 
 ## Development
 The development of this project is based on the main development branch: [MickM-dev](https://github.com/Deakin-SIT383-758/SIT383-758-Project-2026/tree/MickM-dev)
 
-Individual features are developed in sub-branches with the naming convetion _MickM-dev-branchname_, where _branchname_ is the feature being developed or a descriptive name based on the intent of the branch.
+Individual features are developed in sub-branches with the naming convetion _MickM-dev-branchname_, where _branchname_ is the feature being developed or a descriptive name based on the intent of the branch. Each development branch will maintain a separate folder structure with all related assets contained, including any test scenes. Core components are to be included as prefabs in the root feature folder to allow other features and the main branch to use them.
 
-Each development branch will maintain a separate folder structure with all related assets contained, including any test scenes. Core components are to be included as prefabs in the root feature folder to allow other features and the main branch to use them.
+Feature branches remained open to support subsequent development/refinement during relevant scope. If they are dormant, they should be rebased to the latest _MickM-dev_ branch before commencing work. 
 
-Feature branches will remain open to support subsequent development/refinement. If they are dormant, they should be rebased to the latest _MickM-dev_ branch before commencing work.
+All feature branches have now been closed; minor branches will be created to address any bugs or issues identified that need addressing prior to project submission. 
 
 ## Usage
 
