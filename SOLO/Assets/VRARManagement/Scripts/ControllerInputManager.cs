@@ -9,9 +9,9 @@ public class ControllerInputManager : MonoBehaviour
 
     private void Start()
     {
+        SetupCameraLayers();
         inVR = true;
         ToggleVR();
-        //passthroughLayer.textureOpacity = inVR ? 1 : 0;
     }
 
     private void Update()
@@ -21,10 +21,12 @@ public class ControllerInputManager : MonoBehaviour
             ToggleVR();
     }
 
+    [Range(1, 10)]
+    public float godViewScale = 1.1f;
     void ToggleVR()
     {
         inVR = !inVR;
-        float scale = inVR ? 5 : 1;
+        float scale = inVR ? godViewScale : 1;
         
         passthroughLayer.textureOpacity = inVR ? 0 : 1;
         float offset = inVR ? verticalOffset : -verticalOffset;
@@ -46,6 +48,8 @@ public class ControllerInputManager : MonoBehaviour
         }
 
         UpdateCameraClips();
+
+        UpdateCameraLayer(inVR);
     }
     public Transform playerScaler;
     public GameObject[] vrOnlyGOs;
@@ -58,5 +62,18 @@ public class ControllerInputManager : MonoBehaviour
     {
         centreEye.nearClipPlane = inVR ? nearClipCentreVR : nearClipCentreAR;
         centreEye.farClipPlane = inVR ? farClipCentreVR : farClipCentreAR;
+    }
+
+    private LayerMask initialLayerMask;
+    private LayerMask VRLayerMask;
+    [SerializeField] private LayerMask terrainLayer;
+    private void SetupCameraLayers()
+    {
+        initialLayerMask = centreEye.cullingMask;
+        VRLayerMask = initialLayerMask - terrainLayer;
+    }
+    private void UpdateCameraLayer(bool inVR)
+    {
+        centreEye.cullingMask = inVR ? initialLayerMask : VRLayerMask;
     }
 }
