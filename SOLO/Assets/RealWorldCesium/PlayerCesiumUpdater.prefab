@@ -46,4 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCesiumUpdater
   cesiumGeoreference: {fileID: 0}
   worldManager: {fileID: 0}
-  originHeight: 50
+  originHeight: 0
