@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEditor.XR.LegacyInputHelpers;
 using Unity.Mathematics;
+using System.Collections.Generic;
 
 public class AccessOpenCV : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class AccessOpenCV : MonoBehaviour
 
     public GameObject hudTemplate;
     public GameObject hudParent;
+
+    private Dictionary<string, Vector3> objects = new Dictionary<string, Vector3>(); // names of objects and positions
 
 
     private bool modelReady = false;
@@ -42,6 +45,13 @@ public class AccessOpenCV : MonoBehaviour
     {
         StartCoroutine(prepareModel());
         //cameraMaterial = markerParent.GetComponent<Renderer>().material;
+
+        // Fill object dictionary
+        objects.Add("North Chair", new Vector3(0.0599999987f, 2.30999994f, 13.46f));
+        objects.Add("West Chair", new Vector3(-11.3902359f, 2.30999994f, -0.106083527f));
+        objects.Add("East Chair", new Vector3(14.1231422f, 2.30999994f, 0.0802500024f));
+        objects.Add("South Chair", new Vector3(0.316463053f, 2.30999994f, -11.6630659f));
+        objects.Add("Far South Chair", new Vector3(0.920000017f, 2.30999994f, -28.2399998f));
     }
 
     IEnumerator prepareModel()
@@ -72,8 +82,26 @@ public class AccessOpenCV : MonoBehaviour
         Ray centreRay = Camera.main.ScreenPointToRay(new Vector3(Mathf.RoundToInt(Mathf.Abs((sx + ex) / 2.0f) * Camera.main.pixelWidth - 1), Mathf.RoundToInt(Mathf.Abs((sy + ey) / 2) * Camera.main.pixelHeight - 1), 0)); // cast ray from camera
         Debug.Log($"Centre pixel: {Mathf.RoundToInt(Mathf.Abs((sx + ex) / 2.0f) * Camera.main.pixelWidth - 1)}, {Mathf.RoundToInt(Mathf.Abs((sy + ey) / 2) * Camera.main.pixelHeight - 1)}");
         Debug.DrawRay(centreRay.origin, centreRay.direction * 50.0f, Color.green, 3.0f);
+        Debug.DrawLine(centreRay.origin, centreRay.direction * 50.0f, Color.blue, 3.0f);
         GameObject m = Instantiate(hudTemplate, centreRay.origin + (centreRay.direction * 50.0f), quaternion.identity, hudParent.transform);
-        m.GetComponent<ObjectHUDMarker>().SetText(name);
+
+        // Attempt to identify specific object
+        string bestMatch = name;
+        float lowestAngle = 180.0f;
+        foreach (var o in objects)
+        {
+            Ray objectRay = new Ray(Camera.main.transform.position, -(Camera.main.transform.position - o.Value).normalized); // cast ray from camera to object
+            Debug.DrawRay(objectRay.origin, objectRay.direction * 50.0f, Color.red, 3.0f);
+            float angle = Vector3.Angle(centreRay.direction, objectRay.direction);
+            Debug.Log($"Angle to {o.Key}: {angle}");
+
+            if (angle < lowestAngle) // find object with lowest angle
+            {
+                lowestAngle = angle;
+                bestMatch = o.Key;
+            }
+        }
+        m.GetComponent<ObjectHUDMarker>().SetText(bestMatch);
     }
 
     // Update is called once per frame
