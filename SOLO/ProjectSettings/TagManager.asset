@@ -38,7 +38,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - CesiumWorldLayer
   - 
   - MarkerLayer
   - 
