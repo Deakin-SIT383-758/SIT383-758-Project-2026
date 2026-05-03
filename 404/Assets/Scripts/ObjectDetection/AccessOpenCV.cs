@@ -10,6 +10,7 @@ using TMPro;
 using UnityEditor.XR.LegacyInputHelpers;
 using Unity.Mathematics;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 
 public class AccessOpenCV : MonoBehaviour
 {
@@ -82,8 +83,10 @@ public class AccessOpenCV : MonoBehaviour
         Ray centreRay = Camera.main.ScreenPointToRay(new Vector3(Mathf.RoundToInt(Mathf.Abs((sx + ex) / 2.0f) * Camera.main.pixelWidth - 1), Mathf.RoundToInt(Mathf.Abs((sy + ey) / 2) * Camera.main.pixelHeight - 1), 0)); // cast ray from camera
         Debug.Log($"Centre pixel: {Mathf.RoundToInt(Mathf.Abs((sx + ex) / 2.0f) * Camera.main.pixelWidth - 1)}, {Mathf.RoundToInt(Mathf.Abs((sy + ey) / 2) * Camera.main.pixelHeight - 1)}");
         Debug.DrawRay(centreRay.origin, centreRay.direction * 50.0f, Color.green, 3.0f);
-        Debug.DrawLine(centreRay.origin, centreRay.direction * 50.0f, Color.blue, 3.0f);
-        GameObject m = Instantiate(hudTemplate, centreRay.origin + (centreRay.direction * 50.0f), quaternion.identity, hudParent.transform);
+        //GameObject m = Instantiate(hudTemplate, centreRay.origin + (centreRay.direction * 50.0f), quaternion.identity, hudParent.transform);
+        RaycastHit hit;
+        Physics.Raycast(centreRay.origin, centreRay.direction, out hit);
+        GameObject m = Instantiate(hudTemplate, hit.point, quaternion.identity, hudParent.transform);
 
         // Attempt to identify specific object
         string bestMatch = name;
