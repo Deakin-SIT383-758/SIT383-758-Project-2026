@@ -127,7 +127,7 @@ namespace MM.RangeInvariantMarkers
                 Destroy(markerObject);
                 return;
             }
-            string visualsMessage = markerData.Name + ":\n" + markerData.Info;
+            string visualsMessage = "<b>" + markerData.Name + "</b>:\n" + markerData.Info;
             markerVisualsInterface.SetMessage(visualsMessage);
             markerVisualsInterface.SetTimers(visualEffectTimers);
             markers.Add(markerData, markerVisualsInterface);
