@@ -1,16 +1,7 @@
 using UnityEngine;
 
-public class Static_Data : MonoBehaviour
+public class Static_Data
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public static string WORDS_SPOKE;
+    public static string volume;
 }
