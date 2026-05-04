@@ -10,6 +10,7 @@ public class HUDManager : MonoBehaviour
     public TextMeshProUGUI runwayName;
     public TextMeshProUGUI dateUpdated;
     public Slider timeline;
+    public TextMeshProUGUI hazardInfo; // Phase 3: Adding Detailed Hazard Information to the HUD for enhanced player awareness
 
     //Reference to the MetadataManager to access runway Metadata
     public MetadataManager metaManager;
@@ -57,5 +58,16 @@ public class HUDManager : MonoBehaviour
     {
         int newRunwayInstance = (int)timeline.value;
         return ChosenTimeline[newRunwayInstance];
+    }
+
+    // Displays detailed information about specific hazards
+    public void ShowHazardInfo(string type, int severity)
+    {
+        hazardInfo.text = type + " | Severity: " + severity;
+    }
+
+    public void ClearHazardInfo() // Clears the hazard information from the HUD when no hazard is targeted.
+    {
+        hazardInfo.text = "";
     }
 }
