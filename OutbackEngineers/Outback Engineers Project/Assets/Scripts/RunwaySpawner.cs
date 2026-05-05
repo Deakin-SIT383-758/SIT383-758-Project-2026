@@ -1,81 +1,73 @@
 using UnityEngine;
 
-public class RunwaySpawner : MonoBehaviour
+public class RunwayManager : MonoBehaviour
 {
-    [Header("Runway Prefab")]
-    public GameObject RunwayPrefab;
-
-    [Header("Runway Materials")]
-    public Material[] runwayMaterials;
+    [Header("Runway Prefabs")]
+    public GameObject[] runwayPrefabs;
 
     [Header("Spawn Settings")]
-    public float spawnDistance = 10f;
-    public int defaultMaterialIndex = 0;
+    public int defaultPrefabIndex = 0;
+    public Transform spawnReference;
+    public float spawnDistance = 5f;
+    public float spawnHeightOffset = -1f;
 
     private GameObject currentRunway;
-    private Renderer runwayRenderer;
 
     void Start()
     {
-        SpawnRunway();
-        ApplyMaterial(defaultMaterialIndex);
+        SpawnRunway(defaultPrefabIndex);
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) ApplyMaterial(0);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) ApplyMaterial(1);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) ApplyMaterial(2);
-        if (Input.GetKeyDown(KeyCode.Alpha4)) ApplyMaterial(3);
-        if (Input.GetKeyDown(KeyCode.Alpha5)) ApplyMaterial(4);
+        if (Input.GetKeyDown(KeyCode.Alpha1)) SpawnRunway(0);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) SpawnRunway(1);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) SpawnRunway(2);
+        if (Input.GetKeyDown(KeyCode.Alpha4)) SpawnRunway(3);
+        if (Input.GetKeyDown(KeyCode.Alpha5)) SpawnRunway(4);
     }
 
-    public void SpawnRunway()
+    public void SpawnRunway(int prefabIndex)
     {
+        if (runwayPrefabs == null || runwayPrefabs.Length == 0)
+        {
+            Debug.LogWarning("No runway prefabs assigned.");
+            return;
+        }
+
+        if (prefabIndex < 0 || prefabIndex >= runwayPrefabs.Length)
+        {
+            Debug.LogWarning("Invalid runway prefab index: " + prefabIndex);
+            return;
+        }
+
         if (currentRunway != null)
         {
             Destroy(currentRunway);
         }
 
-        currentRunway = Instantiate(RunwayPrefab);
-        PositionRunway(currentRunway);
+        Transform reference = spawnReference;
 
-        runwayRenderer = currentRunway.GetComponentInChildren<Renderer>();
-
-        if (runwayRenderer == null)
+        if (reference == null && Camera.main != null)
         {
-            Debug.LogWarning("No Renderer found on runway prefab!");
+            reference = Camera.main.transform;
         }
-    }
 
-    public void ApplyMaterial(int materialIndex)
-    {
-        if (runwayMaterials == null || runwayMaterials.Length == 0)
+        if (reference == null)
         {
-            Debug.LogWarning("No runway materials assigned");
+            Debug.LogWarning("No spawn reference or main camera found.");
             return;
         }
 
-        if (materialIndex < 0 || materialIndex >= runwayMaterials.Length)
-        {
-            Debug.LogWarning("Invalid material index: " + materialIndex);
-            return;
-        }
+        Vector3 forward = reference.forward;
+        forward.y = 0f;
+        forward.Normalize();
 
-        if (runwayRenderer == null)
-        {
-            Debug.LogWarning("No runway renderer assigned.");
-            return;
-        }
+        Vector3 spawnPos = reference.position + forward * spawnDistance;
+        spawnPos.y += spawnHeightOffset;
 
-        runwayRenderer.material = runwayMaterials[materialIndex];
+        currentRunway = Instantiate(runwayPrefabs[prefabIndex], spawnPos, runwayPrefabs[prefabIndex].transform.rotation);
 
-        Debug.Log("Changed runway material to index: " + materialIndex);
-    }
-
-    void PositionRunway(GameObject runway)
-    {
-        runway.transform.position = new Vector3(0f, 0f, 80f);
-        runway.transform.rotation = Quaternion.identity;
+        Debug.Log("Spawned runway prefab index: " + prefabIndex);
     }
 }
