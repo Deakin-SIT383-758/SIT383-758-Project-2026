@@ -45,6 +45,8 @@ public class RunwayManager : MonoBehaviour
             hazardCount = hazardManager.GetHazardCount();
             hudManager.UpdateHUD(currentRunwayID, hazardCount); //Displays hazard count and other data to the HUD
             currentTimeline = hudManager.SetRunwayTimeline(currentRunwayID); //Updates the timeline slider with the values of the timeline of the current runway and stores that array
+            
+            menuManager.SceneChanged = false;
         }
         else if (scene.name == "MainScene")
         {

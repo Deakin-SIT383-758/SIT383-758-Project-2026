@@ -6,7 +6,6 @@ using Unity.VisualScripting;
 
 public class MenuManager : MonoBehaviour
 {
-    InputSystem_Actions actions;
     //UI elements accessing data from
     public TMP_Dropdown selector;
     public GameObject menu;
@@ -20,9 +19,6 @@ public class MenuManager : MonoBehaviour
 
     void Awake()
     {
-        actions = new InputSystem_Actions();
-        actions.Enable();
-
         selector.onValueChanged.AddListener(delegate{OnDropdownValueChange(selector.value);});
     }
 
@@ -67,7 +63,7 @@ public class MenuManager : MonoBehaviour
             menu.SetActive(false);
             MenuActive = false;
         }
-        if(scene.name == "MainScene" && MenuActive == false && actions.Player.Previous.ReadValue<float>() > 0.5f)
+        if(scene.name == "MainScene" && MenuActive == false && OVRInput.GetDown(OVRInput.RawButton.A))
         {
             menu.SetActive(true);
             MenuActive = true;
