@@ -122,8 +122,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7244782684304828449}
   - component: {fileID: 5775951411756540380}
-  - component: {fileID: 6344083708579147589}
-  - component: {fileID: 4281972710516210113}
   - component: {fileID: 4988414730442999552}
   m_Layer: 0
   m_Name: Avatar
@@ -167,51 +165,11 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 6344083708579147589}
-  - {fileID: 4281972710516210113}
   - {fileID: 4988414730442999552}
   - {fileID: 6857134082060887816}
   - {fileID: 7213796603621625806}
   - {fileID: 8974711216874533427}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &6344083708579147589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 363158398567632160}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6fb76e968cc8034397672a468b8f116, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NetworkedPlayer
-  localHead: {fileID: 0}
-  localLeftHand: {fileID: 0}
-  localRightHand: {fileID: 0}
-  headTarget: {fileID: 7264053307924712420}
-  leftHandTarget: {fileID: 1068383566957493253}
-  rightHandTarget: {fileID: 7390407789533115851}
-  headVisual: {fileID: 7725547540315374559}
-  leftHandRenderer: {fileID: 114380411757281701}
-  rightHandRenderer: {fileID: 1313621699733164859}
---- !u!114 &4281972710516210113
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 363158398567632160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Fusion.Runtime.dll::Fusion.NetworkTransform
-  _stateAuthorityChangeErrorCorrectionDelta: 0
-  SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
 --- !u!114 &4988414730442999552
 MonoBehaviour:
   m_ObjectHideFlags: 0

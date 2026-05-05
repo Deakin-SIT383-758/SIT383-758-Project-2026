@@ -1,5 +1,6 @@
 ﻿<Solution>
   <Project Path="Fusion.Unity.Editor.csproj" />
+  <Project Path="Oculus.Interaction.Editor.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Fusion.Unity.csproj" />
   <Project Path="Unity.XR.Interaction.Toolkit.Samples.StarterAssets.csproj" />

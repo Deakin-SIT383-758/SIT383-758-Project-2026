@@ -27,16 +27,32 @@ public class PlayerAvatar : NetworkBehaviour
         if (!HasStateAuthority) return;
 
         OVRCameraRig rig = FindFirstObjectByType<OVRCameraRig>();
-        if (rig == null)
+        if (rig != null)
         {
-            Debug.LogError("VRPlayerAvatar: Could not find OVRCameraRig in scene!"); 
-            return;
-        }
+            // CenterEyeAnchor is the head position in Meta SDK 
+            ovrHead = rig.centerEyeAnchor;
+            ovrLeftHand = rig.leftHandAnchor;
+            ovrRightHand = rig.rightHandAnchor;
 
-        // CenterEyeAnchor is the head position in Meta SDK 
-        ovrHead = rig.centerEyeAnchor;
-        ovrLeftHand = rig.leftHandAnchor;
-        ovrRightHand = rig.rightHandAnchor;
+            Debug.LogError($"Head: {ovrHead.name}, L: {ovrLeftHand.name}, R: {ovrRightHand.name}"); 
+        }
+        else
+        {
+            // Find whatever camera exists in the scene regardless of tag
+            Camera cam = FindFirstObjectByType<Camera>();
+
+            if (cam != null)
+            {
+                ovrHead = cam.transform;
+                ovrLeftHand = cam.transform;
+                ovrRightHand = cam.transform;
+                Debug.Log($"PC fallback using camera: {cam.name} at {cam.transform.position}");
+            }
+            else
+            {
+                Debug.LogError("No camera found at all!");
+            }
+        }
 
         // Hide this avatar's visuals for the local player 
         // so you do not see a head floating in front of you. 
