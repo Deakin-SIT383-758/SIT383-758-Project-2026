@@ -5,11 +5,15 @@ using UnityEngine.XR.ARSubsystems;
 public class TrackVisibility : MonoBehaviour
 {
     public GameObject modelRoot;
+
     [Header("Fade Settings")]
     public float fadeSpeed = 2f;
     public float fadeOutDelay = 0.2f;
+
     private ARTrackedImage trackedImage;
     private Renderer[] renderers;
+    private ParticleSystem[] particleSystems;
+
     private float currentAlpha = 0f;
     private float targetAlpha = 0f;
     private float lostTimer = 0f;
@@ -21,7 +25,11 @@ public class TrackVisibility : MonoBehaviour
         if (modelRoot != null)
         {
             renderers = modelRoot.GetComponentsInChildren<Renderer>(true);
+            particleSystems = modelRoot.GetComponentsInChildren<ParticleSystem>(true);
+
             SetAlpha(0f);
+            SetParticlesVisible(false);
+
             modelRoot.SetActive(false);
         }
     }
@@ -43,7 +51,11 @@ public class TrackVisibility : MonoBehaviour
             targetAlpha = 1f;
 
             if (!modelRoot.activeSelf)
+            {
                 modelRoot.SetActive(true);
+                RefreshParticleSystems();
+                SetParticlesVisible(true);
+            }
         }
         else
         {
@@ -63,6 +75,7 @@ public class TrackVisibility : MonoBehaviour
 
         if (!markerVisible && currentAlpha <= 0.01f)
         {
+            SetParticlesVisible(false);
             modelRoot.SetActive(false);
         }
     }
@@ -71,12 +84,47 @@ public class TrackVisibility : MonoBehaviour
     {
         foreach (Renderer r in renderers)
         {
+            if (r == null) continue;
+
             foreach (Material mat in r.materials)
             {
+                if (mat == null) continue;
+
                 Color color = mat.color;
                 color.a = alpha;
                 mat.color = color;
             }
+        }
+    }
+
+    void SetParticlesVisible(bool visible)
+    {
+        if (particleSystems == null) return;
+
+        foreach (ParticleSystem ps in particleSystems)
+        {
+            if (ps == null) continue;
+
+            if (visible)
+            {
+                ps.gameObject.SetActive(true);
+
+                if (!ps.isPlaying)
+                    ps.Play();
+            }
+            else
+            {
+                ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                ps.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    void RefreshParticleSystems()
+    {
+        if (modelRoot != null)
+        {
+            particleSystems = modelRoot.GetComponentsInChildren<ParticleSystem>(true);
         }
     }
 }

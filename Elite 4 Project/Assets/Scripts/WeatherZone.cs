@@ -5,11 +5,11 @@ public class WeatherZone : MonoBehaviour
     public enum WeatherType
     {
         Clear,
-        Rain,
         Cloud,
-        HighWind,
-        RainAndWind,
-        CloudAndWind
+        Wind,
+        CloudAndRain,
+        CloudAndWind,
+        RainCloudAndWind
     }
 
     [Header("Current Weather")]
@@ -18,37 +18,84 @@ public class WeatherZone : MonoBehaviour
     [Header("Visuals")]
     public ParticleSystem rainParticles;
     public GameObject cloudVisual;
-    public GameObject windVisual;
+    public ParticleSystem windParticles;
 
     [Header("Rain Settings")]
-    public float lightRainRate = 80f;
     public float heavyRainRate = 200f;
+
+    [Header("Wind Settings")]
+    public float windRate = 80f;
 
     public void SetWeather(WeatherType weather)
     {
         currentWeather = weather;
 
-        bool hasRain = weather == WeatherType.Rain || weather == WeatherType.RainAndWind;
-        bool hasCloud = weather == WeatherType.Cloud || weather == WeatherType.CloudAndWind;
-        bool hasWind = weather == WeatherType.HighWind || weather == WeatherType.RainAndWind || weather == WeatherType.CloudAndWind;
+        bool hasRain =
+            weather == WeatherType.CloudAndRain ||
+            weather == WeatherType.RainCloudAndWind;
 
-        if (rainParticles != null)
+        bool hasCloud =
+            weather == WeatherType.Cloud ||
+            weather == WeatherType.CloudAndRain ||
+            weather == WeatherType.CloudAndWind ||
+            weather == WeatherType.RainCloudAndWind;
+
+        bool hasWind =
+            weather == WeatherType.Wind ||
+            weather == WeatherType.CloudAndWind ||
+            weather == WeatherType.RainCloudAndWind;
+
+        SetRain(hasRain);
+        SetCloud(hasCloud);
+        SetWind(hasWind);
+
+        Debug.Log($"{gameObject.name} weather: {weather}");
+    }
+
+    void SetRain(bool active)
+    {
+        if (rainParticles == null) return;
+
+        var emission = rainParticles.emission;
+        emission.rateOverTime = active ? heavyRainRate : 0f;
+
+        if (active)
         {
-            var emission = rainParticles.emission;
-            emission.rateOverTime = hasRain ? heavyRainRate : 0f;
-
-            if (hasRain && !rainParticles.isPlaying)
-                rainParticles.Play();
-
-            if (!hasRain)
-                rainParticles.Stop();
+            rainParticles.gameObject.SetActive(true);
+            rainParticles.Play();
         }
+        else
+        {
+            rainParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            rainParticles.gameObject.SetActive(false);
+        }
+    }
 
+    void SetCloud(bool active)
+    {
         if (cloudVisual != null)
-            cloudVisual.SetActive(hasCloud);
+        {
+            cloudVisual.SetActive(active);
+        }
+    }
 
-        if (windVisual != null)
-            windVisual.SetActive(hasWind);
+    void SetWind(bool active)
+    {
+        if (windParticles == null) return;
+
+        var emission = windParticles.emission;
+        emission.rateOverTime = active ? windRate : 0f;
+
+        if (active)
+        {
+            windParticles.gameObject.SetActive(true);
+            windParticles.Play();
+        }
+        else
+        {
+            windParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            windParticles.gameObject.SetActive(false);
+        }
     }
 
     public void RandomizeWeather()
@@ -56,10 +103,5 @@ public class WeatherZone : MonoBehaviour
         int count = System.Enum.GetValues(typeof(WeatherType)).Length;
         WeatherType randomWeather = (WeatherType)Random.Range(0, count);
         SetWeather(randomWeather);
-    }
-
-    void Start()
-    {
-        SetWeather(WeatherType.Cloud);
     }
 }
