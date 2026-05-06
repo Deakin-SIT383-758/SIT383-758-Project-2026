@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class RunwayManager : MonoBehaviour
+public class RunwaySpawner : MonoBehaviour
 {
     [Header("Runway Prefabs")]
     public GameObject[] runwayPrefabs;
