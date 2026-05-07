@@ -28,6 +28,7 @@ public class MapManager : MonoBehaviour
     public float longitude = 0.0f; // 144.96f for Melbourne
     public float latitude = 0.0f; // 37.81f for Melbourne
     public int zoom = 14;
+    public float scale = 1.0f;
 
     public int tileX = 0; // coordinates of tile in tile group
     public int tileY = 0;
@@ -122,7 +123,7 @@ public class MapManager : MonoBehaviour
                 //yc = heightRange * (yc - minHeight) / (maxHeight - minHeight);
                 yc *= 0.001f; //temporary height scaling for demo purposes
 
-                vertices[y * (mWidth + 1) + x] = new Vector3(xc - 0.5f, yc, zc - 0.5f) * 10.0f;
+                vertices[y * (mWidth + 1) + x] = new Vector3(xc - 0.5f, yc, zc - 0.5f) * scale;
                 uvs[y * (mWidth + 1) + x] = new Vector3(xc, zc);
 
                 //Instantiate(marker, new Vector3(xc - 0.5f, yc, zc - 0.5f) * 10.0f, Quaternion.identity);
@@ -225,8 +226,8 @@ public class MapManager : MonoBehaviour
 
         // Interpolate current coordinates relative to tile corners
         // Assumes the plane coordinates run from (-5, -5) to (5, 5)
-        float r = 10.0f * ((-(longitude - cornerLongA) / (cornerLongB - cornerLongA))) + 5.0f;
-        float d = 10.0f * ((-(latitude - cornerLatA) / (cornerLatB - cornerLatA))) + 5.0f;
+        float r = scale * ((-(longitude - cornerLongA) / (cornerLongB - cornerLongA))) + 5.0f;
+        float d = scale * ((-(latitude - cornerLatA) / (cornerLatB - cornerLatA))) + 5.0f;
         marker.transform.position = mapPlane.transform.position - mapPlane.transform.forward * d + mapPlane.transform.right * r;
 
         //statusText.text = longitude + "," + latitude + "(" + zoom + ")" + "[" + x + ", " + y + "]";
