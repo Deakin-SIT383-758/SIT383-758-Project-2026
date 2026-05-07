@@ -121,9 +121,9 @@ public class MapManager : MonoBehaviour
                 float yc = heightTex[(int)(zc * (tex.height - 1)) * tex.width + (int)(xc * (tex.width - 1))];
                 if (yc < 0.0f) yc = 0.0f;
                 //yc = heightRange * (yc - minHeight) / (maxHeight - minHeight);
-                yc *= 0.001f; //temporary height scaling for demo purposes
+                //yc *= 0.001f; //temporary height scaling for demo purposes
 
-                vertices[y * (mWidth + 1) + x] = new Vector3(xc - 0.5f, yc, zc - 0.5f) * scale;
+                vertices[y * (mWidth + 1) + x] = new Vector3(xc - 0.5f, yc / scale, zc - 0.5f) * scale;
                 uvs[y * (mWidth + 1) + x] = new Vector3(xc, zc);
 
                 //Instantiate(marker, new Vector3(xc - 0.5f, yc, zc - 0.5f) * 10.0f, Quaternion.identity);

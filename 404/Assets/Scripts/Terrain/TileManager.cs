@@ -4,6 +4,7 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 
 public class TileManager : MonoBehaviour
@@ -30,6 +31,8 @@ public class TileManager : MonoBehaviour
     void Start()
     {
         tiles = new GameObject[9];
+        float mPx = (40075016 * Mathf.Cos(latitude)) / (256 * Mathf.Pow(2, zoom)); // get meters/pixel for starting latitude (doesn't update)
+        scale = 256.0f * mPx;
         CreateTiles();
     }
 
