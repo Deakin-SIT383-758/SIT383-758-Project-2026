@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using TMPro;
-using Unity.VisualScripting;
 
 public class MenuManager : MonoBehaviour
 {
@@ -29,28 +27,23 @@ public class MenuManager : MonoBehaviour
         switch (selectionIndex)
         {
             case 0:
-                ChosenScene = "Runway_A";
+                ChosenScene = "City_Runway";
                 break;
+
             case 1:
-                ChosenScene = "Runway_B";
+                ChosenScene = "DryLand_Runway";
                 break;
+
             case 2:
-                ChosenScene = "Runway_C";
+                ChosenScene = "Grass_Runway";
                 break;
+
             case 3:
-                ChosenScene = "Runway_D";
+                ChosenScene = "Marsh_Runway";
                 break;
+
             case 4:
-                ChosenScene = "Runway_E";
-                break;
-            case 5:
-                ChosenScene = "Runway_F";
-                break;
-            case 6:
-                ChosenScene = "Runway_G";
-                break;
-            default:
-                ChosenScene = "Runway_A";
+                ChosenScene = "RedSand_Runway";
                 break;
         }
     }
@@ -63,17 +56,34 @@ public class MenuManager : MonoBehaviour
             menu.SetActive(false);
             MenuActive = false;
         }
-        if(scene.name == "MainScene" && MenuActive == false && OVRInput.GetDown(OVRInput.RawButton.A))
-        {
-            menu.SetActive(true);
-            MenuActive = true;
-        }
+        //if(scene.name == "MainScene" && MenuActive == false && OVRInput.GetDown(OVRInput.RawButton.A))  TEMP BLOCK OUT FOR TESTING PURPOSES WITHOUT HEADSETS
+        //{
+        //    menu.SetActive(true);
+        //    MenuActive = true;
+        //}
     }
 
-    //Called when the View button is pressed
+    void Start()
+    {
+        selector.value = 0;
+
+        OnDropdownValueChange(0);
+
+        Debug.Log("Default runway set to: " + ChosenScene);
+    }
+
     public void GoToMain()
     {
-        SceneManager.LoadScene(1);
+        Debug.Log("VIEW RUNWAY BUTTON PRESSED");
+
+        Debug.Log("Chosen runway BEFORE save: " + ChosenScene);
+
+        PersistanceScript.Instance.selectedRunway = ChosenScene;
+
+        Debug.Log("Saved runway: " + PersistanceScript.Instance.selectedRunway);
+
+        SceneManager.LoadScene("MainScene");
+
         SceneChanged = true;
     }
 

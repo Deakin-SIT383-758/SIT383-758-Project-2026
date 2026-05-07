@@ -15,16 +15,12 @@ public class RunwaySpawner : MonoBehaviour
 
     void Start()
     {
-        SpawnRunway(defaultPrefabIndex);
+        
     }
 
-    void Update()
+    public GameObject GetCurrentRunway()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) SpawnRunway(0);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) SpawnRunway(1);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) SpawnRunway(2);
-        if (Input.GetKeyDown(KeyCode.Alpha4)) SpawnRunway(3);
-        if (Input.GetKeyDown(KeyCode.Alpha5)) SpawnRunway(4);
+        return currentRunway;
     }
 
     public void SpawnRunway(int prefabIndex)
