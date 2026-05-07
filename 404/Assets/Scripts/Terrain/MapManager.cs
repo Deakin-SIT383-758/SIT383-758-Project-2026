@@ -180,8 +180,8 @@ public class MapManager : MonoBehaviour
     }
     IEnumerator updateColourTexture(int x, int y, int z)
     {
-        // Map tiles sources from openstreetmap
-        string url = "https://tile.openstreetmap.org/" + z + "/" + x + "/" + y + ".png";
+        // Satellite photograph tile sourced from ArcGIS
+        string url = $"https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png";
         Debug.Log("Retrieving: " + url);
 
         using (UnityWebRequest req = UnityWebRequestTexture.GetTexture(url)) // use non-blocking UnityWebRequest over blocking HttpWebRequest
