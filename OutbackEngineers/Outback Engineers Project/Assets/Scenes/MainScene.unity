@@ -3258,7 +3258,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 392431895}
-  - component: {fileID: 392431894}
+  - component: {fileID: 392431896}
   m_Layer: 0
   m_Name: RunwaySpawner
   m_TagString: Untagged
@@ -3266,28 +3266,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &392431894
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 392431893}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d9d4cab61bd3094890b59fcbebbcc82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RunwaySpawner
-  runwayPrefabs:
-  - {fileID: 391235073621973662, guid: 0517f6e32b54cfd448ac09ec817726bf, type: 3}
-  - {fileID: 3978737740130356465, guid: f12d7e2b2be5b2e43a9b263030364a29, type: 3}
-  - {fileID: 4470448385695270117, guid: daed4840e6bdf024b94b764dc12a2ea8, type: 3}
-  - {fileID: 5318799346670031499, guid: 3f7ab08b8d62f074597e96ab17eaf164, type: 3}
-  - {fileID: 8265031716071520879, guid: d42b808ab3183334f81a2102eca5063b, type: 3}
-  defaultPrefabIndex: 0
-  spawnReference: {fileID: 35956009}
-  spawnDistance: 5
-  spawnHeightOffset: -1
 --- !u!4 &392431895
 Transform:
   m_ObjectHideFlags: 0
@@ -3303,6 +3281,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &392431896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392431893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a43b773f659e3c4a8737591b0432687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RunwaySpawner
+  runwayPrefabs:
+  - {fileID: 391235073621973662, guid: 0517f6e32b54cfd448ac09ec817726bf, type: 3}
+  - {fileID: 3978737740130356465, guid: f12d7e2b2be5b2e43a9b263030364a29, type: 3}
+  - {fileID: 4470448385695270117, guid: daed4840e6bdf024b94b764dc12a2ea8, type: 3}
+  - {fileID: 5318799346670031499, guid: 3f7ab08b8d62f074597e96ab17eaf164, type: 3}
+  - {fileID: 8265031716071520879, guid: d42b808ab3183334f81a2102eca5063b, type: 3}
+  defaultPrefabIndex: 0
+  spawnReference: {fileID: 0}
+  spawnDistance: 5
+  spawnHeightOffset: -1
 --- !u!1 &400435949
 GameObject:
   m_ObjectHideFlags: 0
@@ -5318,7 +5318,6 @@ Transform:
   - {fileID: 1312652044}
   m_Father: {fileID: 1511006844}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
 --- !u!1 &752031389
 GameObject:
   m_ObjectHideFlags: 0
@@ -5352,7 +5351,7 @@ MonoBehaviour:
   hazardManager: {fileID: 1583339669}
   metadataManager: {fileID: 646123141}
   hudManager: {fileID: 182652444}
-  runwaySpawner: {fileID: 392431894}
+  runwaySpawner: {fileID: 392431896}
 --- !u!4 &752031391
 Transform:
   m_ObjectHideFlags: 0
@@ -5368,8 +5367,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-=======
->>>>>>> 014a117e040cfbae0811a4aa1413e6434e8c8740
 --- !u!1 &754379021
 GameObject:
   m_ObjectHideFlags: 0
@@ -13591,14 +13588,15 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 410087041}
+  - {fileID: 253490701}
+  - {fileID: 832575519}
+  - {fileID: 826608687}
   - {fileID: 1583339670}
   - {fileID: 646123142}
-  - {fileID: 410087041}
   - {fileID: 182652445}
   - {fileID: 392431895}
-  - {fileID: 832575519}
-  - {fileID: 253490701}
-  - {fileID: 826608687}
+  - {fileID: 752031391}
   - {fileID: 35956009}
   - {fileID: 1058274549}
   - {fileID: 431610041}
