@@ -1,0 +1,156 @@
+Shader "Custom/CloudsShader_EdgeFade"
+{
+    Properties
+    {
+        _CloudsColour ("Clouds Colour", Color) = (1,1,1,1)
+        _CloudsScale ("Clouds Scale", Float) = 120
+        _CloudsPower ("Clouds Power", Float) = 1.23
+        _CloudsAlpha ("Clouds Alpha", Float) = 0.55
+        _CloudsSpeed ("Clouds Speed", Vector) = (0.01,0.02,0,0)
+
+        _DistortScale ("Distort Scale", Float) = 0
+        _DistortSpeed ("Distort Speed", Vector) = (0.05,0.05,0,0)
+        _VertexOffset ("Vertex Offset", Float) = 0.5
+
+        _EdgeFadeWidth ("Edge Fade Width", Range(0.01,0.5)) = 0.28
+        _EdgeFadePower ("Edge Fade Power", Range(0.25,5)) = 1.4
+        _NoiseCutoff ("Noise Cutoff", Range(0,1)) = 0.18
+        _NoiseSoftness ("Noise Softness", Range(0.01,1)) = 0.55
+    }
+
+    SubShader
+    {
+        Tags
+        {
+            "RenderPipeline"="UniversalPipeline"
+            "Queue"="Transparent"
+            "RenderType"="Transparent"
+        }
+
+        Pass
+        {
+            Name "CloudsEdgeFade"
+            Tags { "LightMode"="UniversalForward" }
+
+            Blend SrcAlpha OneMinusSrcAlpha
+            ZWrite Off
+            Cull Off
+
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+            CBUFFER_START(UnityPerMaterial)
+                float4 _CloudsColour;
+                float _CloudsScale;
+                float _CloudsPower;
+                float _CloudsAlpha;
+                float4 _CloudsSpeed;
+                float _DistortScale;
+                float4 _DistortSpeed;
+                float _VertexOffset;
+                float _EdgeFadeWidth;
+                float _EdgeFadePower;
+                float _NoiseCutoff;
+                float _NoiseSoftness;
+            CBUFFER_END
+
+            struct Attributes
+            {
+                float4 positionOS : POSITION;
+                float3 normalOS : NORMAL;
+                float2 uv : TEXCOORD0;
+            };
+
+            struct Varyings
+            {
+                float4 positionHCS : SV_POSITION;
+                float2 uv : TEXCOORD0;
+                float3 normalWS : TEXCOORD1;
+                float3 viewDirWS : TEXCOORD2;
+            };
+
+            float hash21(float2 p)
+            {
+                p = frac(p * float2(123.34, 456.21));
+                p += dot(p, p + 45.32);
+                return frac(p.x * p.y);
+            }
+
+            float valueNoise(float2 uv)
+            {
+                float2 i = floor(uv);
+                float2 f = frac(uv);
+                float a = hash21(i);
+                float b = hash21(i + float2(1, 0));
+                float c = hash21(i + float2(0, 1));
+                float d = hash21(i + float2(1, 1));
+                float2 u = f * f * (3.0 - 2.0 * f);
+                return lerp(lerp(a, b, u.x), lerp(c, d, u.x), u.y);
+            }
+
+            float fbm(float2 uv)
+            {
+                float n = 0.0;
+                float amp = 0.5;
+                for (int i = 0; i < 4; i++)
+                {
+                    n += valueNoise(uv) * amp;
+                    uv *= 2.03;
+                    amp *= 0.5;
+                }
+                return saturate(n);
+            }
+
+            float edgeFade(float2 uv)
+            {
+                // Distance from the nearest plane edge in UV space.
+                float2 edgeDistance = min(uv, 1.0 - uv);
+                float boxFade = saturate(min(edgeDistance.x, edgeDistance.y) / max(_EdgeFadeWidth, 0.0001));
+
+                // Smooth the result so the square outline disappears gradually.
+                boxFade = smoothstep(0.0, 1.0, boxFade);
+                return pow(boxFade, _EdgeFadePower);
+            }
+
+            Varyings vert(Attributes IN)
+            {
+                Varyings OUT;
+
+                float2 animatedUV = IN.uv * max(_CloudsScale, 0.001) + _Time.y * _CloudsSpeed.xy;
+                float displacement = (fbm(animatedUV) - 0.5) * _VertexOffset;
+
+                float3 posOS = IN.positionOS.xyz + IN.normalOS * displacement;
+                VertexPositionInputs posInputs = GetVertexPositionInputs(posOS);
+                OUT.positionHCS = posInputs.positionCS;
+                OUT.uv = IN.uv;
+                OUT.normalWS = TransformObjectToWorldNormal(IN.normalOS);
+                OUT.viewDirWS = GetWorldSpaceViewDir(posInputs.positionWS);
+                return OUT;
+            }
+
+            half4 frag(Varyings IN) : SV_Target
+            {
+                float2 distortUV = IN.uv * max(_CloudsScale, 0.001) + _Time.y * _DistortSpeed.xy;
+                float distortion = (fbm(distortUV) - 0.5) * _DistortScale;
+
+                float2 cloudUV = IN.uv * max(_CloudsScale, 0.001) + _Time.y * _CloudsSpeed.xy + distortion;
+                float cloudNoise = fbm(cloudUV);
+                cloudNoise = pow(saturate(cloudNoise), max(_CloudsPower, 0.001));
+                cloudNoise = smoothstep(_NoiseCutoff, _NoiseCutoff + _NoiseSoftness, cloudNoise);
+
+                float fade = edgeFade(IN.uv);
+
+                // Slight view-angle softening so the cloud does not look like a hard card.
+                float fresnel = 1.0 - saturate(dot(normalize(IN.normalWS), normalize(IN.viewDirWS)));
+                float viewSoftness = saturate(1.0 - fresnel * 0.35);
+
+                float alpha = cloudNoise * fade * _CloudsAlpha * _CloudsColour.a * viewSoftness;
+
+                return half4(_CloudsColour.rgb, alpha);
+            }
+            ENDHLSL
+        }
+    }
+}
