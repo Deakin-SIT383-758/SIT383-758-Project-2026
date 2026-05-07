@@ -69,6 +69,8 @@ public class TileManager : MonoBehaviour
                 t.GetComponent<MapManager>().tileX = x;
                 t.GetComponent<MapManager>().tileY = y;
                 t.GetComponent<MapManager>().zoom = zoom;
+                t.GetComponent<MapManager>().longitude = longitude;
+                t.GetComponent<MapManager>().latitude = latitude;
                 tiles[index] = t;
                 index++;
 
