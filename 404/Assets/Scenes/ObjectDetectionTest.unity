@@ -975,6 +975,18 @@ MonoBehaviour:
   markerParent: {fileID: 1190317311}
   hudTemplate: {fileID: 1701202416121763758, guid: 4abb4c50083b91641b22eec6d1bd99d0, type: 3}
   hudParent: {fileID: 1167411423}
+  objNames:
+  - North Chair
+  - West Chair
+  - East Chair
+  - South Chair
+  - Far South Chair
+  objPositions:
+  - {x: 0.06, y: 2.31, z: 13.46}
+  - {x: -11.390236, y: 2.31, z: -0.10608353}
+  - {x: 14.123142, y: 2.31, z: 0.08025}
+  - {x: 0.31646305, y: 2.31, z: -11.663066}
+  - {x: 0.92, y: 2.31, z: -28.24}
   text: {fileID: 1182730474}
 --- !u!1 &1480750557
 GameObject:
