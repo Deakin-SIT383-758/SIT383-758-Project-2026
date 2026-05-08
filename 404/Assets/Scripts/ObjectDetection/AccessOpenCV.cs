@@ -23,6 +23,8 @@ public class AccessOpenCV : MonoBehaviour
     public GameObject hudParent;
 
     private Dictionary<string, Vector3> objects = new Dictionary<string, Vector3>(); // names of objects and positions
+    public List<string> objNames; // object names
+    public List<Vector3> objPositions; // object positions
 
 
     private bool modelReady = false;
@@ -48,11 +50,16 @@ public class AccessOpenCV : MonoBehaviour
         //cameraMaterial = markerParent.GetComponent<Renderer>().material;
 
         // Fill object dictionary
-        objects.Add("North Chair", new Vector3(0.0599999987f, 2.30999994f, 13.46f));
-        objects.Add("West Chair", new Vector3(-11.3902359f, 2.30999994f, -0.106083527f));
-        objects.Add("East Chair", new Vector3(14.1231422f, 2.30999994f, 0.0802500024f));
-        objects.Add("South Chair", new Vector3(0.316463053f, 2.30999994f, -11.6630659f));
-        objects.Add("Far South Chair", new Vector3(0.920000017f, 2.30999994f, -28.2399998f));
+        // objects.Add("North Chair", new Vector3(0.0599999987f, 2.30999994f, 13.46f));
+        // objects.Add("West Chair", new Vector3(-11.3902359f, 2.30999994f, -0.106083527f));
+        // objects.Add("East Chair", new Vector3(14.1231422f, 2.30999994f, 0.0802500024f));
+        // objects.Add("South Chair", new Vector3(0.316463053f, 2.30999994f, -11.6630659f));
+        // objects.Add("Far South Chair", new Vector3(0.920000017f, 2.30999994f, -28.2399998f));
+        for (int i = 0; i < objNames.Count; i++)
+        {
+            objects.Add(objNames[i], objPositions[i]);
+        }
+        Debug.Log("Size of dictionary: " + objects.Count);
     }
 
     IEnumerator prepareModel()
