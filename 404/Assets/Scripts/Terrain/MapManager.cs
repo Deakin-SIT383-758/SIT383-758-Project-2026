@@ -28,6 +28,7 @@ public class MapManager : MonoBehaviour
     public float longitude = 0.0f; // 144.96f for Melbourne
     public float latitude = 0.0f; // 37.81f for Melbourne
     public int zoom = 14;
+    public float scale = 1.0f;
 
     public int tileX = 0; // coordinates of tile in tile group
     public int tileY = 0;
@@ -120,9 +121,9 @@ public class MapManager : MonoBehaviour
                 float yc = heightTex[(int)(zc * (tex.height - 1)) * tex.width + (int)(xc * (tex.width - 1))];
                 if (yc < 0.0f) yc = 0.0f;
                 //yc = heightRange * (yc - minHeight) / (maxHeight - minHeight);
-                yc *= 0.001f; //temporary height scaling for demo purposes
+                //yc *= 0.001f; //temporary height scaling for demo purposes
 
-                vertices[y * (mWidth + 1) + x] = new Vector3(xc - 0.5f, yc, zc - 0.5f) * 10.0f;
+                vertices[y * (mWidth + 1) + x] = new Vector3(xc - 0.5f, yc / scale, zc - 0.5f) * scale;
                 uvs[y * (mWidth + 1) + x] = new Vector3(xc, zc);
 
                 //Instantiate(marker, new Vector3(xc - 0.5f, yc, zc - 0.5f) * 10.0f, Quaternion.identity);
@@ -180,8 +181,8 @@ public class MapManager : MonoBehaviour
     }
     IEnumerator updateColourTexture(int x, int y, int z)
     {
-        // Map tiles sources from openstreetmap
-        string url = "https://tile.openstreetmap.org/" + z + "/" + x + "/" + y + ".png";
+        // Satellite photograph tile sourced from ArcGIS
+        string url = $"https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png";
         Debug.Log("Retrieving: " + url);
 
         using (UnityWebRequest req = UnityWebRequestTexture.GetTexture(url)) // use non-blocking UnityWebRequest over blocking HttpWebRequest
@@ -225,8 +226,8 @@ public class MapManager : MonoBehaviour
 
         // Interpolate current coordinates relative to tile corners
         // Assumes the plane coordinates run from (-5, -5) to (5, 5)
-        float r = 10.0f * ((-(longitude - cornerLongA) / (cornerLongB - cornerLongA))) + 5.0f;
-        float d = 10.0f * ((-(latitude - cornerLatA) / (cornerLatB - cornerLatA))) + 5.0f;
+        float r = scale * ((-(longitude - cornerLongA) / (cornerLongB - cornerLongA))) + 5.0f;
+        float d = scale * ((-(latitude - cornerLatA) / (cornerLatB - cornerLatA))) + 5.0f;
         marker.transform.position = mapPlane.transform.position - mapPlane.transform.forward * d + mapPlane.transform.right * r;
 
         //statusText.text = longitude + "," + latitude + "(" + zoom + ")" + "[" + x + ", " + y + "]";

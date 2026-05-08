@@ -4,6 +4,7 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 
 public class TileManager : MonoBehaviour
@@ -13,7 +14,7 @@ public class TileManager : MonoBehaviour
 
     public Transform trackedObject; // object to update tiles around
 
-    public float scale = 10.0f; // scale of tiles
+    public float scale = 1.0f; // scale of tiles
 
     public float longitude = 0.0f; // 144.96f for Melbourne
     public float latitude = 0.0f; // -37.81f for Melbourne
@@ -30,6 +31,8 @@ public class TileManager : MonoBehaviour
     void Start()
     {
         tiles = new GameObject[9];
+        float mPx = (40075016 * Mathf.Cos(latitude)) / (256 * Mathf.Pow(2, zoom)); // get meters/pixel for starting latitude (doesn't update)
+        scale = 256.0f * mPx;
         CreateTiles();
     }
 
@@ -65,10 +68,14 @@ public class TileManager : MonoBehaviour
         {
             for (int x = -1; x <= 1; x++)
             {
+                Debug.Log($"Tile position: {new Vector3(x * scale, 0.0f, -y * scale)}");
                 GameObject t = Instantiate(tilePrefab, transform.position + new Vector3(x * scale, 0.0f, -y * scale), Quaternion.identity); // instantiate tiles to form 3x3 square
                 t.GetComponent<MapManager>().tileX = x;
                 t.GetComponent<MapManager>().tileY = y;
                 t.GetComponent<MapManager>().zoom = zoom;
+                t.GetComponent<MapManager>().scale = scale;
+                t.GetComponent<MapManager>().longitude = longitude;
+                t.GetComponent<MapManager>().latitude = latitude;
                 tiles[index] = t;
                 index++;
 

@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -126,10 +126,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 015ba2c707b4d0d46999d71498eaf753, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapManager
-  statusText: {fileID: 0}
   mapObject: {fileID: 0}
   mapMaterial: {fileID: 2100000, guid: f87f04f88b274374f85a7a77929a8c9f, type: 2}
   marker: {fileID: 8668583881226635199, guid: 3c2f19ed5672ed74b94783de508a3929, type: 3}
   mapPlane: {fileID: 0}
   longitude: 144.96
   latitude: -37.81
+  zoom: 14
+  tileX: 0
+  tileY: 0
+  mapX: 0
+  mapY: 0
