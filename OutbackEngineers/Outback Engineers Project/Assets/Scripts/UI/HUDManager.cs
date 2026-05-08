@@ -16,8 +16,11 @@ public class HUDManager : MonoBehaviour
     public MetadataManager metaManager;
 
     //A set of arrays that contain all prefabs each Runway has had over time
-    public GameObject[] RunwayA_Timeline;
-    public GameObject[] RunwayB_Timeline;
+    public GameObject[] cityTimeline;
+    public GameObject[] dryLandTimeline;
+    public GameObject[] grassTimeline;
+    public GameObject[] marshTimeline;
+    public GameObject[] redSandTimeline;
 
     //A dictionary that uses the RunwayID as the reference and the arrays containing the timeline of each runway as the definition
     Dictionary<string, GameObject[]> Timelines;
@@ -26,8 +29,11 @@ public class HUDManager : MonoBehaviour
     {
         Timelines = new Dictionary<string, GameObject[]>()
         {
-            { "Runway_A", RunwayA_Timeline },
-            { "Runway_B", RunwayB_Timeline }
+            { "City_Runway", cityTimeline },
+            { "DryLand_Runway", dryLandTimeline },
+            { "Grass_Runway", grassTimeline },
+            { "Marsh_Runway", marshTimeline },
+            { "RedSand_Runway", redSandTimeline }
         };
     }
 
