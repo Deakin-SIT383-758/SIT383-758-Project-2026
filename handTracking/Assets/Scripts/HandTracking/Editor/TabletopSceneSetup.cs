@@ -17,9 +17,6 @@ namespace OAS.HandTracking.Editor
         private const float HotspotSize   = 0.08f;
         private const float HotspotY      = TableHeight + TableThick + HotspotSize * 0.5f;
 
-        // ─────────────────────────────────────────────────────────────────────
-        // MENU: Setup
-        // ─────────────────────────────────────────────────────────────────────
         [MenuItem("OAS/1 - Setup Tabletop Scene")]
         public static void Setup()
         {
@@ -49,10 +46,6 @@ namespace OAS.HandTracking.Editor
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
             EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
         }
-
-        // ─────────────────────────────────────────────────────────────────────
-        // Scene construction helpers
-        // ─────────────────────────────────────────────────────────────────────
 
         private static void EnsureDirectionalLight()
         {
