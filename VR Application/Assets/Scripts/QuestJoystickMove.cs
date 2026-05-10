@@ -4,7 +4,7 @@ using UnityEngine.XR;
 [RequireComponent(typeof(CharacterController))]
 public class QuestJoystickMove : MonoBehaviour
 {
-    [Header("Movement")]
+    [Header("Horizontal Movement")]
     public float moveSpeed = 2f;
 
     [Header("Vertical Movement")]
@@ -14,14 +14,15 @@ public class QuestJoystickMove : MonoBehaviour
 
     private CharacterController characterController;
 
-    void Start()
+    void Awake()
     {
-        characterController =
-            GetComponent<CharacterController>();
+        characterController = GetComponent<CharacterController>();
     }
 
     void Update()
     {
+        Vector3 movement = Vector3.zero;
+
         InputDevice leftController =
             InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
 
@@ -31,9 +32,6 @@ public class QuestJoystickMove : MonoBehaviour
         InputDevice headset =
             InputDevices.GetDeviceAtXRNode(XRNode.Head);
 
-        Vector3 movement = Vector3.zero;
-
-        // HEAD-RELATIVE MOVEMENT
         if (
             leftController.TryGetFeatureValue(
                 CommonUsages.primary2DAxis,
@@ -44,11 +42,8 @@ public class QuestJoystickMove : MonoBehaviour
                 out Quaternion headRotation)
         )
         {
-            Vector3 forward =
-                headRotation * Vector3.forward;
-
-            Vector3 right =
-                headRotation * Vector3.right;
+            Vector3 forward = headRotation * Vector3.forward;
+            Vector3 right = headRotation * Vector3.right;
 
             forward.y = 0f;
             right.y = 0f;
@@ -57,35 +52,28 @@ public class QuestJoystickMove : MonoBehaviour
             right.Normalize();
 
             movement +=
-                (forward * leftJoystick.y +
-                 right * leftJoystick.x)
+                (forward * leftJoystick.y + right * leftJoystick.x)
                 * moveSpeed;
         }
 
-        // VERTICAL MOVEMENT
         if (
             rightController.TryGetFeatureValue(
                 CommonUsages.primary2DAxis,
                 out Vector2 rightJoystick)
         )
         {
-            movement.y =
-                rightJoystick.y * verticalSpeed;
+            movement.y = rightJoystick.y * verticalSpeed;
         }
 
-        // MOVE USING PHYSICS COLLISION
-        characterController.Move(
-            movement * Time.deltaTime);
+        characterController.Move(movement * Time.deltaTime);
 
-        // CLAMP HEIGHT
-        Vector3 position = transform.position;
+        float currentY = transform.position.y;
+        float clampedY = Mathf.Clamp(currentY, minHeight, maxHeight);
+        float correctionY = clampedY - currentY;
 
-        position.y =
-            Mathf.Clamp(
-                position.y,
-                minHeight,
-                maxHeight);
-
-        transform.position = position;
+        if (Mathf.Abs(correctionY) > 0.001f)
+        {
+            characterController.Move(new Vector3(0f, correctionY, 0f));
+        }
     }
 }
