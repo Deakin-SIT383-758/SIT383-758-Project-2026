@@ -8,20 +8,16 @@ namespace OAS.HandTracking
         [SerializeField] private AudioSource   alarmSource;
         [SerializeField] private AudioSource[] passengerSources;
 
-        [Header("3D Audio")]
         [SerializeField] private float minDistance  = 0.5f;  
         [SerializeField] private float maxDistance  = 10f;    
         [SerializeField] private AudioRolloffMode rolloffMode = AudioRolloffMode.Logarithmic;
 
-        [Header("Alarm Anchor")]
-        [Tooltip("Assign the emergency door transform. If left empty, auto-finds the first EmergencyExit hotspot.")]
         [SerializeField] private Transform alarmAnchor;
 
         private void Start()
         {
             InitializeSpatialAudio();
 
-            // Auto-find alarm anchor only if not manually assigned
             if (alarmAnchor == null)
             {
                 foreach (var hs in FindObjectsByType<TabletopHotspot>(FindObjectsSortMode.None))

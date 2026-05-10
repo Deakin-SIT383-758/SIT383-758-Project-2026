@@ -53,7 +53,6 @@ namespace OAS.HandTracking
                 UpdateVisuals();
         }
 
-        // Returns true if the finger is touching the track and _t changed
         private bool TrySample(Transform probe)
         {
             if (probe == null || trackTransform == null) return false;
@@ -82,7 +81,6 @@ namespace OAS.HandTracking
                 Vector3 trackLeft = trackTransform.position - trackTransform.right * trackHalfLen;
                 Vector3 right     = trackTransform.right;
 
-                // Fill stretches from left edge to current value position
                 if (fill != null)
                 {
                     fill.position   = trackLeft + right * (fillWidth * 0.5f);
@@ -90,7 +88,6 @@ namespace OAS.HandTracking
                     fill.localScale = new Vector3(fillWidth, s.y, s.z);
                 }
 
-                // Handle sits at the right edge of the fill
                 if (handle != null)
                     handle.position = trackLeft + right * fillWidth;
             }
