@@ -539,7 +539,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1388069737604584770, guid: d93799c05cdd12940a023f02d33b4cab, type: 3}
   m_PrefabInstance: {fileID: 4476645703627893745}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 4476645703627893746}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ef606b32958d0740ae804dad848e450, type: 3}
@@ -967,6 +967,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2932252343567820989, guid: d93799c05cdd12940a023f02d33b4cab, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4476645703627893748}
     - targetCorrespondingSourceObject: {fileID: 2978688309868848512, guid: d93799c05cdd12940a023f02d33b4cab, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1683464360}
@@ -983,6 +986,41 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: d93799c05cdd12940a023f02d33b4cab, type: 3}
+--- !u!1 &4476645703627893746 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2932252343567820989, guid: d93799c05cdd12940a023f02d33b4cab, type: 3}
+  m_PrefabInstance: {fileID: 4476645703627893745}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4476645703627893747 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6251759531558406692, guid: d93799c05cdd12940a023f02d33b4cab, type: 3}
+  m_PrefabInstance: {fileID: 4476645703627893745}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshPro
+--- !u!114 &4476645703627893748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4476645703627893746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de024c81fc77dd9498cef88480eff809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChecklistManager
+  testControlName: APU
+  testControlValue: 1
+  checklistInformation:
+  - Turn on APU,APU,1,0
+  - Turn on Fuel Pumps,Fuel Pumps,1,0
+  - Push Engine Ignition long string test,Engine Ignition,1,0
+  textBox: {fileID: 4476645703627893747}
 --- !u!1001 &7829512659145880705
 PrefabInstance:
   m_ObjectHideFlags: 0
