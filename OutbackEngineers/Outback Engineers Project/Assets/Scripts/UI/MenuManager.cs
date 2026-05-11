@@ -51,10 +51,25 @@ public class MenuManager : MonoBehaviour
     void Update()
     {
         scene = SceneManager.GetActiveScene();
-        if (scene.name == "MainScene" && SceneChanged == true)
+        if (scene.name == "MainScene" && SceneChanged == true) // Moves menu to the side of the player when in main scene for a less obstructed view of the runway.
         {
-            menu.SetActive(false);
-            MenuActive = false;
+            Transform cam = Camera.main.transform;
+
+            Vector3 sideOffset = cam.right * 2f;
+            Vector3 forwardOffset = cam.forward * 1.5f;
+
+            menu.transform.position =
+                cam.position + sideOffset + forwardOffset;
+
+            menu.transform.LookAt(cam);
+
+            menu.transform.Rotate(0, 180, 0);
+
+            MenuActive = true;
+
+            SceneChanged = false;
+
+            Debug.Log("Menu position: " + menu.transform.position);
         }
         //if(scene.name == "MainScene" && MenuActive == false && OVRInput.GetDown(OVRInput.RawButton.A))  TEMP BLOCK OUT FOR TESTING PURPOSES WITHOUT HEADSETS
         //{
