@@ -13,6 +13,7 @@ public class HazardRaycaster : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, maxDistance)) // Only consider hits within maxDistance
         {
+            Debug.Log("Hit: " + hit.collider.name);
             HazardObject hazard = hit.collider.GetComponent<HazardObject>();
 
             if (hazard != null) // Only consider hits on objects with a HazardObject component
