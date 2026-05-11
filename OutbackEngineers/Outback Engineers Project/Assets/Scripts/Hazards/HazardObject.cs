@@ -108,13 +108,13 @@ public class HazardObject : MonoBehaviour // Phase 3: Implementing Raycasting an
                 switch (hazardType)
                 {
                     case "Crack":
-                        text.text = "#";
+                        text.text = "!";
                         break;
                     case "Debris":
-                        text.text = "X";
+                        text.text = "!";
                         break;
                     case "Water":
-                        text.text = "~";
+                        text.text = "!";
                         break;
                     default:
                         text.text = "!";
