@@ -44,9 +44,10 @@ public class HUDManager : MonoBehaviour
         {
             if (data.runwayID == runwayID)
             {
-                runwayName.text = data.runwayName + " Runway";
+                runwayName.text = data.runwayName;
                 hazardDisplay.text = "Hazards: " + hazardCount;
                 dateUpdated.text = "Version: " + data.RunwayInstance;
+                Debug.Log(timeline.value);
             }
         }
     }
@@ -54,16 +55,11 @@ public class HUDManager : MonoBehaviour
     //Sets the timeline slider with the values for the timeline of the active runway
     public GameObject[] SetRunwayTimeline(string runwayID)
     {
+        Debug.Log(timeline.maxValue + " instances in previous timeline");
         GameObject[] currentTimeline = Timelines[runwayID];
         timeline.maxValue = currentTimeline.Length;
+        Debug.Log(timeline.maxValue + " instances in current timeline");
         return currentTimeline;
-    }
-
-    //Gets the current value of the slider and returns the chosen instance
-    public GameObject GetRunwayInstance(GameObject[] ChosenTimeline)
-    {
-        int newRunwayInstance = (int)timeline.value;
-        return ChosenTimeline[newRunwayInstance];
     }
 
     // Displays detailed information about specific hazards
