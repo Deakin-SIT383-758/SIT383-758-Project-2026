@@ -59,24 +59,6 @@ public class RunwayManager : MonoBehaviour
         // Update HUD continuously
         hazardCount = hazardManager.GetHazardCount();
         hudManager.UpdateHUD(currentRunwayID, hazardCount);
-
-        // Get active runway timeline instance
-        foreach (RunwayData data in metadataManager.runwayDatabase)
-        {
-            if (data.runwayID == currentRunwayID)
-            {
-                activeInstance = data.RunwayInstance;
-            }
-        }
-
-        // Timeline interaction
-        if ((int)hudManager.timeline.value != activeInstance)
-        {
-            hudManager.GetRunwayInstance(currentTimeline);
-
-            // Future retro runway loading support
-            // runwaySpawner.LoadRetroRunway(currentTimeline[(int)hudManager.timeline.value]);
-        }
     }
 
     void LoadRunwaySystems()
@@ -125,6 +107,27 @@ public class RunwayManager : MonoBehaviour
             default:
                 Debug.LogWarning("Unknown runway ID: " + runwayID);
                 return 0;
+        }
+    }
+
+    //Handles when the value of the slider is changed
+    public void HandleSliderValueChanged(float value)
+    {
+        // Get active runway timeline instance
+        foreach (RunwayData data in metadataManager.runwayDatabase)
+        {
+            if (data.runwayID == currentRunwayID)
+            {
+                activeInstance = data.RunwayInstance;
+            }
+        }
+
+        // Timeline interaction
+        if (value != activeInstance)
+        {
+            // Future retro runway loading support
+            Debug.Log("RetroRunway Loaded");
+            runwaySpawner.LoadRetroRunway(currentTimeline[(int)value]);
         }
     }
 

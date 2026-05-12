@@ -1171,11 +1171,18 @@ MonoBehaviour:
   timeline: {fileID: 1070936204}
   hazardInfo: {fileID: 242841092}
   metaManager: {fileID: 646123141}
-  cityTimeline: []
-  dryLandTimeline: []
-  grassTimeline: []
-  marshTimeline: []
-  redSandTimeline: []
+  cityTimeline:
+  - {fileID: 391235073621973662, guid: 0517f6e32b54cfd448ac09ec817726bf, type: 3}
+  - {fileID: 1830425812766502979, guid: 1d8ebda2fc8cadf4394cdfe1542095f4, type: 3}
+  - {fileID: 3403949094466598108, guid: fafba5e83e3b84c4db9e477878e4de06, type: 3}
+  dryLandTimeline:
+  - {fileID: 3978737740130356465, guid: f12d7e2b2be5b2e43a9b263030364a29, type: 3}
+  grassTimeline:
+  - {fileID: 4470448385695270117, guid: daed4840e6bdf024b94b764dc12a2ea8, type: 3}
+  marshTimeline:
+  - {fileID: 5318799346670031499, guid: 3f7ab08b8d62f074597e96ab17eaf164, type: 3}
+  redSandTimeline:
+  - {fileID: 8265031716071520879, guid: d42b808ab3183334f81a2102eca5063b, type: 3}
 --- !u!4 &182652445
 Transform:
   m_ObjectHideFlags: 0
@@ -4915,10 +4922,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_NormalColor: {r: 0.9960785, g: 0.94117653, b: 0.8196079, a: 1}
+    m_HighlightedColor: {r: 0.94117653, g: 0.79215693, b: 0.5058824, a: 1}
+    m_PressedColor: {r: 0.94117653, g: 0.77647066, b: 0.39607847, a: 1}
+    m_SelectedColor: {r: 0.86274517, g: 0.43137258, b: 0.043137256, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -6736,7 +6743,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 946550190}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
@@ -6981,7 +6988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.18431373, g: 0.11764707, b: 0.0627451, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7662,10 +7669,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_NormalColor: {r: 0.9960785, g: 0.94117653, b: 0.8196079, a: 1}
+    m_HighlightedColor: {r: 0.94117653, g: 0.79215693, b: 0.5058824, a: 1}
+    m_PressedColor: {r: 0.94117653, g: 0.77647066, b: 0.39607847, a: 1}
+    m_SelectedColor: {r: 0.18431373, g: 0.11764707, b: 0.0627451, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -7687,11 +7694,23 @@ MonoBehaviour:
   m_Direction: 0
   m_MinValue: 0
   m_MaxValue: 1
-  m_WholeNumbers: 0
+  m_WholeNumbers: 1
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 752031390}
+        m_TargetAssemblyTypeName: RunwayManager, Assembly-CSharp
+        m_MethodName: HandleSliderValueChanged
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1072479085
 GameObject:
   m_ObjectHideFlags: 0
@@ -8368,8 +8387,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4279246383
+  m_fontColor: {r: 0.18431373, g: 0.11764707, b: 0.0627451, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -12829,7 +12848,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9960785, g: 0.94117653, b: 0.8196079, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
