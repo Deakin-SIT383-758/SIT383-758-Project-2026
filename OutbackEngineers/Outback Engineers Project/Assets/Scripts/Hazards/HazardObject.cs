@@ -173,6 +173,6 @@ public class HazardObject : MonoBehaviour // Phase 3: Implementing Raycasting an
 
         overlayInstance.transform.LookAt(cam);
 
-        overlayInstance.transform.Rotate(0, 180, 90);
+        overlayInstance.transform.Rotate(0, 180, 0);
     }
 }

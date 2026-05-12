@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TitleText : MonoBehaviour
+public class TitleText : MonoBehaviour // Dynamic Title added above dropdown menu in main scene.
 {
     void LateUpdate()
     {
