@@ -126,6 +126,7 @@ GameObject:
   - component: {fileID: 1920390220395730945}
   - component: {fileID: 1827593628930621599}
   - component: {fileID: 5861288719330850755}
+  - component: {fileID: 1061017897468093594}
   m_Layer: 0
   m_Name: SimpleNetworkPlayer
   m_TagString: Untagged
@@ -169,6 +170,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 1827593628930621599}
   - {fileID: 5861288719330850755}
+  - {fileID: 1061017897468093594}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &1827593628930621599
 MonoBehaviour:
@@ -199,6 +201,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a73fffeca3a4674190ccec1997b4ffe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimpleNetworkPlayerFollower
+--- !u!114 &1061017897468093594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2745391242965946823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9aef282999cf4fa438d9f56b848f6d8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NetworkPlayerColor
+  renderersToColour:
+  - {fileID: 2347101788594785040}
+  - {fileID: 4713115078758695488}
 --- !u!1 &6404256804296209644
 GameObject:
   m_ObjectHideFlags: 0

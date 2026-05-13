@@ -10,8 +10,6 @@ public class AlertManager : MonoBehaviour
     [Header("Audio")]
     public AudioSource alertAudio;
 
-    private bool alertActive = false;
-
     void Start()
     {
         HideAlert();
@@ -19,20 +17,37 @@ public class AlertManager : MonoBehaviour
 
     void Update()
     {
-        // TEMP TEST KEY: Press T to simulate extreme weather
+        // KEYBOARD TESTING IN UNITY EDITOR
         if (Input.GetKeyDown(KeyCode.T))
         {
             TriggerWeatherAlert();
         }
 
-        // TEMP TEST KEY: Press F to simulate low fuel
         if (Input.GetKeyDown(KeyCode.F))
         {
             TriggerLowFuelAlert();
         }
 
-        // TEMP TEST KEY: Press Y to hide alert
         if (Input.GetKeyDown(KeyCode.Y))
+        {
+            HideAlert();
+        }
+
+        // QUEST CONTROLLER TESTING
+        // A button = weather warning
+        if (OVRInput.GetDown(OVRInput.RawButton.A))
+        {
+            TriggerWeatherAlert();
+        }
+
+        // B button = low fuel warning
+        if (OVRInput.GetDown(OVRInput.RawButton.B))
+        {
+            TriggerLowFuelAlert();
+        }
+
+        // Y button = hide warning
+        if (OVRInput.GetDown(OVRInput.RawButton.Y))
         {
             HideAlert();
         }
@@ -56,8 +71,6 @@ public class AlertManager : MonoBehaviour
 
     public void TriggerAlert(string title, string message)
     {
-        alertActive = true;
-
         if (alertCanvas != null)
         {
             alertCanvas.SetActive(true);
@@ -70,7 +83,7 @@ public class AlertManager : MonoBehaviour
 
         if (alertAudio != null)
         {
-            alertAudio.Stop(); // prevents overlapping sounds
+            alertAudio.Stop();
             alertAudio.Play();
         }
 
@@ -79,8 +92,6 @@ public class AlertManager : MonoBehaviour
 
     public void HideAlert()
     {
-        alertActive = false;
-
         if (alertCanvas != null)
         {
             alertCanvas.SetActive(false);
