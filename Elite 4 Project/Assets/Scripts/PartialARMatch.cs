@@ -16,6 +16,7 @@ public class LooseMarkerSpawner : MonoBehaviour
         trackedImageManager = GetComponent<ARTrackedImageManager>();
     }
 
+    [System.Obsolete]
     void OnEnable()
     {
         #pragma warning disable 618
@@ -23,6 +24,7 @@ public class LooseMarkerSpawner : MonoBehaviour
         #pragma warning restore 618
     }
 
+    [System.Obsolete]
     void OnDisable()
     {
         #pragma warning disable 618
@@ -30,6 +32,7 @@ public class LooseMarkerSpawner : MonoBehaviour
         #pragma warning restore 618
     }
 
+    [System.Obsolete]
     private void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs eventArgs)
     {
         foreach (var trackedImage in eventArgs.added)
