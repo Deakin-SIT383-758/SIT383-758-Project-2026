@@ -17,7 +17,6 @@ namespace OAS.HandTracking
 
         [SerializeField] private float delayBetweenQuestions = 2f;
 
-        // Question order: ask about each unique hotspot type once
         private static readonly HotspotType[] Questions =
         {
             HotspotType.EmergencyExit,

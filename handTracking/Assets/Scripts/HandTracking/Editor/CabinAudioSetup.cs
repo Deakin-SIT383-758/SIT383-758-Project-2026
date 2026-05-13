@@ -200,8 +200,6 @@ namespace OAS.HandTracking.Editor
             return tmp;
         }
 
-        // ── Audio source factory ─────────────────────────────────────────────────
-
         private static AudioSource MakeSource(Transform parent, string goName,
                                                bool loop, float spatialBlend,
                                                float minDist, float maxDist, float volume)

@@ -15,17 +15,16 @@ namespace OAS.HandTracking
         [SerializeField] private GameObject           overlayMenu;
         [SerializeField] private TabletopHandPointer  handPointer;
         [SerializeField] private GameObject           teleportInteractor;
+        [SerializeField] private MRPassthroughToggle  passthroughToggle;
 
         [SerializeField] private Vector3 palmNormalAxis  = Vector3.down;
         [SerializeField] private bool    invertPalmNormal = false;
         [SerializeField, Range(0f, 1f)] private float palmThreshold = 0.55f;
 
-        [SerializeField] private float        touchRadius     = 0.025f;
-        [SerializeField] private float        dwellSeconds    = 0.4f;
-        [SerializeField] private float        menuRayDistance = 0.8f;
+        [SerializeField] private float touchRadius     = 0.025f;
+        [SerializeField] private float dwellSeconds    = 0.4f;
+        [SerializeField] private float menuRayDistance = 0.8f;
         [SerializeField] private LineRenderer menuRayLine;
-
-        // ── Internal state ───────────────────────────────────────────────────────
 
         private Camera _cam;
 
@@ -100,7 +99,7 @@ namespace OAS.HandTracking
             }
         }
 
-        // ── Hand follow ──────────────────────────────────────────────────────────
+        // Hand follow
 
         private void FollowHand()
         {
@@ -125,7 +124,7 @@ namespace OAS.HandTracking
             }
         }
 
-        // ── Gesture ──────────────────────────────────────────────────────────────
+        // Gesture
 
         private void GestureUpdate()
         {
@@ -147,7 +146,7 @@ namespace OAS.HandTracking
             return _lWrist.TransformDirection(axis).normalized;
         }
 
-        // ── Trigger button ───────────────────────────────────────────────────────
+        // Trigger button
 
         private void TriggerTouchCheck()
         {
@@ -166,7 +165,7 @@ namespace OAS.HandTracking
             return false;
         }
 
-        // ── Ray interaction (right hand, menu open) ──────────────────────────────
+        // Ray interaction (right hand, menu open)
 
         private void RayUpdate()
         {
@@ -218,7 +217,7 @@ namespace OAS.HandTracking
             _rayHovered = null;
         }
 
-        // ── Touch interaction (both hands, menu open) ────────────────────────────
+        // Touch interaction (both hands, menu open)
 
         private void TouchUpdate()
         {
@@ -258,8 +257,6 @@ namespace OAS.HandTracking
             }
         }
 
-        // ── Public API ───────────────────────────────────────────────────────────
-
         public void OpenMenu()
         {
             if (_menuOpen) return;
@@ -287,6 +284,12 @@ namespace OAS.HandTracking
         {
             if (teleportInteractor != null)
                 teleportInteractor.SetActive(!teleportInteractor.activeSelf);
+            CloseMenu();
+        }
+
+        public void OnOption4Pressed()
+        {
+            passthroughToggle?.Toggle();
             CloseMenu();
         }
 

@@ -51,7 +51,7 @@ namespace OAS.HandTracking.Editor
             EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
         }
 
-        // ── Construction ─────────────────────────────────────────────────────────
+        // Construction
 
         private static void Build(
             OVRHand leftHand, OVRSkeleton leftSkeleton,
@@ -62,7 +62,7 @@ namespace OAS.HandTracking.Editor
 
             var rayLine = MakeRayLine(root.transform);
             var trigger = MakeTriggerButton(root.transform);
-            var (overlay, closeBtn, opt1, opt3) =
+            var (overlay, closeBtn, opt1, opt3, opt4) =
                 MakeOverlay(root.transform, leftSkeleton, rightSkeleton);
 
             var cso = new SerializedObject(controller);
@@ -78,14 +78,17 @@ namespace OAS.HandTracking.Editor
             cso.FindProperty("handPointer").objectReferenceValue   = Object.FindFirstObjectByType<TabletopHandPointer>();
             cso.FindProperty("teleportInteractor").objectReferenceValue =
                 GameObject.Find("TeleportHandInteractor");
+            cso.FindProperty("passthroughToggle").objectReferenceValue =
+                Object.FindFirstObjectByType<MRPassthroughToggle>();
             cso.ApplyModifiedPropertiesWithoutUndo();
 
             UnityEventTools.AddPersistentListener(closeBtn.onClick, controller.CloseMenu);
             UnityEventTools.AddPersistentListener(opt1.onClick,     controller.OnOption1Pressed);
             UnityEventTools.AddPersistentListener(opt3.onClick,     controller.OnOption3Pressed);
+            UnityEventTools.AddPersistentListener(opt4.onClick,     controller.OnOption4Pressed);
         }
 
-        // ── Ray line ─────────────────────────────────────────────────────────────
+        // Ray line 
 
         private static LineRenderer MakeRayLine(Transform parent)
         {
@@ -101,7 +104,7 @@ namespace OAS.HandTracking.Editor
             return lr;
         }
 
-        // ── Trigger button ────────────────────────────────────────────────────────
+        // Trigger button
 
         private static GameObject MakeTriggerButton(Transform parent)
         {
@@ -116,23 +119,24 @@ namespace OAS.HandTracking.Editor
             return go;
         }
 
-        // ── Overlay panel ─────────────────────────────────────────────────────────
+        // Overlay panel
 
         private static (GameObject overlay,
                          HandMenuButton close,
                          HandMenuButton opt1,
-                         HandMenuButton opt3)
+                         HandMenuButton opt3,
+                         HandMenuButton opt4)
             MakeOverlay(Transform parent, OVRSkeleton leftSk, OVRSkeleton rightSk)
         {
             var overlay = new GameObject("OverlayMenu");
             overlay.transform.SetParent(parent, false);
 
-            // Dark background slab
+            // Dark background slab — tall enough for 5 items
             var bg = GameObject.CreatePrimitive(PrimitiveType.Cube);
             bg.name = "Background";
             bg.transform.SetParent(overlay.transform, false);
             bg.transform.localPosition = Vector3.zero;
-            bg.transform.localScale    = new Vector3(0.16f, 0.225f, 0.002f);
+            bg.transform.localScale    = new Vector3(0.16f, 0.27f, 0.002f);
             Object.DestroyImmediate(bg.GetComponent<Collider>());
             bg.GetComponent<Renderer>().sharedMaterial =
                 new Material(Shader.Find("Universal Render Pipeline/Unlit"))
@@ -140,13 +144,13 @@ namespace OAS.HandTracking.Editor
 
             // Title
             MakeLabel(overlay.transform, "Title", "MENU",
-                      localY: 0.092f, canvasW: 160f, canvasH: 22f, fontSize: 18);
+                      localY: 0.112f, canvasW: 160f, canvasH: 22f, fontSize: 18);
 
             // Buttons — stacked downward from startY
-            const float startY = 0.045f;
-            var close = MakeButton(overlay.transform, "CloseBtn",  "Close",
+            const float startY = 0.068f;
+            var close = MakeButton(overlay.transform, "CloseBtn",   "Close",
                                    new Color(0.75f, 0.18f, 0.18f), startY);
-            var opt1  = MakeButton(overlay.transform, "Option1Btn","Toggle Ray",
+            var opt1  = MakeButton(overlay.transform, "Option1Btn", "Toggle Ray",
                                    new Color(0.18f, 0.38f, 0.75f), startY - (BtnH + BtnGap));
 
             // Option 2 slot → sound range slider
@@ -154,14 +158,17 @@ namespace OAS.HandTracking.Editor
                                  centerY: startY - (BtnH + BtnGap) * 2,
                                  leftSk, rightSk);
 
-            var opt3  = MakeButton(overlay.transform, "Option3Btn","Toggle Teleport",
+            var opt3  = MakeButton(overlay.transform, "Option3Btn", "Toggle Teleport",
                                    new Color(0.18f, 0.38f, 0.75f), startY - (BtnH + BtnGap) * 3);
 
+            var opt4  = MakeButton(overlay.transform, "Option4Btn", "Toggle MR",
+                                   new Color(0.18f, 0.55f, 0.38f), startY - (BtnH + BtnGap) * 4);
+
             overlay.SetActive(false);
-            return (overlay, close, opt1, opt3);
+            return (overlay, close, opt1, opt3, opt4);
         }
 
-        // ── Sound range slider (replaces Option 2 button slot) ───────────────────
+        // Sound range slider
 
         private static void MakeSoundRangeSlider(Transform overlayParent, float centerY,
                                                   OVRSkeleton leftSk, OVRSkeleton rightSk)
@@ -205,7 +212,7 @@ namespace OAS.HandTracking.Editor
                     { color = Color.white };
 
             // Value label below track
-            var valueTmp = MakeLabel(overlayParent, "SoundRange_Value", "Range: 0.30 m",
+            var valueTmp = MakeLabel(overlayParent, "SoundRange_Value", "Range: 5.00 m",
                                      localY: centerY - 0.018f, canvasW: 130f, canvasH: 20f, fontSize: 10);
 
             // AudioRangeSlider on the overlay — disabled when menu closed (overlay inactive)
@@ -231,7 +238,7 @@ namespace OAS.HandTracking.Editor
             sso.ApplyModifiedPropertiesWithoutUndo();
         }
 
-        // ── Button factory ────────────────────────────────────────────────────────
+        // Button factory
 
         private static HandMenuButton MakeButton(
             Transform parent, string goName, string label, Color color, float localY)
@@ -250,7 +257,7 @@ namespace OAS.HandTracking.Editor
             return go.AddComponent<HandMenuButton>();
         }
 
-        // ── TMP label helper ──────────────────────────────────────────────────────
+        // TMP label helper 
 
         private static TMP_Text MakeLabel(Transform parent, string goName, string text,
                                            float localY, float canvasW, float canvasH, int fontSize)
