@@ -78,7 +78,7 @@ public class ChecklistManager : MonoBehaviour
         textBox.text = "";
         foreach (ChecklistItem i in checklistItems)
         {
-            string itemString = (i.completed ? "Y" : "N") + ": " + i.instruction + "\n";
+            string itemString = (i.completed ? "☑" : "☐") + ": " + i.instruction + "\n";
             textBox.text += itemString;
         }
     }
