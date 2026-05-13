@@ -10,11 +10,11 @@ public class RealtimeDayNightLighting : MonoBehaviour
 
     [Header("UI")]
     public Slider timeSlider;
-    public Toggle automaticTimeToggle;
+    public Toggle manualTimeToggle;
     public TMP_Text timeLabel;
 
     [Header("Mode")]
-    public bool useSlider = true;
+    public bool useManualTime = false;
 
     [Header("Light Intensity")]
     public float dayIntensity = 1.2f;
@@ -33,24 +33,23 @@ public class RealtimeDayNightLighting : MonoBehaviour
     {
         if (timeSlider != null)
         {
-            timeSlider.minValue = 0;
-            timeSlider.maxValue = 24;
+            timeSlider.minValue = 0f;
+            timeSlider.maxValue = 24f;
             timeSlider.onValueChanged.AddListener(OnTimeSliderChanged);
         }
 
-        if (automaticTimeToggle != null)
+        if (manualTimeToggle != null)
         {
-            automaticTimeToggle.isOn = !useSlider;
-            automaticTimeToggle.onValueChanged.AddListener(SetAutomaticTime);
+            manualTimeToggle.isOn = useManualTime;
+            manualTimeToggle.onValueChanged.AddListener(SetManualTime);
         }
 
-        SetAutomaticTime(!useSlider);
-        UpdateLighting();
+        SetManualTime(useManualTime);
     }
 
     void Update()
     {
-        if (!useSlider)
+        if (!useManualTime)
         {
             UpdateLighting();
         }
@@ -58,24 +57,24 @@ public class RealtimeDayNightLighting : MonoBehaviour
 
     public void OnTimeSliderChanged(float value)
     {
-        if (useSlider)
+        if (useManualTime)
         {
             UpdateLighting();
         }
     }
 
-    public void SetAutomaticTime(bool isAutomatic)
+    public void SetManualTime(bool isManual)
     {
-        useSlider = !isAutomatic;
+        useManualTime = isManual;
 
         if (timeSlider != null)
         {
-            timeSlider.gameObject.SetActive(!isAutomatic);
+            timeSlider.gameObject.SetActive(isManual);
         }
 
         if (timeLabel != null)
         {
-            timeLabel.gameObject.SetActive(!isAutomatic);
+            timeLabel.gameObject.SetActive(isManual);
         }
 
         UpdateLighting();
@@ -88,17 +87,7 @@ public class RealtimeDayNightLighting : MonoBehaviour
             return;
         }
 
-        float hour;
-
-        if (useSlider && timeSlider != null)
-        {
-            hour = timeSlider.value;
-        }
-        else
-        {
-            DateTime now = DateTime.Now;
-            hour = now.Hour + now.Minute / 60f;
-        }
+        float hour = GetCurrentHour();
 
         int h = Mathf.FloorToInt(hour);
         int m = Mathf.FloorToInt((hour - h) * 60f);
@@ -109,14 +98,18 @@ public class RealtimeDayNightLighting : MonoBehaviour
         }
 
         float dayProgress = hour / 24f;
+
         float daylightAmount = Mathf.SmoothStep(
-            0,
-            1,
+            0f,
+            1f,
             Mathf.Clamp01(Mathf.Sin(dayProgress * Mathf.PI))
         );
 
-        sunMoonLight.intensity = Mathf.Lerp(nightIntensity, dayIntensity, daylightAmount);
-        sunMoonLight.color = Color.Lerp(nightColour, dayColour, daylightAmount);
+        sunMoonLight.intensity =
+            Mathf.Lerp(nightIntensity, dayIntensity, daylightAmount);
+
+        sunMoonLight.color =
+            Color.Lerp(nightColour, dayColour, daylightAmount);
 
         RenderSettings.ambientLight = Color.Lerp(
             nightColour * 0.2f,
@@ -125,12 +118,26 @@ public class RealtimeDayNightLighting : MonoBehaviour
         );
 
         float sunAngle = dayProgress * 360f - 90f;
-        sunMoonLight.transform.rotation = Quaternion.Euler(sunAngle, 170f, 0f);
+        sunMoonLight.transform.rotation =
+            Quaternion.Euler(sunAngle, 170f, 0f);
 
         if (mapRenderer != null)
         {
-            Color mapTint = Color.Lerp(nightMapTint, dayMapTint, daylightAmount);
+            Color mapTint =
+                Color.Lerp(nightMapTint, dayMapTint, daylightAmount);
+
             mapRenderer.material.color = mapTint;
         }
+    }
+
+    private float GetCurrentHour()
+    {
+        if (useManualTime && timeSlider != null)
+        {
+            return timeSlider.value;
+        }
+
+        DateTime now = DateTime.Now;
+        return now.Hour + now.Minute / 60f;
     }
 }
