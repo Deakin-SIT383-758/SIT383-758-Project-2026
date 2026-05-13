@@ -1172,9 +1172,9 @@ MonoBehaviour:
   hazardInfo: {fileID: 242841092}
   metaManager: {fileID: 646123141}
   cityTimeline:
-  - {fileID: 391235073621973662, guid: 0517f6e32b54cfd448ac09ec817726bf, type: 3}
   - {fileID: 1830425812766502979, guid: 1d8ebda2fc8cadf4394cdfe1542095f4, type: 3}
   - {fileID: 3403949094466598108, guid: fafba5e83e3b84c4db9e477878e4de06, type: 3}
+  - {fileID: 391235073621973662, guid: 0517f6e32b54cfd448ac09ec817726bf, type: 3}
   dryLandTimeline:
   - {fileID: 3978737740130356465, guid: f12d7e2b2be5b2e43a9b263030364a29, type: 3}
   grassTimeline:
@@ -3318,12 +3318,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a43b773f659e3c4a8737591b0432687, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RunwaySpawner
-  runwayPrefabs:
-  - {fileID: 391235073621973662, guid: 0517f6e32b54cfd448ac09ec817726bf, type: 3}
-  - {fileID: 3978737740130356465, guid: f12d7e2b2be5b2e43a9b263030364a29, type: 3}
-  - {fileID: 4470448385695270117, guid: daed4840e6bdf024b94b764dc12a2ea8, type: 3}
-  - {fileID: 5318799346670031499, guid: 3f7ab08b8d62f074597e96ab17eaf164, type: 3}
-  - {fileID: 8265031716071520879, guid: d42b808ab3183334f81a2102eca5063b, type: 3}
   defaultPrefabIndex: 0
   spawnReference: {fileID: 0}
   spawnDistance: 5
@@ -4555,7 +4549,7 @@ MonoBehaviour:
     latitude: -37.8136
     longitude: 133.2531
     timestamp: 10:30 AM
-    RunwayInstance: 0
+    RunwayInstance: 2
   - runwayID: DryLand_Runway
     runwayName: DryLand_Runway
     latitude: -33.8536
@@ -4580,6 +4574,18 @@ MonoBehaviour:
     longitude: 150.2239
     timestamp: 10:35 AM
     RunwayInstance: 0
+  - runwayID: City_Runway
+    runwayName: City_Runway
+    latitude: -37.8136
+    longitude: 133.2531
+    timestamp: 5:27 AM
+    RunwayInstance: 0
+  - runwayID: City_Runway
+    runwayName: City_Runway
+    latitude: -37.8136
+    longitude: 133.2531
+    timestamp: 10:35 PM
+    RunwayInstance: 1
 --- !u!4 &646123142
 Transform:
   m_ObjectHideFlags: 0

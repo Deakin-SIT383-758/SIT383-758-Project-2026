@@ -2,9 +2,6 @@ using UnityEngine;
 
 public class RunwaySpawner : MonoBehaviour
 {
-    [Header("Runway Prefabs")]
-    public GameObject[] runwayPrefabs;
-
     [Header("Spawn Settings")]
     public int defaultPrefabIndex = 0;
     public Transform spawnReference;
@@ -13,61 +10,12 @@ public class RunwaySpawner : MonoBehaviour
 
     private GameObject currentRunway;
 
-    void Start()
-    {
-        
-    }
-
     public GameObject GetCurrentRunway()
     {
         return currentRunway;
     }
 
-    public void SpawnRunway(int prefabIndex)
-    {
-        if (runwayPrefabs == null || runwayPrefabs.Length == 0)
-        {
-            Debug.LogWarning("No runway prefabs assigned.");
-            return;
-        }
-
-        if (prefabIndex < 0 || prefabIndex >= runwayPrefabs.Length)
-        {
-            Debug.LogWarning("Invalid runway prefab index: " + prefabIndex);
-            return;
-        }
-
-        if (currentRunway != null)
-        {
-            Destroy(currentRunway);
-        }
-
-        Transform reference = spawnReference;
-
-        if (reference == null && Camera.main != null)
-        {
-            reference = Camera.main.transform;
-        }
-
-        if (reference == null)
-        {
-            Debug.LogWarning("No spawn reference or main camera found.");
-            return;
-        }
-
-        Vector3 forward = reference.forward;
-        forward.y = 0f;
-        forward.Normalize();
-
-        Vector3 spawnPos = reference.position + forward * spawnDistance;
-        spawnPos.y += spawnHeightOffset;
-
-        currentRunway = Instantiate(runwayPrefabs[prefabIndex], spawnPos, runwayPrefabs[prefabIndex].transform.rotation);
-
-        Debug.Log("Spawned runway prefab index: " + prefabIndex);
-    }
-
-    public void LoadRetroRunway(GameObject runway)
+    public void LoadRunway(GameObject runway)
     {
         if (currentRunway != null)
         {

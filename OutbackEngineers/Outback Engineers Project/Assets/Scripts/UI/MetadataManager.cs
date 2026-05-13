@@ -24,11 +24,11 @@ public class MetadataManager : MonoBehaviour
 
     public List<RunwayData> runwayDatabase;
 
-    public void DisplayMetadata(string runwayID)
+    public void DisplayMetadata(string runwayID, int instance)
     {
         foreach (RunwayData data in runwayDatabase)
         {
-            if (data.runwayID == runwayID)
+            if (data.runwayID == runwayID && data.RunwayInstance == instance)
             {
                 runwayText.text = "Runway: " + data.runwayID;
                 locationText.text = "Lat/Lon: " + data.latitude + ", " + data.longitude;

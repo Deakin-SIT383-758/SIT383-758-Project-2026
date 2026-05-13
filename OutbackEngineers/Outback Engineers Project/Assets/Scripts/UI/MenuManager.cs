@@ -71,11 +71,6 @@ public class MenuManager : MonoBehaviour
 
             Debug.Log("Menu position: " + menu.transform.position);
         }
-        //if(scene.name == "MainScene" && MenuActive == false && OVRInput.GetDown(OVRInput.RawButton.A))  TEMP BLOCK OUT FOR TESTING PURPOSES WITHOUT HEADSETS
-        //{
-        //    menu.SetActive(true);
-        //    MenuActive = true;
-        //}
     }
 
     void Start()
@@ -99,13 +94,6 @@ public class MenuManager : MonoBehaviour
 
         SceneManager.LoadScene("MainScene");
 
-        SceneChanged = true;
-    }
-
-    //Called when the Menu Button is pressed
-    public void GoToMenu()
-    {
-        SceneManager.LoadScene(0);
         SceneChanged = true;
     }
 

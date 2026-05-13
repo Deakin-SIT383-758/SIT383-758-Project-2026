@@ -54,20 +54,23 @@ public class RunwayManager : MonoBehaviour
             return;
 
         // Update metadata continuously
-        metadataManager.DisplayMetadata(currentRunwayID);
+        metadataManager.DisplayMetadata(currentRunwayID, activeInstance);
 
         // Update HUD continuously
         hazardCount = hazardManager.GetHazardCount();
-        hudManager.UpdateHUD(currentRunwayID, hazardCount);
+        hudManager.UpdateHUD(currentRunwayID, hazardCount, activeInstance);
     }
 
+    //Loads all the Runway Systems
     void LoadRunwaySystems()
     {
         DetectRunway();
 
-        int runwayIndex = GetRunwayIndex(currentRunwayID);
+        currentTimeline = hudManager.SetRunwayTimeline(currentRunwayID);
 
-        runwaySpawner.SpawnRunway(runwayIndex);
+        activeInstance = currentTimeline.Length-1;
+
+        runwaySpawner.LoadRunway(currentTimeline[activeInstance]);
 
         GameObject runwayObj = runwaySpawner.GetCurrentRunway();
 
@@ -76,63 +79,38 @@ public class RunwayManager : MonoBehaviour
             hazardManager.LoadHazards(currentRunwayID, runwayObj.transform);
         }
 
-        metadataManager.DisplayMetadata(currentRunwayID);
+        metadataManager.DisplayMetadata(currentRunwayID, activeInstance);
 
         hazardCount = hazardManager.GetHazardCount();
 
-        hudManager.UpdateHUD(currentRunwayID, hazardCount);
-
-        currentTimeline = hudManager.SetRunwayTimeline(currentRunwayID);
+        hudManager.UpdateHUD(currentRunwayID, hazardCount, activeInstance);
+        
+        hudManager.timeline.value = activeInstance;
     }
 
-    int GetRunwayIndex(string runwayID)
-    {
-        switch (runwayID)
-        {
-            case "City_Runway":
-                return 0;
-
-            case "DryLand_Runway":
-                return 1;
-
-            case "Grass_Runway":
-                return 2;
-
-            case "Marsh_Runway":
-                return 3;
-
-            case "RedSand_Runway":
-                return 4;
-
-            default:
-                Debug.LogWarning("Unknown runway ID: " + runwayID);
-                return 0;
-        }
-    }
-
-    //Handles when the value of the slider is changed
+    //Handles when the value of the timeline slider is changed
     public void HandleSliderValueChanged(float value)
     {
-        // Get active runway timeline instance
-        foreach (RunwayData data in metadataManager.runwayDatabase)
+        // Future retro runway loading support
+        Debug.Log("RetroRunway Loaded");
+
+        activeInstance = (int)value;
+
+        runwaySpawner.LoadRunway(currentTimeline[activeInstance]);
+
+        GameObject runwayObj = runwaySpawner.GetCurrentRunway();
+
+        if (runwayObj != null)
         {
-            if (data.runwayID == currentRunwayID)
-            {
-                activeInstance = data.RunwayInstance;
-            }
+            hazardManager.LoadHazards(currentRunwayID, runwayObj.transform);
         }
 
-        // Timeline interaction
-        if (value != activeInstance)
-        {
-            // Future retro runway loading support
-            Debug.Log("RetroRunway Loaded");
-            runwaySpawner.LoadRetroRunway(currentTimeline[(int)value]);
-        }
-    }
+        metadataManager.DisplayMetadata(currentRunwayID, activeInstance);
 
-    public string GetRunwayID()
-    {
-        return currentRunwayID;
+        hazardCount = hazardManager.GetHazardCount();
+
+        hudManager.UpdateHUD(currentRunwayID, hazardCount, activeInstance);
+        
+        hudManager.timeline.value = activeInstance;
     }
 }

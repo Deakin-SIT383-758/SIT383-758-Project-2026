@@ -38,11 +38,11 @@ public class HUDManager : MonoBehaviour
     }
 
     //Updates the HUD with the current RunwayID and the number of Hazards on that runway.
-    public void UpdateHUD(string runwayID, int hazardCount)
+    public void UpdateHUD(string runwayID, int hazardCount, int instance)
     {
         foreach (RunwayData data in metaManager.runwayDatabase)
         {
-            if (data.runwayID == runwayID)
+            if (data.runwayID == runwayID && data.RunwayInstance == instance)
             {
                 runwayName.text = data.runwayName;
                 hazardDisplay.text = "Hazards: " + hazardCount;
@@ -57,7 +57,7 @@ public class HUDManager : MonoBehaviour
     {
         Debug.Log(timeline.maxValue + " instances in previous timeline");
         GameObject[] currentTimeline = Timelines[runwayID];
-        timeline.maxValue = currentTimeline.Length;
+        timeline.maxValue = currentTimeline.Length-1;
         Debug.Log(timeline.maxValue + " instances in current timeline");
         return currentTimeline;
     }
