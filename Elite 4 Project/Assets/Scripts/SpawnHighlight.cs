@@ -7,13 +7,16 @@ using System;
 public class SpawnHighlight : MonoBehaviour
 {
     [SerializeField] private DetectGesture gestureDetector;
-    [SerializeField] private Handedness handedness = Handedness.Right;
     [SerializeField] private float maxRayDistance = 10.0f;
     [SerializeField] private string mapTag = "Map";
 
-    public event Action<Vector3, Vector3> OnLaserUpdated;
-    public event Action OnLaserStopped;
+    // These events are picked up by NetworkedGesture to sync things over the network
+    public event Action<Vector3, Vector3, Handedness> OnLaserUpdated;
+    public event Action<Handedness> OnLaserStopped;
     public event Action<Vector3> OnHighlightRequested;
+
+    // Determines which hand this script reads from
+    public Handedness handedness = Handedness.Right;
 
     private XRHandSubsystem handSubsystem;
     private LineRenderer lineRenderer;
@@ -24,19 +27,21 @@ public class SpawnHighlight : MonoBehaviour
     private void OnEnable()
     {
         lineRenderer = GetComponent<LineRenderer>();
-        Debug.Log($"SpawnHighlight: LineRenderer found: {lineRenderer != null}");
 
+        // Subscribe to gesture events from DetectGesture
         if (gestureDetector != null)
         {
             gestureDetector.OnPointingStarted += HandlePointingStarted;
             gestureDetector.OnPointingStopped += HandlePointingStopped;
         }
 
+        // Hand subsystem isn't immediately available so wait for it in a coroutine
         StartCoroutine(WaitForHandSubsystem());
     }
 
     private void OnDisable()
     {
+        // Unsubscribe when disabled to avoid errors
         if (gestureDetector != null)
         {
             gestureDetector.OnPointingStarted -= HandlePointingStarted;
@@ -45,12 +50,16 @@ public class SpawnHighlight : MonoBehaviour
     }
 
     private void HandlePointingStarted() => isPointing = true;
+
     private void HandlePointingStopped()
     {
         isPointing = false;
         if (lineRenderer != null) lineRenderer.enabled = false;
-        OnLaserStopped?.Invoke();
 
+        // Tell NetworkedGesture the laser stopped
+        OnLaserStopped?.Invoke(handedness);
+
+        // If pointing at the map when the gesture ended, request a highlight spawn
         if (hasValidHit)
         {
             OnHighlightRequested?.Invoke(lastHitPoint);
@@ -58,6 +67,7 @@ public class SpawnHighlight : MonoBehaviour
         }
     }
 
+    // Waits until the XR hand subsystem is running before trying to read hand data
     IEnumerator WaitForHandSubsystem()
     {
         List<XRHandSubsystem> subsystems = new();
@@ -77,8 +87,6 @@ public class SpawnHighlight : MonoBehaviour
 
             yield return null;
         }
-
-        Debug.Log("SpawnHighlight: Hand subsystem found and running");
     }
 
     void Update()
@@ -99,9 +107,10 @@ public class SpawnHighlight : MonoBehaviour
         if (!indexIntermediate.TryGetPose(out Pose intermediatePose)) return;
         if (lineRenderer == null) return;
 
+        // XR hand joint positions are in local tracking space so we need to convert
+        // them to world space using the XR Origin's transform
         Transform xrOrigin = Camera.main.transform.root;
 
-        // Transform tip position from local tracking space to world space
         Vector3 rayOrigin = xrOrigin != null
             ? xrOrigin.TransformPoint(tipPose.position)
             : tipPose.position;
@@ -110,10 +119,8 @@ public class SpawnHighlight : MonoBehaviour
             ? xrOrigin.TransformPoint(intermediatePose.position)
             : intermediatePose.position;
 
+        // Ray shoots from the tip away from the intermediate joint, along the finger
         Vector3 rayDirection = (rayOrigin - intermediateWorld).normalized;
-
-        Debug.Log($"RayOrigin: {rayOrigin}, Direction: {rayDirection}");
-        Debug.Log($"SpawnHighlight: Setting lineRenderer enabled, lineRenderer null: {lineRenderer == null}");
 
         RaycastHit hit;
         if (Physics.Raycast(rayOrigin, rayDirection, out hit, maxRayDistance))
@@ -121,27 +128,28 @@ public class SpawnHighlight : MonoBehaviour
             lineRenderer.SetPosition(0, rayOrigin);
             lineRenderer.SetPosition(1, hit.point);
             lineRenderer.enabled = true;
-            Debug.Log($"pos0: {lineRenderer.GetPosition(0)}, pos1: {lineRenderer.GetPosition(1)}");
 
             if (hit.collider.CompareTag(mapTag))
             {
+                // Pointing at the map, store the hit point for when the gesture ends
                 lastHitPoint = hit.point;
                 hasValidHit = true;
-                OnLaserUpdated?.Invoke(rayOrigin, hit.point);
+                OnLaserUpdated?.Invoke(rayOrigin, hit.point, handedness);
             }
             else
             {
                 hasValidHit = false;
-                OnLaserUpdated?.Invoke(rayOrigin, rayOrigin + rayDirection * maxRayDistance);
+                OnLaserUpdated?.Invoke(rayOrigin, rayOrigin + rayDirection * maxRayDistance, handedness);
             }
         }
         else
         {
+            // Nothing hit, draw the laser to max distance
             lineRenderer.SetPosition(0, rayOrigin);
             lineRenderer.SetPosition(1, rayOrigin + rayDirection * maxRayDistance);
             lineRenderer.enabled = true;
             hasValidHit = false;
-            OnLaserUpdated?.Invoke(rayOrigin, rayOrigin + rayDirection * maxRayDistance);
+            OnLaserUpdated?.Invoke(rayOrigin, rayOrigin + rayDirection * maxRayDistance, handedness);
         }
     }
 }
