@@ -825,7 +825,7 @@ GameObject:
   - component: {fileID: 108347221}
   - component: {fileID: 108347223}
   - component: {fileID: 108347222}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1072,7 +1072,7 @@ GameObject:
   - component: {fileID: 120484355}
   - component: {fileID: 120484357}
   - component: {fileID: 120484356}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MenuFooterText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3022,7 +3022,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 362828885}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Handle Slide Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4023,7 +4023,7 @@ GameObject:
   - component: {fileID: 494667226}
   - component: {fileID: 494667228}
   - component: {fileID: 494667227}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Checkmark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4638,7 +4638,7 @@ GameObject:
   - component: {fileID: 574780713}
   - component: {fileID: 574780712}
   - component: {fileID: 574780711}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ISDK_RayCanvasInteraction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5490,7 +5490,7 @@ GameObject:
   m_Component:
   - component: {fileID: 634149678}
   - component: {fileID: 634149679}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ManualTimeToggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5699,7 +5699,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 646003918}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5800,7 +5800,7 @@ GameObject:
   - component: {fileID: 674267899}
   - component: {fileID: 674267901}
   - component: {fileID: 674267900}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5937,7 +5937,7 @@ GameObject:
   - component: {fileID: 714380643}
   - component: {fileID: 714380645}
   - component: {fileID: 714380644}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6873,7 +6873,7 @@ GameObject:
   - component: {fileID: 829907935}
   - component: {fileID: 829907937}
   - component: {fileID: 829907936}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6980,7 +6980,7 @@ GameObject:
   - component: {fileID: 842276871}
   - component: {fileID: 842276873}
   - component: {fileID: 842276872}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7218,7 +7218,7 @@ GameObject:
   - component: {fileID: 845730364}
   - component: {fileID: 845730363}
   - component: {fileID: 845730362}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Surface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7829,7 +7829,7 @@ GameObject:
   - component: {fileID: 921398147}
   - component: {fileID: 921398149}
   - component: {fileID: 921398148}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8557,7 +8557,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1067802973}
   - component: {fileID: 1067802974}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ManualTimeSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8827,7 +8827,7 @@ GameObject:
   - component: {fileID: 1101463935}
   - component: {fileID: 1101463937}
   - component: {fileID: 1101463936}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MenuHeadingText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8964,7 +8964,7 @@ GameObject:
   - component: {fileID: 1105991937}
   - component: {fileID: 1105991936}
   - component: {fileID: 1105991935}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ManualTimeLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10287,7 +10287,7 @@ GameObject:
   - component: {fileID: 1271194191}
   - component: {fileID: 1271194190}
   - component: {fileID: 1271194189}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10838,9 +10838,9 @@ GameObject:
   - component: {fileID: 1365299355}
   - component: {fileID: 1365299359}
   - component: {fileID: 1365299358}
-  - component: {fileID: 1365299357}
-  - component: {fileID: 1365299356}
-  m_Layer: 0
+  - component: {fileID: 1365299361}
+  - component: {fileID: 1365299360}
+  m_Layer: 6
   m_Name: Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10891,42 +10891,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &1365299356
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1365299353}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5773d1bae79973e468de0885d98a33ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MenuSpawner
-  head: {fileID: 346371648}
-  distance: 1
-  verticalOffset: -0.1
-  positionSmoothTime: 0.4
-  rotationSmoothSpeed: 6
---- !u!114 &1365299357
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1365299353}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
-  m_IgnoreReversedGraphics: 0
-  m_CheckFor2DOcclusion: 0
-  m_CheckFor3DOcclusion: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RaycastTriggerInteraction: 1
 --- !u!114 &1365299358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10967,6 +10931,42 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 1
+--- !u!114 &1365299360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365299353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5773d1bae79973e468de0885d98a33ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuSpawner
+  head: {fileID: 346371648}
+  distance: 1
+  verticalOffset: -0.1
+  positionSmoothTime: 0.4
+  rotationSmoothSpeed: 6
+--- !u!114 &1365299361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365299353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1389099764
 GameObject:
   m_ObjectHideFlags: 0
@@ -10978,7 +10978,7 @@ GameObject:
   - component: {fileID: 1389099765}
   - component: {fileID: 1389099767}
   - component: {fileID: 1389099766}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
