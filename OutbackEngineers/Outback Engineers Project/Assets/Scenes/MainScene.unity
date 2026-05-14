@@ -1176,6 +1176,8 @@ MonoBehaviour:
   - {fileID: 391235073621973662, guid: abb2530970ad8204ba6d3285045ed6a9, type: 3}
   - {fileID: 391235073621973662, guid: 0517f6e32b54cfd448ac09ec817726bf, type: 3}
   dryLandTimeline:
+  - {fileID: 3978737740130356465, guid: e59c8057a1d832442911bcb56102922c, type: 3}
+  - {fileID: 3978737740130356465, guid: c2e23ca8d01614546a2816851be19c11, type: 3}
   - {fileID: 3978737740130356465, guid: f12d7e2b2be5b2e43a9b263030364a29, type: 3}
   grassTimeline:
   - {fileID: 4470448385695270117, guid: daed4840e6bdf024b94b764dc12a2ea8, type: 3}
@@ -1449,7 +1451,7 @@ GameObject:
   - component: {fileID: 219980889}
   - component: {fileID: 219980888}
   m_Layer: 5
-  m_Name: HazardText
+  m_Name: TotalHazardText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1494,7 +1496,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Hazards: -'
+  m_text: 'Total Hazards: -'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1560,7 +1562,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 8.5235815}
+  m_margin: {x: 0, y: 0, z: 0.017356873, w: 8.5235815}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1639,7 +1641,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3.51, y: -7.18}
+  m_AnchoredPosition: {x: 3.54, y: -7.18}
   m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &242841092
@@ -1671,8 +1673,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4278218495
+  m_fontColor: {r: 1, g: 0.42948884, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1689,14 +1691,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.25
-  m_fontSizeBase: 0.25
+  m_fontSize: 0.33
+  m_fontSizeBase: 0.33
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -1728,7 +1730,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -3.555335, y: 0, z: 3.5518484, w: 9.278501}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -4543,7 +4545,6 @@ MonoBehaviour:
   runwayText: {fileID: 1964509658}
   locationText: {fileID: 1468551871}
   timeText: {fileID: 2025916236}
-  dateStamp: {fileID: 2025916236}
   runwayDatabase:
   - runwayID: City_Runway
     runwayName: City_Runway
@@ -4572,7 +4573,21 @@ MonoBehaviour:
     longitude: 112.3214
     timestamp: 10:35 AM
     RunwayInstance: 0
-    datestamp: 
+    datestamp: 05/05/2026
+  - runwayID: DryLand_Runway
+    runwayName: DryLand_Runway
+    latitude: 2.9971
+    longitude: 150.2239
+    timestamp: 10:35 AM
+    RunwayInstance: 1
+    datestamp: 06/05/2026
+  - runwayID: DryLand_Runway
+    runwayName: DryLand_Runway
+    latitude: 2.9971
+    longitude: 150.2239
+    timestamp: 10:35 AM
+    RunwayInstance: 2
+    datestamp: 08/05/2026
   - runwayID: Grass_Runway
     runwayName: Grass_Runway
     latitude: -12.9732
@@ -10055,7 +10070,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 8.421366}
+  m_margin: {x: 0, y: 0, z: 0, w: 9.302755}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -13055,7 +13070,7 @@ GameObject:
   - component: {fileID: 2025916237}
   - component: {fileID: 2025916236}
   m_Layer: 5
-  m_Name: TimeText
+  m_Name: TimeDateText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
