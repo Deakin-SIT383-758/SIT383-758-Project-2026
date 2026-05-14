@@ -4,24 +4,27 @@ using UnityEngine.XR;
 [RequireComponent(typeof(CharacterController))]
 public class QuestJoystickMove : MonoBehaviour
 {
-    [Header("Horizontal Movement")]
-    public float moveSpeed = 2f;
+    public Transform head;
 
-    [Header("Vertical Movement")]
+    public float moveSpeed = 2f;
     public float verticalSpeed = 2f;
+
     public float minHeight = 0.5f;
     public float maxHeight = 5f;
 
-    private CharacterController characterController;
+    private CharacterController cc;
 
-    void Awake()
+    void Start()
     {
-        characterController = GetComponent<CharacterController>();
+        cc = GetComponent<CharacterController>();
     }
 
     void Update()
     {
-        Vector3 movement = Vector3.zero;
+        UpdateCharacterController();
+
+        Vector2 leftInput = Vector2.zero;
+        Vector2 rightInput = Vector2.zero;
 
         InputDevice leftController =
             InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
@@ -29,51 +32,50 @@ public class QuestJoystickMove : MonoBehaviour
         InputDevice rightController =
             InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
 
-        InputDevice headset =
-            InputDevices.GetDeviceAtXRNode(XRNode.Head);
+        leftController.TryGetFeatureValue(
+            CommonUsages.primary2DAxis,
+            out leftInput);
 
-        if (
-            leftController.TryGetFeatureValue(
-                CommonUsages.primary2DAxis,
-                out Vector2 leftJoystick)
-            &&
-            headset.TryGetFeatureValue(
-                CommonUsages.deviceRotation,
-                out Quaternion headRotation)
-        )
-        {
-            Vector3 forward = headRotation * Vector3.forward;
-            Vector3 right = headRotation * Vector3.right;
+        rightController.TryGetFeatureValue(
+            CommonUsages.primary2DAxis,
+            out rightInput);
 
-            forward.y = 0f;
-            right.y = 0f;
+        Vector3 forward = head.forward;
+        Vector3 right = head.right;
 
-            forward.Normalize();
-            right.Normalize();
+        forward.y = 0;
+        right.y = 0;
 
-            movement +=
-                (forward * leftJoystick.y + right * leftJoystick.x)
-                * moveSpeed;
-        }
+        forward.Normalize();
+        right.Normalize();
 
-        if (
-            rightController.TryGetFeatureValue(
-                CommonUsages.primary2DAxis,
-                out Vector2 rightJoystick)
-        )
-        {
-            movement.y = rightJoystick.y * verticalSpeed;
-        }
+        Vector3 move =
+            (forward * leftInput.y + right * leftInput.x)
+            * moveSpeed;
 
-        characterController.Move(movement * Time.deltaTime);
+        move.y = rightInput.y * verticalSpeed;
 
-        float currentY = transform.position.y;
-        float clampedY = Mathf.Clamp(currentY, minHeight, maxHeight);
-        float correctionY = clampedY - currentY;
+        cc.Move(move * Time.deltaTime);
 
-        if (Mathf.Abs(correctionY) > 0.001f)
-        {
-            characterController.Move(new Vector3(0f, correctionY, 0f));
-        }
+        ClampHeight();
+    }
+
+    void UpdateCharacterController()
+    {
+        cc.height = Mathf.Clamp(head.localPosition.y, 1f, 2f);
+
+        Vector3 center = head.localPosition;
+        center.y = cc.height / 2f;
+
+        cc.center = center;
+    }
+
+    void ClampHeight()
+    {
+        Vector3 pos = transform.position;
+
+        pos.y = Mathf.Clamp(pos.y, minHeight, maxHeight);
+
+        transform.position = pos;
     }
 }
