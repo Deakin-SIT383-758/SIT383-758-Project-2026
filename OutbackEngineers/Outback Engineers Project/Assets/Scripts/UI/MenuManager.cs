@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Collections;
 
 public class MenuManager : MonoBehaviour
 {
@@ -92,7 +93,16 @@ public class MenuManager : MonoBehaviour
 
         Debug.Log("Saved runway: " + PersistanceScript.Instance.selectedRunway);
 
-        SceneManager.LoadScene("MainScene");
+        IEnumerator LoadMainScene()
+        {
+            yield return new WaitForSeconds(0.15f);
+
+            SceneManager.LoadScene("MainScene");
+        }
+
+        StartCoroutine(LoadMainScene());
+
+        //SceneManager.LoadScene("MainScene");
 
         SceneChanged = true;
     }

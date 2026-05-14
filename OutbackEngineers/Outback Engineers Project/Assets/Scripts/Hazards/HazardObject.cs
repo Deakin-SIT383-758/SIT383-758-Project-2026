@@ -21,10 +21,25 @@ public class HazardObject : MonoBehaviour // Phase 3: Implementing Raycasting an
     public GameObject waterMesh;
     public GameObject debrisMesh;
 
+    public AudioClip hoverSound;
+
+    private AudioSource audioSource;
+    private bool hasPlayedHover;
+
     void Awake()
     {
         CreateOverlay();
-     
+
+        audioSource = GetComponent<AudioSource>();
+
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        audioSource.spatialBlend = 1f;
+        audioSource.playOnAwake = false;
+
     }
 
     void Start()
@@ -40,6 +55,12 @@ public class HazardObject : MonoBehaviour // Phase 3: Implementing Raycasting an
         }
 
         transform.localScale = originalScale * 1.2f;
+
+        if (!hasPlayedHover && hoverSound != null)
+        {
+            audioSource.PlayOneShot(hoverSound);
+            hasPlayedHover = true;
+        }
     }
 
     public void Unhighlight()
@@ -47,6 +68,8 @@ public class HazardObject : MonoBehaviour // Phase 3: Implementing Raycasting an
         transform.localScale = originalScale;
 
         UpdateVisual(); // restore correct colours
+
+        hasPlayedHover = false;
     }
 
     public void Initialise(Hazard data)
