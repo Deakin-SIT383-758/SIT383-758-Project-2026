@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cd08d2727cd441e4a7e459f5dec14ac, type: 3}
+  m_Name: MockFlightPlan 2
+  m_EditorClassIdentifier: Assembly-CSharp::MockFlightPlan
+  callsign: VH-ABC
+  aircraftType: C194
+  waypoints:
+  - {x: 0.62, y: 0, z: 0.5}
+  - {x: 0.56, y: 0, z: 0.5}
+  - {x: 0.33177578, y: 0, z: 0.32028404}
+  - {x: 0.10847162, y: 0, z: 0.13433595}
+  - {x: -0.11964094, y: 0, z: -0.045521513}
+  - {x: -0.35667434, y: 0, z: -0.21407922}
+  - {x: -0.58, y: 0, z: -0.4}
+  - {x: -0.6297, y: 0, z: -0.4}
+  cruiseSpeed: 145
+  cruiseAltitude: 8500
