@@ -21,8 +21,7 @@ public class MetadataManager : MonoBehaviour
 {
     public TextMeshProUGUI runwayText;
     public TextMeshProUGUI locationText;
-    public TextMeshProUGUI timeText;
-    public TextMeshProUGUI dateStamp;
+    public TextMeshProUGUI timeText; // Use this for both date and time
 
     public List<RunwayData> runwayDatabase;
 
@@ -34,8 +33,18 @@ public class MetadataManager : MonoBehaviour
             {
                 runwayText.text = "Runway: " + data.runwayID;
                 locationText.text = "Lat/Lon: " + data.latitude + ", " + data.longitude;
-                timeText.text = "Updated: " + data.timestamp;
-                dateStamp.text = "Date: " + data.datestamp;
+
+                // Try to parse and format date/time for better readability
+                if (System.DateTime.TryParse($"{data.datestamp} {data.timestamp}", out var dt))
+                {
+                    // Example: "Updated: 14 May 2026, 15:30"
+                    timeText.text = $"Updated: {dt:dd MMM yyyy, HH:mm}";
+                }
+                else
+                {
+                    // Fallback if parsing fails
+                    timeText.text = $"Updated: {data.datestamp} {data.timestamp}";
+                }
             }
         }
     }
