@@ -12,6 +12,7 @@ public class RunwayData
     public float longitude;
     public string timestamp;
     public int RunwayInstance;
+    public string datestamp;
 }
 
 
@@ -21,6 +22,7 @@ public class MetadataManager : MonoBehaviour
     public TextMeshProUGUI runwayText;
     public TextMeshProUGUI locationText;
     public TextMeshProUGUI timeText;
+    public TextMeshProUGUI dateStamp;
 
     public List<RunwayData> runwayDatabase;
 
@@ -33,6 +35,7 @@ public class MetadataManager : MonoBehaviour
                 runwayText.text = "Runway: " + data.runwayID;
                 locationText.text = "Lat/Lon: " + data.latitude + ", " + data.longitude;
                 timeText.text = "Updated: " + data.timestamp;
+                dateStamp.text = "Date: " + data.datestamp;
             }
         }
     }

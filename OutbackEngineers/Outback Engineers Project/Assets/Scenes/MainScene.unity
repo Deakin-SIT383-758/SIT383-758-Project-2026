@@ -1172,8 +1172,8 @@ MonoBehaviour:
   hazardInfo: {fileID: 242841092}
   metaManager: {fileID: 646123141}
   cityTimeline:
-  - {fileID: 1830425812766502979, guid: 1d8ebda2fc8cadf4394cdfe1542095f4, type: 3}
-  - {fileID: 3403949094466598108, guid: fafba5e83e3b84c4db9e477878e4de06, type: 3}
+  - {fileID: 391235073621973662, guid: add528d2966271b46bf696c7c9f28f96, type: 3}
+  - {fileID: 391235073621973662, guid: abb2530970ad8204ba6d3285045ed6a9, type: 3}
   - {fileID: 391235073621973662, guid: 0517f6e32b54cfd448ac09ec817726bf, type: 3}
   dryLandTimeline:
   - {fileID: 3978737740130356465, guid: f12d7e2b2be5b2e43a9b263030364a29, type: 3}
@@ -4543,49 +4543,57 @@ MonoBehaviour:
   runwayText: {fileID: 1964509658}
   locationText: {fileID: 1468551871}
   timeText: {fileID: 2025916236}
+  dateStamp: {fileID: 2025916236}
   runwayDatabase:
-  - runwayID: City_Runway
-    runwayName: City_Runway
-    latitude: -37.8136
-    longitude: 133.2531
-    timestamp: 10:30 AM
-    RunwayInstance: 2
-  - runwayID: DryLand_Runway
-    runwayName: DryLand_Runway
-    latitude: -33.8536
-    longitude: 112.3214
-    timestamp: 10:35 AM
-    RunwayInstance: 0
-  - runwayID: Grass_Runway
-    runwayName: Grass_Runway
-    latitude: -12.9732
-    longitude: 110.9382
-    timestamp: 01:28 PM
-    RunwayInstance: 0
-  - runwayID: Marsh_Runway
-    runwayName: Marsh_Runway
-    latitude: 9.3821
-    longitude: 148.7821
-    timestamp: 10:35 AM
-    RunwayInstance: 0
-  - runwayID: RedSand_Runway
-    runwayName: RedSand_Runway
-    latitude: 2.9971
-    longitude: 150.2239
-    timestamp: 10:35 AM
-    RunwayInstance: 0
   - runwayID: City_Runway
     runwayName: City_Runway
     latitude: -37.8136
     longitude: 133.2531
     timestamp: 5:27 AM
     RunwayInstance: 0
+    datestamp: 05/05/2026
   - runwayID: City_Runway
     runwayName: City_Runway
     latitude: -37.8136
     longitude: 133.2531
     timestamp: 10:35 PM
     RunwayInstance: 1
+    datestamp: 06/05/2026
+  - runwayID: City_Runway
+    runwayName: City_Runway
+    latitude: -37.8136
+    longitude: 133.2531
+    timestamp: 11:28 PM
+    RunwayInstance: 2
+    datestamp: 08/05/2026
+  - runwayID: DryLand_Runway
+    runwayName: DryLand_Runway
+    latitude: -33.8536
+    longitude: 112.3214
+    timestamp: 10:35 AM
+    RunwayInstance: 0
+    datestamp: 
+  - runwayID: Grass_Runway
+    runwayName: Grass_Runway
+    latitude: -12.9732
+    longitude: 110.9382
+    timestamp: 01:28 PM
+    RunwayInstance: 0
+    datestamp: 
+  - runwayID: Marsh_Runway
+    runwayName: Marsh_Runway
+    latitude: 9.3821
+    longitude: 148.7821
+    timestamp: 10:35 AM
+    RunwayInstance: 0
+    datestamp: 
+  - runwayID: RedSand_Runway
+    runwayName: RedSand_Runway
+    latitude: 2.9971
+    longitude: 150.2239
+    timestamp: 10:35 AM
+    RunwayInstance: 0
+    datestamp: 
 --- !u!4 &646123142
 Transform:
   m_ObjectHideFlags: 0
