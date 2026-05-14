@@ -2,10 +2,10 @@
   <Project Path="PhotonVoice.API.csproj" />
   <Project Path="PhotonUnityNetworking.csproj" />
   <Project Path="Oculus.Interaction.Editor.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="PhotonVoice.PUN.Editor.csproj" />
   <Project Path="PhotonRealtime.csproj" />
   <Project Path="PhotonVoice.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="PhotonUnityNetworking.Utilities.csproj" />
   <Project Path="Unity.XR.Interaction.Toolkit.Samples.SpatialKeyboard.Editor.csproj" />
   <Project Path="Unity.XR.Interaction.Toolkit.Samples.SpatialKeyboard.csproj" />
