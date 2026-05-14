@@ -21,9 +21,12 @@ public class HazardObject : MonoBehaviour // Phase 3: Implementing Raycasting an
     public GameObject waterMesh;
     public GameObject debrisMesh;
 
-    public AudioClip hoverSound;
+    public AudioClip severity1Sound;
+    public AudioClip severity2Sound;
+    public AudioClip severity3Sound;
 
     private AudioSource audioSource;
+
     private bool hasPlayedHover;
 
     void Awake()
@@ -47,6 +50,31 @@ public class HazardObject : MonoBehaviour // Phase 3: Implementing Raycasting an
         
     }
 
+    void PlaySeveritySound()
+    {
+        AudioClip clipToPlay = null;
+
+        switch (severity)
+        {
+            case 1:
+                clipToPlay = severity1Sound;
+                break;
+
+            case 2:
+                clipToPlay = severity2Sound;
+                break;
+
+            case 3:
+                clipToPlay = severity3Sound;
+                break;
+        }
+
+        if (clipToPlay != null)
+        {
+            audioSource.PlayOneShot(clipToPlay);
+        }
+    }
+
     public void Highlight()
     {
         foreach (Renderer r in renderers)
@@ -56,9 +84,10 @@ public class HazardObject : MonoBehaviour // Phase 3: Implementing Raycasting an
 
         transform.localScale = originalScale * 1.2f;
 
-        if (!hasPlayedHover && hoverSound != null)
+        if (!hasPlayedHover)
         {
-            audioSource.PlayOneShot(hoverSound);
+            PlaySeveritySound();
+
             hasPlayedHover = true;
         }
     }

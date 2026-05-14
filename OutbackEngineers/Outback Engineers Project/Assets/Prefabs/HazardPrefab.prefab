@@ -1284,7 +1284,9 @@ MonoBehaviour:
   crackMesh: {fileID: 4802810378707471289}
   waterMesh: {fileID: 5556917827920799419}
   debrisMesh: {fileID: 2565213074869266054}
-  hoverSound: {fileID: 8300000, guid: 4eab53f6aa0b1424c8a214483722982a, type: 3}
+  severity1Sound: {fileID: 8300000, guid: 4eab53f6aa0b1424c8a214483722982a, type: 3}
+  severity2Sound: {fileID: 8300000, guid: f629c2b28fdc33241bc95dddd1b8da5d, type: 3}
+  severity3Sound: {fileID: 8300000, guid: 691b12514f17fa545a62d3adccede7d7, type: 3}
 --- !u!82 &2908858980212093476
 AudioSource:
   m_ObjectHideFlags: 0
