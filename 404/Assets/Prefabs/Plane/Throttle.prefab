@@ -282,6 +282,7 @@ GameObject:
   - component: {fileID: 1388364449866923489}
   - component: {fileID: 3680573466016632962}
   - component: {fileID: 3162144297543854036}
+  - component: {fileID: 6447690632186624472}
   m_Layer: 0
   m_Name: RightThrottle
   m_TagString: Untagged
@@ -539,6 +540,26 @@ MonoBehaviour:
   m_LimitAngularVelocity: 0
   m_MaxLinearVelocityDelta: 10
   m_MaxAngularVelocityDelta: 20
+--- !u!114 &6447690632186624472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4613979234059750154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8caf2819694d93d45866d9b3a36a1e88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VRSlidingThrottle
+  controllerAxis: 2
+  throttleAxis: 0
+  minPosition: 0
+  maxPosition: 0.3
+  controllerMovementMultiplier: 2
+  invertDirection: 0
+  throttleValue: 0
+  grabInteractable: {fileID: 3162144297543854036}
 --- !u!1 &5516319196599579977
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,6 +664,7 @@ GameObject:
   - component: {fileID: 561305427355308875}
   - component: {fileID: 3764700123550978687}
   - component: {fileID: 4070928216054760107}
+  - component: {fileID: 7035293562618847055}
   m_Layer: 0
   m_Name: LeftThrottle
   m_TagString: Untagged
@@ -900,3 +922,23 @@ MonoBehaviour:
   m_LimitAngularVelocity: 0
   m_MaxLinearVelocityDelta: 10
   m_MaxAngularVelocityDelta: 20
+--- !u!114 &7035293562618847055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5915851364952738441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8caf2819694d93d45866d9b3a36a1e88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VRSlidingThrottle
+  controllerAxis: 2
+  throttleAxis: 0
+  minPosition: 0
+  maxPosition: 0.8
+  controllerMovementMultiplier: 6.92
+  invertDirection: 1
+  throttleValue: 0
+  grabInteractable: {fileID: 4070928216054760107}
