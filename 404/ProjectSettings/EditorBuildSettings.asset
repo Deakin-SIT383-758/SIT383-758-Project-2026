@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/DataSharing.unity
+    guid: 71c7b853f78bb4b41a99621a59d39c75
+  - enabled: 0
     path: Assets/Scenes/VoiceChat.unity
     guid: de4210ec8773ad441b0782caaed36609
   - enabled: 0
