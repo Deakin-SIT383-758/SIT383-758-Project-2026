@@ -17,12 +17,17 @@ public class VRButton : MonoBehaviour
     private bool isPressed = false;
 
     public string controlName;
+    public bool isToggle = false; // Is this button a toggle?
+    private bool toggleState = false; // On or off state of toggle
+    public GameObject toggleLight; // Light gameobject to toggle
 
     private void Start()
     {
         startPos = buttonTop.localPosition;
 
         interactable.selectEntered.AddListener(OnPress);
+
+        toggleLight.SetActive(false);
     }
 
     private void OnDestroy()
@@ -58,7 +63,17 @@ public class VRButton : MonoBehaviour
 
         // ===== ACTION HERE =====
         Debug.Log("VR Button Pressed!");
-        ChecklistManager.Instance.ControlUpdate(controlName, 1);
+        if (isToggle)
+        {
+            toggleState = !toggleState; // Swap state
+            int i = toggleState ? 1 : 0;
+            toggleLight.SetActive(toggleState);
+            ChecklistManager.Instance.ControlUpdate(controlName, i);
+        }
+        else
+        {
+            ChecklistManager.Instance.ControlUpdate(controlName, 1);
+        }
 
         yield return new WaitForSeconds(returnDelay);
 
