@@ -1,5 +1,6 @@
 using Fusion;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using TMPro;
 
 public class NetworkAlertManager : NetworkBehaviour
@@ -11,6 +12,25 @@ public class NetworkAlertManager : NetworkBehaviour
     [Header("Audio")]
     public AudioSource alertAudio;
 
+    [Header("OpenXR / XRI Input")]
+    public InputActionProperty weatherAlertAction;
+    public InputActionProperty lowFuelAlertAction;
+    public InputActionProperty hideAlertAction;
+
+    private void OnEnable()
+    {
+        RegisterAction(weatherAlertAction, OnWeatherAlertPressed);
+        RegisterAction(lowFuelAlertAction, OnLowFuelAlertPressed);
+        RegisterAction(hideAlertAction, OnHideAlertPressed);
+    }
+
+    private void OnDisable()
+    {
+        UnregisterAction(weatherAlertAction, OnWeatherAlertPressed);
+        UnregisterAction(lowFuelAlertAction, OnLowFuelAlertPressed);
+        UnregisterAction(hideAlertAction, OnHideAlertPressed);
+    }
+
     private void Start()
     {
         HideAlertLocal();
@@ -18,39 +38,58 @@ public class NetworkAlertManager : NetworkBehaviour
 
     private void Update()
     {
-        // Right controller A = weather warning
-        if (OVRInput.GetDown(OVRInput.RawButton.A))
-        {
-            RPC_ShowWeatherAlert();
-        }
-
-        // Right controller B = low fuel warning
-        if (OVRInput.GetDown(OVRInput.RawButton.B))
-        {
-            RPC_ShowLowFuelAlert();
-        }
-
-        // Left controller Y = hide warning
-        if (OVRInput.GetDown(OVRInput.RawButton.Y))
-        {
-            RPC_HideAlert();
-        }
-
         // Keyboard fallbacks for Unity Editor testing
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Keyboard.current == null) return;
+
+        if (Keyboard.current.tKey.wasPressedThisFrame)
         {
             RPC_ShowWeatherAlert();
         }
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Keyboard.current.fKey.wasPressedThisFrame)
         {
             RPC_ShowLowFuelAlert();
         }
 
-        if (Input.GetKeyDown(KeyCode.Y))
+        if (Keyboard.current.yKey.wasPressedThisFrame)
         {
             RPC_HideAlert();
         }
+    }
+
+    private void RegisterAction(
+        InputActionProperty actionProperty,
+        System.Action<InputAction.CallbackContext> callback)
+    {
+        if (actionProperty.action == null) return;
+
+        actionProperty.action.Enable();
+        actionProperty.action.performed += callback;
+    }
+
+    private void UnregisterAction(
+        InputActionProperty actionProperty,
+        System.Action<InputAction.CallbackContext> callback)
+    {
+        if (actionProperty.action == null) return;
+
+        actionProperty.action.performed -= callback;
+        actionProperty.action.Disable();
+    }
+
+    private void OnWeatherAlertPressed(InputAction.CallbackContext context)
+    {
+        RPC_ShowWeatherAlert();
+    }
+
+    private void OnLowFuelAlertPressed(InputAction.CallbackContext context)
+    {
+        RPC_ShowLowFuelAlert();
+    }
+
+    private void OnHideAlertPressed(InputAction.CallbackContext context)
+    {
+        RPC_HideAlert();
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
