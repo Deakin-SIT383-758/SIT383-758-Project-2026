@@ -16,6 +16,8 @@ public class VRButton : MonoBehaviour
     private Vector3 startPos;
     private bool isPressed = false;
 
+    public string controlName;
+
     private void Start()
     {
         startPos = buttonTop.localPosition;
@@ -56,6 +58,7 @@ public class VRButton : MonoBehaviour
 
         // ===== ACTION HERE =====
         Debug.Log("VR Button Pressed!");
+        ChecklistManager.Instance.ControlUpdate(controlName, 1);
 
         yield return new WaitForSeconds(returnDelay);
 

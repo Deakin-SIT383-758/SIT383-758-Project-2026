@@ -8,6 +8,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 
 public class ChecklistManager : MonoBehaviour
 {
+    public static ChecklistManager Instance { get; set; }
     public class ChecklistItem
     {
         public ChecklistItem(string ins, string cName, float cValue, float mar)
@@ -48,6 +49,14 @@ public class ChecklistManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
         ConstructChecklist();
         UpdateTextDisplay();
     }
@@ -78,7 +87,7 @@ public class ChecklistManager : MonoBehaviour
         textBox.text = "";
         foreach (ChecklistItem i in checklistItems)
         {
-            string itemString = (i.completed ? "☑" : "☐") + ": " + i.instruction + "\n";
+            string itemString = (i.completed ? "☒" : "☐") + ": " + i.instruction + "\n";
             textBox.text += itemString;
         }
     }

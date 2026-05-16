@@ -1,3 +1,5 @@
+using TMPro;
+using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -20,6 +22,9 @@ public class VRSlidingThrottle : MonoBehaviour
 
     [Range(0, 1)]
     public float throttleValue;
+
+    public string controlName = "Throttle";
+    public TMP_Text text;
 
     [Header("References")]
     public UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable grabInteractable;
@@ -135,6 +140,8 @@ public class VRSlidingThrottle : MonoBehaviour
         transform.localScale = startLocalScale;
 
         throttleValue = Mathf.InverseLerp(minPosition, maxPosition, axisPosition);
+        ChecklistManager.Instance.ControlUpdate(controlName, throttleValue);
+        text.text = Mathf.Round(throttleValue * 100.0f).ToString();
     }
 
     private Vector3 GetHandPositionInRailSpace()
