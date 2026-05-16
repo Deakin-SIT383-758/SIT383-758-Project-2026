@@ -94,7 +94,7 @@ public class AccessOpenCV : MonoBehaviour
         RaycastHit hit;
         Physics.Raycast(centreRay.origin, centreRay.direction, out hit);
         Debug.Log($"Raycast hit at: {hit.point}, distance {hit.distance}");
-        if (hit.distance == 0) return; // Don't place marker if raycast doesn't hit
+        if (hit.distance == 0 || hit.distance < 10.0f) return; // Don't place marker if raycast doesn't hit or if too close to user
         GameObject m = Instantiate(hudTemplate, hit.point, quaternion.identity, null);
 
         // Attempt to identify specific object
