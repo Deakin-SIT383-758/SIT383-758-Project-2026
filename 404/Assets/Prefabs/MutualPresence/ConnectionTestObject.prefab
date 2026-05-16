@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3245437263921953169}
   - component: {fileID: 5840381500435648732}
   - component: {fileID: 882059429713517790}
+  - component: {fileID: 2983751863989500354}
   m_Layer: 0
   m_Name: ConnectionTestObject
   m_TagString: Untagged
@@ -136,6 +137,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 5840381500435648732}
   - {fileID: 882059429713517790}
+  - {fileID: 2983751863989500354}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &5840381500435648732
 MonoBehaviour:
@@ -167,3 +169,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NetworkTestObject
   left: 1
+--- !u!114 &2983751863989500354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2755326644204590775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6376dd7fc23b3764483a7349b58502e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonVoice.Fusion::Photon.Voice.Fusion.VoiceNetworkObject
