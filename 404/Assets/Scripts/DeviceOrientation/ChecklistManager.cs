@@ -106,6 +106,14 @@ public class ChecklistManager : MonoBehaviour
             Debug.Log($"Checklist item {currentItem} completed");
             currentItem += 1; // go to next item
             UpdateTextDisplay();
+            if (checklistItems[currentItem].controlName == "Engine Ignition")
+            {
+                // Add code to start engine sounds here
+            }
+            if (currentItem == checklistItems.Count - 1)
+            {
+                Debug.Log("Checklist completed!");
+            }
         }
         else
         {
@@ -120,6 +128,10 @@ public class ChecklistManager : MonoBehaviour
                     for (int j = i; j <= currentItem; j++)
                     {
                         checklistItems[j].completed = false; // uncheck subsequent steps
+                        if (checklistItems[j].controlName == "Engine Ignition")
+                        {
+                            // Add code to stop engine sounds here
+                        }
                     }
                 }
             }

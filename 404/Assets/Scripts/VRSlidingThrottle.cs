@@ -100,6 +100,9 @@ public class VRSlidingThrottle : MonoBehaviour
     {
         isGrabbed = false;
         handTransform = null;
+
+        ChecklistManager.Instance.ControlUpdate(controlName, throttleValue);
+        text.text = Mathf.Round(throttleValue * 100.0f).ToString() + "%";
     }
 
     private void LateUpdate()
@@ -140,8 +143,6 @@ public class VRSlidingThrottle : MonoBehaviour
         transform.localScale = startLocalScale;
 
         throttleValue = Mathf.InverseLerp(minPosition, maxPosition, axisPosition);
-        ChecklistManager.Instance.ControlUpdate(controlName, throttleValue);
-        text.text = Mathf.Round(throttleValue * 100.0f).ToString();
     }
 
     private Vector3 GetHandPositionInRailSpace()
