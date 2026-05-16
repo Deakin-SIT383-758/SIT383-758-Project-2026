@@ -4857,6 +4857,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4715268646880056310, guid: c20e81071bae94f45a1a07495fdd52ee, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 4715268646880056310, guid: c20e81071bae94f45a1a07495fdd52ee, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4715268646880056310, guid: c20e81071bae94f45a1a07495fdd52ee, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.08
+      objectReference: {fileID: 0}
     - target: {fileID: 8265489487201606246, guid: c20e81071bae94f45a1a07495fdd52ee, type: 3}
       propertyPath: m_text
       value: Engine Ignition
