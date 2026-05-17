@@ -13,7 +13,6 @@ using Unity.Mathematics;
 using UnityEngine.Tilemaps;
 using System.Collections;
 using UnityEngine.Networking;
-using UnityEditor.PackageManager.Requests;
 
 public class MapManager : MonoBehaviour
 {

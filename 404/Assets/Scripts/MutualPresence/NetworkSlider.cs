@@ -1,9 +1,10 @@
+using Fusion;
 using TMPro;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class VRSlidingThrottle : MonoBehaviour
-{
+public class NetworkSlider : NetworkBehaviour
+{ 
     public enum SlideAxis
     {
         LocalX,
@@ -99,8 +100,20 @@ public class VRSlidingThrottle : MonoBehaviour
     {
         isGrabbed = false;
         handTransform = null;
+        RPC_UpdateThrottle(targetPosition);
+        RPC_UpdateChecklist();
+    }
+    private void updateChecklist()
+    {
+        if (throttleValue * 100.0f == 100)
+        {
+            ChecklistManager.Instance.ControlUpdate(controlName, 1);
+        }
+        else if (throttleValue * 100.0f == 0)
+        {
+            ChecklistManager.Instance.ControlUpdate(controlName, 0);
+        }
 
-        ChecklistManager.Instance.ControlUpdate(controlName, throttleValue);
         text.text = Mathf.Round(throttleValue * 100.0f).ToString() + "%";
     }
 
@@ -108,7 +121,7 @@ public class VRSlidingThrottle : MonoBehaviour
     {
         if (!isGrabbed || handTransform == null)
         {
-            ApplyThrottlePosition(targetPosition);
+            //ApplyCurrentThrottlePosition();
             return;
         }
 
@@ -124,7 +137,7 @@ public class VRSlidingThrottle : MonoBehaviour
         targetPosition = grabStartThrottlePosition + handDelta;
         targetPosition = Mathf.Clamp(targetPosition, minPosition, maxPosition);
 
-        ApplyThrottlePosition(targetPosition);
+        RPC_UpdateThrottle(targetPosition);
     }
 
     private void ApplyCurrentThrottlePosition()
@@ -141,7 +154,8 @@ public class VRSlidingThrottle : MonoBehaviour
         transform.localRotation = startLocalRotation;
         transform.localScale = startLocalScale;
 
-        throttleValue = Mathf.InverseLerp(minPosition, maxPosition, axisPosition);
+        throttleValue = Mathf.InverseLerp(minPosition, maxPosition, axisPosition);        
+        text.text = Mathf.Round(throttleValue * 100.0f).ToString() + "%";
     }
 
     private Vector3 GetHandPositionInRailSpace()
@@ -180,4 +194,17 @@ public class VRSlidingThrottle : MonoBehaviour
                 break;
         }
     }
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_UpdateThrottle(float newPosition)
+    {
+        targetPosition = newPosition;
+        ApplyThrottlePosition(targetPosition);
+    }
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_UpdateChecklist()
+    {
+        updateChecklist();
+    }
 }
+
+
