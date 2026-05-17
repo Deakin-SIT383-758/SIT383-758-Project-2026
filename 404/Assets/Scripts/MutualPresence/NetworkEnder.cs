@@ -8,10 +8,13 @@ public class NetworkEnder : MonoBehaviour
 
     public void Update()
     {
-        if (menu.shutdown)
+        if (menu != null)
         {
-            shutItDown();
-            
+            if (menu.shutdown)
+            {
+                shutItDown();
+
+            }
         }
     }
     public async void shutItDown()
