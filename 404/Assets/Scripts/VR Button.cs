@@ -16,10 +16,15 @@ public class VRButton : MonoBehaviour
     private Vector3 startPos;
     private bool isPressed = false;
 
+    [Header("Toggle")]
     public string controlName;
-    public bool isToggle = false; // Is this button a toggle?
-    private bool toggleState = false; // On or off state of toggle
-    public GameObject toggleLight; // Light gameobject to toggle
+    public bool isToggle = false;
+    private bool toggleState = false;
+    public GameObject toggleLight;
+
+    [Header("Audio")]
+    public AudioSource engineStartSource;
+    public AudioSource engineIdleSource;
 
     private void Start()
     {
@@ -27,7 +32,18 @@ public class VRButton : MonoBehaviour
 
         interactable.selectEntered.AddListener(OnPress);
 
-        toggleLight.SetActive(false);
+        if (toggleLight != null)
+            toggleLight.SetActive(false);
+
+        // Ensure audio is OFF at start
+        if (engineStartSource != null)
+            engineStartSource.Stop();
+
+        if (engineIdleSource != null)
+        {
+            engineIdleSource.Stop();
+            engineIdleSource.loop = true;
+        }
     }
 
     private void OnDestroy()
@@ -38,18 +54,16 @@ public class VRButton : MonoBehaviour
     private void OnPress(SelectEnterEventArgs args)
     {
         if (!isPressed)
-        {
             StartCoroutine(PressAnimation());
-        }
     }
 
-    IEnumerator PressAnimation()
+    private IEnumerator PressAnimation()
     {
         isPressed = true;
 
         Vector3 pressedPos = startPos + Vector3.down * pressDepth;
 
-        // Move down
+        // PRESS DOWN
         while (Vector3.Distance(buttonTop.localPosition, pressedPos) > 0.001f)
         {
             buttonTop.localPosition = Vector3.Lerp(
@@ -57,27 +71,47 @@ public class VRButton : MonoBehaviour
                 pressedPos,
                 Time.deltaTime * pressSpeed
             );
-
             yield return null;
         }
 
-        // ===== ACTION HERE =====
-        Debug.Log("VR Button Pressed!");
+        buttonTop.localPosition = pressedPos;
+
+        // =========================
+        // TOGGLE LOGIC (THIS IS KEY)
+        // =========================
         if (isToggle)
         {
-            toggleState = !toggleState; // Swap state
-            int i = toggleState ? 1 : 0;
-            toggleLight.SetActive(toggleState);
-            ChecklistManager.Instance.ControlUpdate(controlName, i);
-        }
-        else
-        {
-            ChecklistManager.Instance.ControlUpdate(controlName, 1);
+            toggleState = !toggleState;
+
+            if (toggleLight != null)
+                toggleLight.SetActive(toggleState);
+
+            if (toggleState)
+            {
+                // TURN ON ENGINE
+                if (engineStartSource != null)
+                {
+                    engineStartSource.Play();
+                    yield return new WaitForSeconds(engineStartSource.clip.length);
+                }
+
+                if (engineIdleSource != null)
+                    engineIdleSource.Play();
+            }
+            else
+            {
+                // TURN OFF ENGINE
+                if (engineStartSource != null)
+                    engineStartSource.Stop();
+
+                if (engineIdleSource != null)
+                    engineIdleSource.Stop();
+            }
         }
 
         yield return new WaitForSeconds(returnDelay);
 
-        // Move back up
+        // RETURN UP
         while (Vector3.Distance(buttonTop.localPosition, startPos) > 0.001f)
         {
             buttonTop.localPosition = Vector3.Lerp(
@@ -85,7 +119,6 @@ public class VRButton : MonoBehaviour
                 startPos,
                 Time.deltaTime * pressSpeed
             );
-
             yield return null;
         }
 
