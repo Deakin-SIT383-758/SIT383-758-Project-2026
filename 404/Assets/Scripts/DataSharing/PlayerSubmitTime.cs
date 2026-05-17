@@ -7,7 +7,6 @@ public class PlayerSubmitTime : NetworkBehaviour
     public override void Spawned()
     {
         if (!Object.HasInputAuthority) return;
-
         StartCoroutine(WaitThenSubmit());
     }
 
@@ -33,15 +32,11 @@ public class PlayerSubmitTime : NetworkBehaviour
     }
     private int GetOrCreatePlayerId()
     {
-        if (!PlayerPrefs.HasKey("PlayerID"))
+        if (!PlayerPrefs.HasKey("PlayerID") || PlayerPrefs.GetInt("PlayerID",0) == 0)
         {
-            int newId = Random.Range(100000, 999999);
-            PlayerPrefs.SetInt("PlayerID", newId);
+            PlayerPrefs.SetInt("PlayerID", Random.Range(100000, 999999));
             PlayerPrefs.Save();
-
-            Debug.Log("Created new PlayerID: " + newId);
         }
-
         return PlayerPrefs.GetInt("PlayerID");
     }
 }

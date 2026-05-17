@@ -10,7 +10,7 @@ public class ServerManager : NetworkBehaviour
 {
     public static ServerManager Instance;
 
-    public TMP_Text leaderboardText;
+    public DataBoard leaderboardText;
     [Serializable]
     public struct TimeData : INetworkStruct
     {
@@ -23,22 +23,14 @@ public class ServerManager : NetworkBehaviour
 
     [Networked, Capacity(10)]
     public NetworkArray<TimeData> PracticeTimeList { get; }
-
-    private void Awake()
-    {
-        Instance = this;
-    }
-
     public override void Spawned()
     {
-        Debug.Log("ServerManager spawned by Fusion");
         Instance = this;
     }
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_RequestEveryoneResubmit()
     {
         PlayerSubmitTime localSubmitter = FindFirstObjectByType<PlayerSubmitTime>();
-
         if (localSubmitter != null && localSubmitter.Object.HasInputAuthority)
         {
             localSubmitter.SubmitMyTime();
@@ -50,7 +42,6 @@ public class ServerManager : NetworkBehaviour
         for (int i = 0; i < PracticeTimeList.Length; i++)
         {
             TimeData entry = PracticeTimeList.Get(i);
-
             if (entry.used == 1 && entry.id == id)
             {
                 entry.name = name;
@@ -77,20 +68,14 @@ public class ServerManager : NetworkBehaviour
                 return;
             }
         }
-
-        Debug.LogWarning("Leaderboard is full.");
     }
     private void UpdateLeaderboardText()
     {
         if (leaderboardText == null)
         {
-            leaderboardText = FindFirstObjectByType<TMP_Text>();
+            leaderboardText = FindFirstObjectByType<DataBoard>();
         }
-
-        if (leaderboardText == null) return;
-
-        string display = "Leaderboard\n";
-
+        string display = "Hours In Sim\n";
         for (int i = 0; i < PracticeTimeList.Length; i++)
         {
             TimeData entry = PracticeTimeList.Get(i);
@@ -101,8 +86,7 @@ public class ServerManager : NetworkBehaviour
                        entry.hours + "H " +
                        entry.minutes + "M\n";
         }
-
-        leaderboardText.text = display;
+        leaderboardText.text.text = display;
     }
     private void Update()
     {
