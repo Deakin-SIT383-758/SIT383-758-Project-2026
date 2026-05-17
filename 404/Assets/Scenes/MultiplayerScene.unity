@@ -4446,6 +4446,7 @@ GameObject:
   - component: {fileID: 1307653570}
   - component: {fileID: 1307653569}
   - component: {fileID: 1307653573}
+  - component: {fileID: 1307653574}
   m_Layer: 0
   m_Name: Prototype Runner
   m_TagString: Untagged
@@ -4603,6 +4604,18 @@ MonoBehaviour:
   AutoConnectAndJoin: 1
   UseFusionAppSettings: 1
   UseFusionAuthValues: 1
+--- !u!114 &1307653574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307653568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8edbe7108d8a43ab838cf8b8d9453df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fusion.Unity::Fusion.RunnerEnableVisibility
 --- !u!1 &1332677618 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 519368370063639840, guid: 9e92d8fa303184449acd4365aa70f345, type: 3}
@@ -6984,6 +6997,7 @@ GameObject:
   - component: {fileID: 2040701543}
   - component: {fileID: 2040701542}
   - component: {fileID: 2040701541}
+  - component: {fileID: 2040701544}
   m_Layer: 0
   m_Name: Prototype Network Start
   m_TagString: Untagged
@@ -7044,6 +7058,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2040701544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2040701540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f7c8b24bc1d5754285152cddcf0512e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SetRoomNameBeforeStart
+  runner: {fileID: 1307653571}
 --- !u!1 &2044628506 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 519368370063639840, guid: 9e92d8fa303184449acd4365aa70f345, type: 3}

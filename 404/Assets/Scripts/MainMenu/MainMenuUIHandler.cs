@@ -1,27 +1,20 @@
+using Fusion;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 //This script is to handle the main menu UI change settings transition to scenes and exit the program
 public class MainMenuUIHandler : MonoBehaviour
 {
-    public Slider VolumeSlider;
-    public TMP_Text VolumeInfo;
+    public TMP_InputField roomNameInput;
     //the menu game objects are the collection of a menu so they can be switched between
     public GameObject Menu1;
     public GameObject Menu2;
+    public NetworkRunner runner;
+    public bool shutdown = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //starts the volume slider at 50 and gets the volume info text working
-        VolumeSlider.value = 50f;
-        VolumeInfo.text = ("Volume: " + VolumeSlider.value);
-    }
-    public void VolumeUpdate()
-    {
-        //updates the volume and the settings holder depending on the volume slider
-        VolumeInfo.text = ("Volume: " + Mathf.Round(VolumeSlider.value * 10.0f) * 0.1f);
-        SettingsHolder Settings = FindAnyObjectByType<SettingsHolder>();
-        Settings.Volume = VolumeSlider.value;
     }
     public void MenuChange(int State)
     {
@@ -34,13 +27,21 @@ public class MainMenuUIHandler : MonoBehaviour
         }
         else if (State == 2)
         {
+            shutdown = true;
             Menu2.SetActive(true);
             Menu1.SetActive(false);
         }
     }
     public void LoadScene(int scene)
     {
-        //to be implemented further down the line once the scenes to be transitioned to are created
+        SceneManager.LoadScene(scene);
+    }
+    public void Multiplayer()
+    {
+        string roomName = roomNameInput.text;
+        PlayerPrefs.SetString("RoomName", roomName);
+        PlayerPrefs.Save();
+        SceneManager.LoadScene("MultiplayerScene");
     }
     public void ExitProgram()
     {
