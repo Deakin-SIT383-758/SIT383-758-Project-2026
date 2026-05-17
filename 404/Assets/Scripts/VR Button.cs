@@ -82,6 +82,8 @@ public class VRButton : MonoBehaviour
         if (isToggle)
         {
             toggleState = !toggleState;
+            int i = toggleState ? 1 : 0;
+            ChecklistManager.Instance.ControlUpdate(controlName, i);
 
             if (toggleLight != null)
                 toggleLight.SetActive(toggleState);
@@ -107,6 +109,10 @@ public class VRButton : MonoBehaviour
                 if (engineIdleSource != null)
                     engineIdleSource.Stop();
             }
+        }
+        else
+        {
+            ChecklistManager.Instance.ControlUpdate(controlName, 1);
         }
 
         yield return new WaitForSeconds(returnDelay);
