@@ -3,27 +3,42 @@ using UnityEngine.InputSystem;
 
 public class VRMenuToggle : MonoBehaviour
 {
-    public GameObject menuRoot;
+    [SerializeField] private GameObject menuRoot;
 
-    [Header("OpenXR / XRI Input")]
-    public InputActionProperty menuButton;
+    [Header("XR Input Action")]
+    [SerializeField] private InputActionProperty menuButton;
+
+    private bool wasPressedLastFrame;
 
     private void OnEnable()
     {
-        menuButton.action.Enable();
-        menuButton.action.performed += ToggleMenu;
+        if (menuButton.action != null)
+        {
+            menuButton.action.Enable();
+        }
     }
 
     private void OnDisable()
     {
-        menuButton.action.performed -= ToggleMenu;
-        menuButton.action.Disable();
+        if (menuButton.action != null)
+        {
+            menuButton.action.Disable();
+        }
     }
 
-    private void ToggleMenu(InputAction.CallbackContext context)
+    private void Update()
     {
-        if (menuRoot == null) return;
+        if (menuButton.action == null || menuRoot == null)
+            return;
 
-        menuRoot.SetActive(!menuRoot.activeSelf);
+        bool isPressed =
+            menuButton.action.WasPressedThisFrame();
+
+        if (isPressed && !wasPressedLastFrame)
+        {
+            menuRoot.SetActive(!menuRoot.activeSelf);
+        }
+
+        wasPressedLastFrame = isPressed;
     }
 }
