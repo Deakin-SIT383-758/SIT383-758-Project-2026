@@ -67,10 +67,10 @@ public class MockPlaneDataProvider : MonoBehaviour, IPlaneDataProvider
     [SerializeField] private float simTimeMultiplier = 60f;
 
     [Header("Phase Speed Factors")]
-    [Range(0.1f, 1f)] [SerializeField] private float climbSpeedFactor   = 0.85f;
-    [Range(0.1f, 1f)] [SerializeField] private float descentSpeedFactor = 0.9f;
-    [Range(0.1f, 1f)] [SerializeField] private float groundRollPeakFactor = 0.6f;
-    [Range(0.01f, 0.3f)] [SerializeField] private float rollFloorFactor = 0.05f;
+    [Range(0.1f, 1f)][SerializeField] private float climbSpeedFactor = 0.85f;
+    [Range(0.1f, 1f)][SerializeField] private float descentSpeedFactor = 0.9f;
+    [Range(0.1f, 1f)][SerializeField] private float groundRollPeakFactor = 0.6f;
+    [Range(0.01f, 0.3f)][SerializeField] private float rollFloorFactor = 0.05f;
     [Tooltip("Per-plane uniform speed jitter applied to cruise speed, in knots.")]
     [SerializeField] private Vector2 perPlaneSpeedJitterKnots = new Vector2(-15f, 15f);
 
@@ -87,7 +87,7 @@ public class MockPlaneDataProvider : MonoBehaviour, IPlaneDataProvider
 
     private const int WaypointPlacementRetries = 12;
 
-    private readonly Dictionary<string, PlaneData>   _planes = new();
+    private readonly Dictionary<string, PlaneData> _planes = new();
     private readonly Dictionary<string, FlightState> _states = new();
     private float _stepLogAccumulator;
 
@@ -103,7 +103,10 @@ public class MockPlaneDataProvider : MonoBehaviour, IPlaneDataProvider
 
     public IReadOnlyDictionary<string, PlaneData> ActivePlanes => _planes;
     public event Action<PlaneData> OnPlaneUpdated;
-    public event Action<string>    OnPlaneRemoved;
+
+#pragma warning disable CS0067
+    public event Action<string> OnPlaneRemoved;
+#pragma warning restore CS0067
 
     public Vector3[] GetRoute(string hex)
     {
@@ -155,9 +158,9 @@ public class MockPlaneDataProvider : MonoBehaviour, IPlaneDataProvider
             return;
         }
 
-        var usedPairs   = new HashSet<(int, int)>();
+        var usedPairs = new HashSet<(int, int)>();
         var usedOrigins = new HashSet<int>();
-        var usedDests   = new HashSet<int>();
+        var usedDests = new HashSet<int>();
 
         for (int i = 0; i < flightPlans.Count; i++)
         {
@@ -172,9 +175,9 @@ public class MockPlaneDataProvider : MonoBehaviour, IPlaneDataProvider
             usedDests.Add(destIdx);
 
             var origin = airports[originIdx];
-            var dest   = airports[destIdx];
+            var dest = airports[destIdx];
 
-            var (rollStart, rotation)   = PickTakeoffEnds(origin, dest.Center);
+            var (rollStart, rotation) = PickTakeoffEnds(origin, dest.Center);
             var (touchdown, rollOutEnd) = PickLandingEnds(dest, origin.Center);
 
             Vector3 takeoffBearing = SafeNormalize(rotation - rollStart, Vector3.forward);
@@ -191,25 +194,25 @@ public class MockPlaneDataProvider : MonoBehaviour, IPlaneDataProvider
 
             var bp = new FlightPath.BuildParams
             {
-                rollStart        = rollStart,
-                rotation         = rotation,
-                touchdown        = touchdown,
-                rollOutEnd       = rollOutEnd,
-                takeoffBearing   = takeoffBearing,
-                landingBearing   = landingBearing,
-                interiorXZ       = interior,
-                climbDistance    = climbDistance,
-                descentDistance  = descentDistance,
-                cruiseAltFeet    = cruiseAlt,
+                rollStart = rollStart,
+                rotation = rotation,
+                touchdown = touchdown,
+                rollOutEnd = rollOutEnd,
+                takeoffBearing = takeoffBearing,
+                landingBearing = landingBearing,
+                interiorXZ = interior,
+                climbDistance = climbDistance,
+                descentDistance = descentDistance,
+                cruiseAltFeet = cruiseAlt,
                 wobbleAmplitudeFeet = cruiseWobbleFeet,
-                wobbleFrequency  = cruiseWobbleCyclesPerUnit,
-                wobblePhase      = (float)(rng.NextDouble() * 2.0 * Math.PI),
+                wobbleFrequency = cruiseWobbleCyclesPerUnit,
+                wobblePhase = (float)(rng.NextDouble() * 2.0 * Math.PI),
                 groundRollPeakFactor = groundRollPeakFactor,
-                climbSpeedFactor     = climbSpeedFactor,
-                cruiseSpeedFactor    = 1f,
-                descentSpeedFactor   = descentSpeedFactor,
-                rollFloorFactor      = rollFloorFactor,
-                arcLengthSamples     = arcLengthSamplesPerSegment,
+                climbSpeedFactor = climbSpeedFactor,
+                cruiseSpeedFactor = 1f,
+                descentSpeedFactor = descentSpeedFactor,
+                rollFloorFactor = rollFloorFactor,
+                arcLengthSamples = arcLengthSamplesPerSegment,
             };
             var path = FlightPath.Build(bp);
 
@@ -224,32 +227,32 @@ public class MockPlaneDataProvider : MonoBehaviour, IPlaneDataProvider
 #endif
 
             Vector3 startAuthored = path.Sample(0f);
-            float initialTrack    = path.TrackDeg(0f);
+            float initialTrack = path.TrackDeg(0f);
 
             var plane = new PlaneData
             {
-                hex      = hex,
-                flight   = plan.callsign,
-                lat      = startAuthored.z,
-                lon      = startAuthored.x,
-                ASL      = startAuthored.y,
-                gs       = 0f,
-                track    = initialTrack,
+                hex = hex,
+                flight = plan.callsign,
+                lat = startAuthored.z,
+                lon = startAuthored.x,
+                ASL = startAuthored.y,
+                gs = 0f,
+                track = initialTrack,
                 baroRate = 0f,
-                squawk   = "1200",
-                status   = PlaneStatus.Normal,
+                squawk = "1200",
+                status = PlaneStatus.Normal,
                 lastSeen = DateTimeOffset.UtcNow,
-                seenPos  = 0f,
+                seenPos = 0f,
                 mapPosition = ToWorldSpace(startAuthored),
             };
 
             _planes[hex] = plane;
             _states[hex] = new FlightState
             {
-                plan              = plan,
-                path              = path,
-                s                 = 0f,
-                speedJitterKnots  = Mathf.Lerp(perPlaneSpeedJitterKnots.x, perPlaneSpeedJitterKnots.y, (float)rng.NextDouble()),
+                plan = plan,
+                path = path,
+                s = 0f,
+                speedJitterKnots = Mathf.Lerp(perPlaneSpeedJitterKnots.x, perPlaneSpeedJitterKnots.y, (float)rng.NextDouble()),
             };
 
             if (logPathSummary)
@@ -309,14 +312,14 @@ public class MockPlaneDataProvider : MonoBehaviour, IPlaneDataProvider
         {
             var end = path.Sample(path.TotalLength);
             plane.mapPosition = ToWorldSpace(end);
-            plane.ASL         = end.y;
-            plane.gs          = 0f;
-            plane.baroRate    = 0f;
+            plane.ASL = end.y;
+            plane.gs = 0f;
+            plane.baroRate = 0f;
             return;
         }
 
         float factor = path.SpeedFactor(state.s);
-        var phase    = path.PhaseAt(state.s);
+        var phase = path.PhaseAt(state.s);
 
         float effectiveSpeedKnots = state.plan.cruiseSpeed * factor;
         if (phase == FlightPhase.Cruise) effectiveSpeedKnots += state.speedJitterKnots;
@@ -333,11 +336,11 @@ public class MockPlaneDataProvider : MonoBehaviour, IPlaneDataProvider
         plane.lat = pAuthored.z;
         plane.lon = pAuthored.x;
         plane.ASL = pAuthored.y;
-        plane.gs  = effectiveSpeedKnots;
+        plane.gs = effectiveSpeedKnots;
         plane.track = path.TrackDeg(state.s);
         plane.turnRateDegPerSec = path.CurvatureXZ(state.s) * authoredPerSec * Mathf.Rad2Deg;
 
-        float ftPerRealSec  = path.DyDsFeetPerUnit(state.s) * authoredPerSec;
+        float ftPerRealSec = path.DyDsFeetPerUnit(state.s) * authoredPerSec;
         float simMinPerReal = Mathf.Max(0.0001f, simTimeMultiplier) / 60f;
         plane.baroRate = ftPerRealSec / simMinPerReal;
     }
@@ -371,7 +374,7 @@ public class MockPlaneDataProvider : MonoBehaviour, IPlaneDataProvider
         if (chordLen < 1e-3f) return result;
 
         Vector3 along = chord / chordLen;
-        Vector3 perp  = new Vector3(-along.z, 0f, along.x);
+        Vector3 perp = new Vector3(-along.z, 0f, along.x);
 
         float sectionLen = chordLen / (count + 1);
         float effMin = Mathf.Min(minSpacing, sectionLen * 0.7f);
@@ -416,8 +419,8 @@ public class MockPlaneDataProvider : MonoBehaviour, IPlaneDataProvider
     {
         int n = airports.Count;
         if (TryPickPair(rng, n, usedPairs, usedOrigins, usedDests, out var pair)) return pair;
-        if (TryPickPair(rng, n, usedPairs, null,         usedDests, out pair))   return pair;
-        if (TryPickPair(rng, n, usedPairs, null,         null,      out pair))   return pair;
+        if (TryPickPair(rng, n, usedPairs, null, usedDests, out pair)) return pair;
+        if (TryPickPair(rng, n, usedPairs, null, null, out pair)) return pair;
 
         int oFallback = rng.Next(n);
         int dFallback;
