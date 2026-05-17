@@ -10,7 +10,6 @@ public class MainMenuUIHandler : MonoBehaviour
     //the menu game objects are the collection of a menu so they can be switched between
     public GameObject Menu1;
     public GameObject Menu2;
-    public NetworkRunner runner;
     public bool shutdown = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -34,6 +33,7 @@ public class MainMenuUIHandler : MonoBehaviour
     }
     public void LoadScene(int scene)
     {
+        shutdown = true;
         SceneManager.LoadScene(scene);
     }
     public void Multiplayer()

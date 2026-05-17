@@ -6,7 +6,7 @@ public class NetworkEnder : MonoBehaviour
     public NetworkRunner runner;
     public MainMenuUIHandler menu;
 
-    public async void Update()
+    public void Update()
     {
         if (menu.shutdown)
         {

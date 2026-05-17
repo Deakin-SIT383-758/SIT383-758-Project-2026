@@ -7,6 +7,7 @@ public class NameChanger : MonoBehaviour
     public void ChangeName()
     {
         PlayerPrefs.SetString("Name",inputField.text);
-        inputField.text = ("Saved");
+        inputField.text = ("");
+        FindAnyObjectByType<PlayerSubmitTime>().SubmitMyTime();
     }
 }

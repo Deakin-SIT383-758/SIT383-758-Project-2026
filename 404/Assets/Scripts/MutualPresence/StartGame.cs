@@ -6,7 +6,7 @@ public class StartGame : MonoBehaviour
 
     public NetworkRunner runner;
 
-    private async void Start()
+    private void Start()
     {
         string roomName = PlayerPrefs.GetString("RoomName", "DefaultRoom");
 

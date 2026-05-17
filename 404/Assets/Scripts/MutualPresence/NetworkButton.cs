@@ -1,4 +1,5 @@
 using Fusion;
+using Photon.Voice.Unity;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -22,6 +23,14 @@ public class NetworkButton : NetworkBehaviour
     public bool isToggle = false; // Is this button a toggle?
     private bool toggleState = false; // On or off state of toggle
     public GameObject toggleLight; // Light gameobject to toggle
+    [Header("Audio")]
+    public AudioSource engineStartSource;
+    public AudioSource engineIdleSource;
+    public bool isAudio = false;
+    public bool isPlaying = false;
+    public bool isIntercom = false;
+    public Recorder Intercom;
+    public bool muted = false;
 
     private void Start()
     {
@@ -33,12 +42,22 @@ public class NetworkButton : NetworkBehaviour
             toggleLight.SetActive(false);
 
         }
+        if (isAudio)
+        {
+            engineStartSource.Stop();
+            engineIdleSource.Stop();
+
+        }
+
+
         startPos = buttonTop.localPosition;
         interactable = this.gameObject.GetComponent<XRSimpleInteractable>();
-        
-        interactable.selectEntered.AddListener(OnPress);
 
-        toggleLight.SetActive(false);
+        interactable.selectEntered.AddListener(OnPress);
+        if (toggleLight != null)
+        {
+            toggleLight.SetActive(false);
+        }
     }
 
     private void OnDestroy()
@@ -76,7 +95,47 @@ public class NetworkButton : NetworkBehaviour
 
             yield return null;
         }
+        if (isAudio && !isPlaying)
+        {
+            isPlaying = true;
+            // TURN ON ENGINE
+            if (engineStartSource != null)
+            {
+                engineStartSource.Play();
+                yield return new WaitForSeconds(engineStartSource.clip.length);
+            }
 
+            if (engineIdleSource != null)
+            {
+                engineIdleSource.loop = true;
+                engineIdleSource.Play();
+            }
+            ChecklistManager.Instance.ControlUpdate(controlName, 1);
+        }
+        else if (isAudio)
+        {
+            // TURN OFF ENGINE
+            if (engineStartSource != null)
+                engineStartSource.Stop();
+
+            if (engineIdleSource != null)
+                engineIdleSource.loop = false;
+                engineIdleSource.Stop();
+            isPlaying = false;
+        }
+        if (isIntercom)
+        {
+            if (muted)
+            {
+                Intercom.RecordingEnabled = true;
+                muted = false;
+            }
+            else
+            {
+                Intercom.RecordingEnabled = false;
+                muted = true;
+            }
+        }
         // ===== ACTION HERE =====
         Debug.Log("VR Button Pressed!");
         if (isToggle)
