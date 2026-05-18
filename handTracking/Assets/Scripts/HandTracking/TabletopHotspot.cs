@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 namespace OAS.HandTracking
@@ -9,9 +9,9 @@ namespace OAS.HandTracking
         [SerializeField] private HotspotType hotspotType;
         [SerializeField] private float feedbackDuration = 1.5f;
 
-        private Material _mat;
-        private Color _defaultColor;
-        private int _hoverCount;
+        private Material hotspotMaterial;
+        private Color defaultColor;
+        private int hoverCount;
 
         private static readonly Color HoverColor    = new Color(1f, 0.85f, 0f);
         private static readonly Color CorrectColor   = Color.green;
@@ -21,25 +21,25 @@ namespace OAS.HandTracking
 
         private void Awake()
         {
-            var rend = GetComponent<Renderer>();
-            if (rend != null)
+            Renderer hotspotRenderer = GetComponent<Renderer>();
+            if (hotspotRenderer != null)
             {
-                _mat = rend.material; // creates a per-instance copy
-                _defaultColor = _mat.color;
+                hotspotMaterial = hotspotRenderer.material;
+                defaultColor = hotspotMaterial.color;
             }
         }
 
         public void OnHoverEnter()
         {
-            _hoverCount++;
-            if (_mat != null) _mat.color = HoverColor;
+            hoverCount++;
+            if (hotspotMaterial != null) hotspotMaterial.color = HoverColor;
         }
 
         public void OnHoverExit()
         {
-            _hoverCount = Mathf.Max(0, _hoverCount - 1);
-            if (_hoverCount == 0 && _mat != null)
-                _mat.color = _defaultColor;
+            hoverCount = Mathf.Max(0, hoverCount - 1);
+            if (hoverCount == 0 && hotspotMaterial != null)
+                hotspotMaterial.color = defaultColor;
         }
 
         public void OnSelected(bool isCorrect)
@@ -50,9 +50,9 @@ namespace OAS.HandTracking
 
         private IEnumerator ShowFeedback(Color feedbackColor)
         {
-            if (_mat != null) _mat.color = feedbackColor;
+            if (hotspotMaterial != null) hotspotMaterial.color = feedbackColor;
             yield return new WaitForSeconds(feedbackDuration);
-            if (_mat != null) _mat.color = _hoverCount > 0 ? HoverColor : _defaultColor;
+            if (hotspotMaterial != null) hotspotMaterial.color = hoverCount > 0 ? HoverColor : defaultColor;
         }
     }
 }

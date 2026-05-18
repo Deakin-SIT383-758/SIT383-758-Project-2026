@@ -7,32 +7,32 @@ namespace OAS.HandTracking
     {
         public UnityEvent onClick = new UnityEvent();
 
-        private Material _mat;
-        private Color    _defaultColor;
-        private int      _hoverCount;
+        private Material buttonMaterial;
+        private Color defaultColor;
+        private int hoverCount;
 
         private static readonly Color HoverColor = new Color(0.4f, 0.75f, 1f);
 
         private void Awake()
         {
-            var rend = GetComponent<Renderer>();
-            if (rend != null)
+            Renderer buttonRenderer = GetComponent<Renderer>();
+            if (buttonRenderer != null)
             {
-                _mat          = rend.material;
-                _defaultColor = _mat.color;
+                buttonMaterial = buttonRenderer.material;
+                defaultColor = buttonMaterial.color;
             }
         }
 
         public void OnHoverEnter()
         {
-            _hoverCount++;
-            if (_mat != null) _mat.color = HoverColor;
+            hoverCount++;
+            if (buttonMaterial != null) buttonMaterial.color = HoverColor;
         }
 
         public void OnHoverExit()
         {
-            _hoverCount = Mathf.Max(0, _hoverCount - 1);
-            if (_hoverCount == 0 && _mat != null) _mat.color = _defaultColor;
+            hoverCount = Mathf.Max(0, hoverCount - 1);
+            if (hoverCount == 0 && buttonMaterial != null) buttonMaterial.color = defaultColor;
         }
 
         public void Press() => onClick?.Invoke();

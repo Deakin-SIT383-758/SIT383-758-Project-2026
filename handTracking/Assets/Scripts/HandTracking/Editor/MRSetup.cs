@@ -27,15 +27,15 @@ namespace OAS.HandTracking.Editor
                 return;
             }
 
-            var go = new GameObject("Passthrough");
+            var go    = new GameObject("Passthrough");
             var layer = go.AddComponent<OVRPassthroughLayer>();
 
-            var so = new SerializedObject(layer);
-            var placement = so.FindProperty("projectionSurfaceType");
-            if (placement != null) placement.enumValueIndex = 0; 
-            var overlay = so.FindProperty("overlayType");
-            if (overlay != null) overlay.enumValueIndex = 1; 
-            so.ApplyModifiedPropertiesWithoutUndo();
+            var layerSO   = new SerializedObject(layer);
+            var placement = layerSO.FindProperty("projectionSurfaceType");
+            if (placement != null) placement.enumValueIndex = 0;
+            var overlay   = layerSO.FindProperty("overlayType");
+            if (overlay != null) overlay.enumValueIndex = 1;
+            layerSO.ApplyModifiedPropertiesWithoutUndo();
 
             var cam = Camera.main;
             if (cam != null)
@@ -48,38 +48,36 @@ namespace OAS.HandTracking.Editor
             var ovrManager = Object.FindFirstObjectByType<OVRManager>();
             if (ovrManager != null)
             {
-                var mso = new SerializedObject(ovrManager);
+                var managerSO = new SerializedObject(ovrManager);
                 foreach (var propName in new[] { "_passthroughSupport", "passthroughSupport",
                                                   "_isInsightPassthroughEnabled" })
                 {
-                    var prop = mso.FindProperty(propName);
+                    var prop = managerSO.FindProperty(propName);
                     if (prop == null) continue;
                     if (prop.propertyType == SerializedPropertyType.Enum)
-                        prop.enumValueIndex = 1; // Supported
+                        prop.enumValueIndex = 1;
                     else
                         prop.boolValue = true;
                     break;
                 }
-                mso.ApplyModifiedPropertiesWithoutUndo();
+                managerSO.ApplyModifiedPropertiesWithoutUndo();
             }
 
-            var toggle = go.AddComponent<MRPassthroughToggle>();
-            var tso    = new SerializedObject(toggle);
-            var floor  = GameObject.Find("Floor");
-            tso.FindProperty("virtualFloor").objectReferenceValue = floor;
-            tso.ApplyModifiedPropertiesWithoutUndo();
+            var toggle   = go.AddComponent<MRPassthroughToggle>();
+            var toggleSO = new SerializedObject(toggle);
+            var floor    = GameObject.Find("Floor");
+            toggleSO.FindProperty("virtualFloor").objectReferenceValue = floor;
+            toggleSO.ApplyModifiedPropertiesWithoutUndo();
         }
 
         private static void SetupMRUK()
         {
             if (Object.FindFirstObjectByType<MRUK>() != null)
-            {
                 return;
-            }
 
             var go = new GameObject("MRUK");
             go.AddComponent<MRUK>();
-            go.SetActive(false); 
+            go.SetActive(false);
         }
 
         private static void SetupTableAnchor()
@@ -90,30 +88,29 @@ namespace OAS.HandTracking.Editor
                 return;
             }
 
-            var anchorGO = new GameObject("TableAnchor");
-            anchorGO.transform.position = Vector3.zero;
+            var anchorObject = new GameObject("TableAnchor");
+            anchorObject.transform.position = Vector3.zero;
 
             var table = GameObject.Find("Table");
             if (table != null)
-                table.transform.SetParent(anchorGO.transform, true);
+                table.transform.SetParent(anchorObject.transform, true);
             else
                 Debug.LogWarning("[OAS] 'Table' GameObject not found — reparent it under TableAnchor manually.");
 
             var ui = GameObject.Find("TrainingUI");
             if (ui != null)
-                ui.transform.SetParent(anchorGO.transform, true);
+                ui.transform.SetParent(anchorObject.transform, true);
             else
                 Debug.LogWarning("GameObject not found — reparent it under TableAnchor manually.");
 
-            var anchor = anchorGO.AddComponent<QRTableAnchor>();
-            var aso = new SerializedObject(anchor);
-            aso.FindProperty("tableRoot").objectReferenceValue         = anchorGO.transform;
-            aso.FindProperty("tableSurfaceLocalY").floatValue          = 0.785f;
-            // FindFirstObjectByType with Include finds inactive objects too
+            var anchor   = anchorObject.AddComponent<QRTableAnchor>();
+            var anchorSO = new SerializedObject(anchor);
+            anchorSO.FindProperty("tableRoot").objectReferenceValue       = anchorObject.transform;
+            anchorSO.FindProperty("tableSurfaceLocalY").floatValue        = 0.785f;
             var mruk = Object.FindFirstObjectByType<MRUK>(FindObjectsInactive.Include);
-            aso.FindProperty("mrukGameObject").objectReferenceValue  = mruk != null ? mruk.gameObject : null;
-            aso.FindProperty("virtualFloor").objectReferenceValue    = GameObject.Find("Floor");
-            aso.ApplyModifiedPropertiesWithoutUndo();
+            anchorSO.FindProperty("mrukGameObject").objectReferenceValue  = mruk != null ? mruk.gameObject : null;
+            anchorSO.FindProperty("virtualFloor").objectReferenceValue    = GameObject.Find("Floor");
+            anchorSO.ApplyModifiedPropertiesWithoutUndo();
         }
 
         private static void WirePassthroughToMenu()
@@ -127,13 +124,11 @@ namespace OAS.HandTracking.Editor
 
             var toggle = Object.FindFirstObjectByType<MRPassthroughToggle>();
             if (toggle == null)
-            {
                 return;
-            }
 
-            var cso = new SerializedObject(controller);
-            cso.FindProperty("passthroughToggle").objectReferenceValue = toggle;
-            cso.ApplyModifiedPropertiesWithoutUndo();
+            var controllerSO = new SerializedObject(controller);
+            controllerSO.FindProperty("passthroughToggle").objectReferenceValue = toggle;
+            controllerSO.ApplyModifiedPropertiesWithoutUndo();
         }
     }
 }

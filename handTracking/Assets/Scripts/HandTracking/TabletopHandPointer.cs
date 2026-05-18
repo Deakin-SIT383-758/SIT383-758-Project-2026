@@ -6,24 +6,28 @@ namespace OAS.HandTracking
 {
     public class TabletopHandPointer : MonoBehaviour
     {
-        [SerializeField] private OVRHand      rightHand;
-        [SerializeField] private OVRSkeleton  rightSkeleton;
-        [SerializeField] private Transform    rightControllerAnchor;
+        [SerializeField] private OVRHand rightHand;
+        [SerializeField] private OVRSkeleton rightSkeleton;
+        [SerializeField] private Transform rightControllerAnchor;
         [SerializeField] private LineRenderer rightRayLine;
 
-        [SerializeField] private OVRHand      leftHand;
-        [SerializeField] private OVRSkeleton  leftSkeleton;
-        [SerializeField] private Transform    leftControllerAnchor;
+        [SerializeField] private OVRHand leftHand;
+        [SerializeField] private OVRSkeleton leftSkeleton;
+        [SerializeField] private Transform leftControllerAnchor;
         [SerializeField] private LineRenderer leftRayLine;
 
         [SerializeField] private float maxRayDistance = 2f;
 
         public event Action<TabletopHotspot> OnHotspotSelected;
 
-        private Transform _rIndex2, _rIndex3;
-        private Transform _lIndex2, _lIndex3;
-        private bool      _rWasPinching, _lWasPinching;
-        private TabletopHotspot _rHovered, _lHovered;
+        private Transform rightIndexMid;
+        private Transform rightIndexTip;
+        private Transform leftIndexMid;
+        private Transform leftIndexTip;
+        private bool rightWasPinching;
+        private bool leftWasPinching;
+        private TabletopHotspot rightHovered;
+        private TabletopHotspot leftHovered;
 
         private void Start()
         {
@@ -35,18 +39,19 @@ namespace OAS.HandTracking
         {
             while (!skeleton.IsInitialized) yield return null;
 
-            Transform i2 = null, i3 = null;
+            Transform indexMid = null;
+            Transform indexTip = null;
             foreach (var bone in skeleton.Bones)
             {
-                if      (bone.Id == OVRSkeleton.BoneId.Hand_Index2) i2 = bone.Transform;
-                else if (bone.Id == OVRSkeleton.BoneId.Hand_Index3) i3 = bone.Transform;
+                if      (bone.Id == OVRSkeleton.BoneId.Hand_Index2) indexMid = bone.Transform;
+                else if (bone.Id == OVRSkeleton.BoneId.Hand_Index3) indexTip = bone.Transform;
             }
 
             string side = isRight ? "Right" : "Left";
-            if (i2 != null && i3 != null)
+            if (indexMid != null && indexTip != null)
             {
-                if (isRight) { _rIndex2 = i2; _rIndex3 = i3; }
-                else         { _lIndex2 = i2; _lIndex3 = i3; }
+                if (isRight) { rightIndexMid = indexMid; rightIndexTip = indexTip; }
+                else         { leftIndexMid  = indexMid; leftIndexTip  = indexTip; }
                 Debug.Log($"[HandPointer] {side} hand bones ready.");
             }
             else
@@ -58,20 +63,20 @@ namespace OAS.HandTracking
 
         private void Update()
         {
-            ProcessHand(rightHand, _rIndex2, _rIndex3, rightControllerAnchor, rightRayLine,
-                        isRight: true,  ref _rHovered, ref _rWasPinching);
-            ProcessHand(leftHand,  _lIndex2, _lIndex3, leftControllerAnchor,  leftRayLine,
-                        isRight: false, ref _lHovered, ref _lWasPinching);
+            ProcessHand(rightHand, rightIndexMid, rightIndexTip, rightControllerAnchor, rightRayLine,
+                        isRight: true,  ref rightHovered, ref rightWasPinching);
+            ProcessHand(leftHand,  leftIndexMid,  leftIndexTip,  leftControllerAnchor,  leftRayLine,
+                        isRight: false, ref leftHovered,  ref leftWasPinching);
         }
 
         private void ProcessHand(
-            OVRHand hand, Transform i2, Transform i3,
+            OVRHand hand, Transform indexMid, Transform indexTip,
             Transform anchor, LineRenderer rayLine, bool isRight,
             ref TabletopHotspot hovered, ref bool wasPinching)
         {
             bool usingHand = hand != null && hand.IsTracked;
 
-            if (!TryGetRay(usingHand, i2, i3, anchor, out Ray ray))
+            if (!TryGetRay(usingHand, indexMid, indexTip, anchor, out Ray ray))
             {
                 ClearHover(ref hovered);
                 SetRayVisual(rayLine, false);
@@ -80,8 +85,8 @@ namespace OAS.HandTracking
 
             SetRayVisual(rayLine, true, ray);
 
-            var newHover = Physics.Raycast(ray, out RaycastHit hit, maxRayDistance)
-                ? hit.collider.GetComponent<TabletopHotspot>()
+            TabletopHotspot newHover = Physics.Raycast(ray, out RaycastHit rayHit, maxRayDistance)
+                ? rayHit.collider.GetComponent<TabletopHotspot>()
                 : null;
 
             if (newHover != hovered)
@@ -99,12 +104,12 @@ namespace OAS.HandTracking
                 OnHotspotSelected?.Invoke(hovered);
         }
 
-        private static bool TryGetRay(bool usingHand, Transform i2, Transform i3,
+        private static bool TryGetRay(bool usingHand, Transform indexMid, Transform indexTip,
             Transform anchor, out Ray ray)
         {
-            if (usingHand && i2 != null)
+            if (usingHand && indexMid != null)
             {
-                ray = new Ray(i3.position, (i3.position - i2.position).normalized);
+                ray = new Ray(indexTip.position, (indexTip.position - indexMid.position).normalized);
                 return true;
             }
             if (!usingHand && anchor != null)
@@ -135,21 +140,21 @@ namespace OAS.HandTracking
             OVRInput.Button.PrimaryIndexTrigger,
             isRight ? OVRInput.Controller.RTouch : OVRInput.Controller.LTouch);
 
-        private void SetRayVisual(LineRenderer lr, bool active, Ray ray = default)
+        private void SetRayVisual(LineRenderer rayLine, bool active, Ray ray = default)
         {
-            if (lr == null) return;
-            lr.enabled = active;
+            if (rayLine == null) return;
+            rayLine.enabled = active;
             if (!active) return;
-            lr.SetPosition(0, ray.origin);
-            lr.SetPosition(1, ray.origin + ray.direction * maxRayDistance);
+            rayLine.SetPosition(0, ray.origin);
+            rayLine.SetPosition(1, ray.origin + ray.direction * maxRayDistance);
         }
 
         private void OnDisable()
         {
-            ClearHover(ref _rHovered);
-            ClearHover(ref _lHovered);
-            _rWasPinching = false;
-            _lWasPinching = false;
+            ClearHover(ref rightHovered);
+            ClearHover(ref leftHovered);
+            rightWasPinching = false;
+            leftWasPinching  = false;
             SetRayVisual(rightRayLine, false);
             SetRayVisual(leftRayLine,  false);
         }

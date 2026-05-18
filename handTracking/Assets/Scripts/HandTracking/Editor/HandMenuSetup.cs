@@ -51,8 +51,6 @@ namespace OAS.HandTracking.Editor
             EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
         }
 
-        // Construction
-
         private static void Build(
             OVRHand leftHand, OVRSkeleton leftSkeleton,
             OVRHand rightHand, OVRSkeleton rightSkeleton)
@@ -65,22 +63,22 @@ namespace OAS.HandTracking.Editor
             var (overlay, closeBtn, opt1, opt3, opt4) =
                 MakeOverlay(root.transform, leftSkeleton, rightSkeleton);
 
-            var cso = new SerializedObject(controller);
-            cso.FindProperty("leftHand").objectReferenceValue      = leftHand;
-            cso.FindProperty("leftSkeleton").objectReferenceValue  = leftSkeleton;
-            cso.FindProperty("rightHand").objectReferenceValue     = rightHand;
-            cso.FindProperty("rightSkeleton").objectReferenceValue = rightSkeleton;
-            cso.FindProperty("triggerButton").objectReferenceValue = trigger;
-            cso.FindProperty("overlayMenu").objectReferenceValue   = overlay;
-            cso.FindProperty("menuRayLine").objectReferenceValue   = rayLine;
-            cso.FindProperty("palmNormalAxis").vector3Value        = Vector3.down;
-            cso.FindProperty("invertPalmNormal").boolValue         = false;
-            cso.FindProperty("handPointer").objectReferenceValue   = Object.FindFirstObjectByType<TabletopHandPointer>();
-            cso.FindProperty("teleportInteractor").objectReferenceValue =
+            var controllerSO = new SerializedObject(controller);
+            controllerSO.FindProperty("leftHand").objectReferenceValue      = leftHand;
+            controllerSO.FindProperty("leftSkeleton").objectReferenceValue  = leftSkeleton;
+            controllerSO.FindProperty("rightHand").objectReferenceValue     = rightHand;
+            controllerSO.FindProperty("rightSkeleton").objectReferenceValue = rightSkeleton;
+            controllerSO.FindProperty("triggerButton").objectReferenceValue = trigger;
+            controllerSO.FindProperty("overlayMenu").objectReferenceValue   = overlay;
+            controllerSO.FindProperty("menuRayLine").objectReferenceValue   = rayLine;
+            controllerSO.FindProperty("palmNormalAxis").vector3Value        = Vector3.down;
+            controllerSO.FindProperty("invertPalmNormal").boolValue         = false;
+            controllerSO.FindProperty("handPointer").objectReferenceValue   = Object.FindFirstObjectByType<TabletopHandPointer>();
+            controllerSO.FindProperty("teleportInteractor").objectReferenceValue =
                 GameObject.Find("TeleportHandInteractor");
-            cso.FindProperty("passthroughToggle").objectReferenceValue =
+            controllerSO.FindProperty("passthroughToggle").objectReferenceValue =
                 Object.FindFirstObjectByType<MRPassthroughToggle>();
-            cso.ApplyModifiedPropertiesWithoutUndo();
+            controllerSO.ApplyModifiedPropertiesWithoutUndo();
 
             UnityEventTools.AddPersistentListener(closeBtn.onClick, controller.CloseMenu);
             UnityEventTools.AddPersistentListener(opt1.onClick,     controller.OnOption1Pressed);
@@ -88,23 +86,19 @@ namespace OAS.HandTracking.Editor
             UnityEventTools.AddPersistentListener(opt4.onClick,     controller.OnOption4Pressed);
         }
 
-        // Ray line 
-
         private static LineRenderer MakeRayLine(Transform parent)
         {
             var go = new GameObject("MenuRay");
             go.transform.SetParent(parent, false);
-            var lr = go.AddComponent<LineRenderer>();
-            lr.positionCount = 2;
-            lr.startWidth    = 0.004f;
-            lr.endWidth      = 0.002f;
-            lr.useWorldSpace = true;
-            lr.material = new Material(Shader.Find("Universal Render Pipeline/Unlit"))
+            var rayLine = go.AddComponent<LineRenderer>();
+            rayLine.positionCount = 2;
+            rayLine.startWidth    = 0.004f;
+            rayLine.endWidth      = 0.002f;
+            rayLine.useWorldSpace = true;
+            rayLine.material = new Material(Shader.Find("Universal Render Pipeline/Unlit"))
                 { color = new Color(0.5f, 0.85f, 1f, 0.75f) };
-            return lr;
+            return rayLine;
         }
-
-        // Trigger button
 
         private static GameObject MakeTriggerButton(Transform parent)
         {
@@ -119,44 +113,38 @@ namespace OAS.HandTracking.Editor
             return go;
         }
 
-        // Overlay panel
-
         private static (GameObject overlay,
                          HandMenuButton close,
                          HandMenuButton opt1,
                          HandMenuButton opt3,
                          HandMenuButton opt4)
-            MakeOverlay(Transform parent, OVRSkeleton leftSk, OVRSkeleton rightSk)
+            MakeOverlay(Transform parent, OVRSkeleton leftSkeleton, OVRSkeleton rightSkeleton)
         {
             var overlay = new GameObject("OverlayMenu");
             overlay.transform.SetParent(parent, false);
 
-            // Dark background slab — tall enough for 5 items
-            var bg = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            bg.name = "Background";
-            bg.transform.SetParent(overlay.transform, false);
-            bg.transform.localPosition = Vector3.zero;
-            bg.transform.localScale    = new Vector3(0.16f, 0.27f, 0.002f);
-            Object.DestroyImmediate(bg.GetComponent<Collider>());
-            bg.GetComponent<Renderer>().sharedMaterial =
+            var background = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            background.name = "Background";
+            background.transform.SetParent(overlay.transform, false);
+            background.transform.localPosition = Vector3.zero;
+            background.transform.localScale    = new Vector3(0.16f, 0.27f, 0.002f);
+            Object.DestroyImmediate(background.GetComponent<Collider>());
+            background.GetComponent<Renderer>().sharedMaterial =
                 new Material(Shader.Find("Universal Render Pipeline/Unlit"))
                     { color = new Color(0.07f, 0.07f, 0.08f) };
 
-            // Title
             MakeLabel(overlay.transform, "Title", "MENU",
                       localY: 0.112f, canvasW: 160f, canvasH: 22f, fontSize: 18);
 
-            // Buttons — stacked downward from startY
             const float startY = 0.068f;
             var close = MakeButton(overlay.transform, "CloseBtn",   "Close",
                                    new Color(0.75f, 0.18f, 0.18f), startY);
             var opt1  = MakeButton(overlay.transform, "Option1Btn", "Toggle Ray",
                                    new Color(0.18f, 0.38f, 0.75f), startY - (BtnH + BtnGap));
 
-            // Option 2 slot → sound range slider
             MakeSoundRangeSlider(overlay.transform,
                                  centerY: startY - (BtnH + BtnGap) * 2,
-                                 leftSk, rightSk);
+                                 leftSkeleton, rightSkeleton);
 
             var opt3  = MakeButton(overlay.transform, "Option3Btn", "Toggle Teleport",
                                    new Color(0.18f, 0.38f, 0.75f), startY - (BtnH + BtnGap) * 3);
@@ -168,18 +156,14 @@ namespace OAS.HandTracking.Editor
             return (overlay, close, opt1, opt3, opt4);
         }
 
-        // Sound range slider
-
         private static void MakeSoundRangeSlider(Transform overlayParent, float centerY,
-                                                  OVRSkeleton leftSk, OVRSkeleton rightSk)
+                                                  OVRSkeleton leftSkeleton, OVRSkeleton rightSkeleton)
         {
             const float halfLen = 0.055f;
 
-            // Title label above track
             MakeLabel(overlayParent, "SoundRange_Title", "Sound Range",
                       localY: centerY + 0.018f, canvasW: 130f, canvasH: 20f, fontSize: 11);
 
-            // Track — keeps BoxCollider for finger detection
             var track = GameObject.CreatePrimitive(PrimitiveType.Cube);
             track.name = "SoundRangeTrack";
             track.transform.SetParent(overlayParent, false);
@@ -189,56 +173,50 @@ namespace OAS.HandTracking.Editor
                 new Material(Shader.Find("Universal Render Pipeline/Lit"))
                     { color = new Color(0.25f, 0.25f, 0.27f) };
 
-            // Fill — cyan bar, no collider
-            var fillGO = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            fillGO.name = "SoundRangeFill";
-            fillGO.transform.SetParent(overlayParent, false);
-            fillGO.transform.localPosition = new Vector3(-halfLen, centerY, -0.002f);
-            fillGO.transform.localScale    = new Vector3(0.001f, 0.006f, 0.005f);
-            Object.DestroyImmediate(fillGO.GetComponent<Collider>());
-            fillGO.GetComponent<Renderer>().sharedMaterial =
+            var fillObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            fillObject.name = "SoundRangeFill";
+            fillObject.transform.SetParent(overlayParent, false);
+            fillObject.transform.localPosition = new Vector3(-halfLen, centerY, -0.002f);
+            fillObject.transform.localScale    = new Vector3(0.001f, 0.006f, 0.005f);
+            Object.DestroyImmediate(fillObject.GetComponent<Collider>());
+            fillObject.GetComponent<Renderer>().sharedMaterial =
                 new Material(Shader.Find("Universal Render Pipeline/Lit"))
                     { color = new Color(0.18f, 0.65f, 1f) };
 
-            // Handle — white sphere, no collider
-            var handleGO = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            handleGO.name = "SoundRangeHandle";
-            handleGO.transform.SetParent(overlayParent, false);
-            handleGO.transform.localPosition = new Vector3(-halfLen, centerY, -0.001f);
-            handleGO.transform.localScale    = Vector3.one * 0.011f;
-            Object.DestroyImmediate(handleGO.GetComponent<Collider>());
-            handleGO.GetComponent<Renderer>().sharedMaterial =
+            var handleObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            handleObject.name = "SoundRangeHandle";
+            handleObject.transform.SetParent(overlayParent, false);
+            handleObject.transform.localPosition = new Vector3(-halfLen, centerY, -0.001f);
+            handleObject.transform.localScale    = Vector3.one * 0.011f;
+            Object.DestroyImmediate(handleObject.GetComponent<Collider>());
+            handleObject.GetComponent<Renderer>().sharedMaterial =
                 new Material(Shader.Find("Universal Render Pipeline/Lit"))
                     { color = Color.white };
 
-            // Value label below track
-            var valueTmp = MakeLabel(overlayParent, "SoundRange_Value", "Range: 5.00 m",
-                                     localY: centerY - 0.018f, canvasW: 130f, canvasH: 20f, fontSize: 10);
+            var valueLabel = MakeLabel(overlayParent, "SoundRange_Value", "Range: 5.00 m",
+                                       localY: centerY - 0.018f, canvasW: 130f, canvasH: 20f, fontSize: 10);
 
-            // AudioRangeSlider on the overlay — disabled when menu closed (overlay inactive)
-            var slider = overlayParent.gameObject.AddComponent<AudioRangeSlider>();
-            var sso    = new SerializedObject(slider);
-            sso.FindProperty("leftSkeleton").objectReferenceValue   = leftSk;
-            sso.FindProperty("rightSkeleton").objectReferenceValue  = rightSk;
-            sso.FindProperty("trackTransform").objectReferenceValue = track.transform;
-            sso.FindProperty("fill").objectReferenceValue           = fillGO.transform;
-            sso.FindProperty("handle").objectReferenceValue         = handleGO.transform;
-            sso.FindProperty("valueLabel").objectReferenceValue     = valueTmp;
-            sso.FindProperty("trackHalfLen").floatValue             = halfLen;
-            sso.FindProperty("minRange").floatValue                 = 0.5f;
-            sso.FindProperty("maxRange").floatValue                 = 10.0f;
-            sso.FindProperty("initialRange").floatValue             = 5.0f;
+            var slider   = overlayParent.gameObject.AddComponent<AudioRangeSlider>();
+            var sliderSO = new SerializedObject(slider);
+            sliderSO.FindProperty("leftSkeleton").objectReferenceValue   = leftSkeleton;
+            sliderSO.FindProperty("rightSkeleton").objectReferenceValue  = rightSkeleton;
+            sliderSO.FindProperty("trackTransform").objectReferenceValue = track.transform;
+            sliderSO.FindProperty("fill").objectReferenceValue           = fillObject.transform;
+            sliderSO.FindProperty("handle").objectReferenceValue         = handleObject.transform;
+            sliderSO.FindProperty("valueLabel").objectReferenceValue     = valueLabel;
+            sliderSO.FindProperty("trackHalfLen").floatValue             = halfLen;
+            sliderSO.FindProperty("minRange").floatValue                 = 0.5f;
+            sliderSO.FindProperty("maxRange").floatValue                 = 10.0f;
+            sliderSO.FindProperty("initialRange").floatValue             = 5.0f;
 
-            var audioMgr = Object.FindFirstObjectByType<CabinAudioManager>();
-            if (audioMgr != null)
-                sso.FindProperty("audioManager").objectReferenceValue = audioMgr;
+            var audioManager = Object.FindFirstObjectByType<CabinAudioManager>();
+            if (audioManager != null)
+                sliderSO.FindProperty("audioManager").objectReferenceValue = audioManager;
             else
                 Debug.LogWarning("[OAS] CabinAudioManager not found — assign it manually on the AudioRangeSlider.");
 
-            sso.ApplyModifiedPropertiesWithoutUndo();
+            sliderSO.ApplyModifiedPropertiesWithoutUndo();
         }
-
-        // Button factory
 
         private static HandMenuButton MakeButton(
             Transform parent, string goName, string label, Color color, float localY)
@@ -257,8 +235,6 @@ namespace OAS.HandTracking.Editor
             return go.AddComponent<HandMenuButton>();
         }
 
-        // TMP label helper 
-
         private static TMP_Text MakeLabel(Transform parent, string goName, string text,
                                            float localY, float canvasW, float canvasH, int fontSize)
         {
@@ -270,21 +246,21 @@ namespace OAS.HandTracking.Editor
 
             var canvas = go.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.WorldSpace;
-            var rt = go.GetComponent<RectTransform>();
-            rt.sizeDelta = new Vector2(canvasW, canvasH);
+            var rectTransform = go.GetComponent<RectTransform>();
+            rectTransform.sizeDelta = new Vector2(canvasW, canvasH);
 
-            var textGO = new GameObject("Text");
-            textGO.transform.SetParent(go.transform, false);
-            var tmp = textGO.AddComponent<TextMeshProUGUI>();
+            var textObject = new GameObject("Text");
+            textObject.transform.SetParent(go.transform, false);
+            var tmp       = textObject.AddComponent<TextMeshProUGUI>();
             tmp.text      = text;
             tmp.fontSize  = fontSize;
             tmp.alignment = TextAlignmentOptions.Center;
             tmp.color     = Color.white;
 
-            var trt = textGO.GetComponent<RectTransform>();
-            trt.anchorMin = Vector2.zero;
-            trt.anchorMax = Vector2.one;
-            trt.offsetMin = trt.offsetMax = Vector2.zero;
+            var textRect      = textObject.GetComponent<RectTransform>();
+            textRect.anchorMin = Vector2.zero;
+            textRect.anchorMax = Vector2.one;
+            textRect.offsetMin = textRect.offsetMax = Vector2.zero;
 
             return tmp;
         }

@@ -6,11 +6,11 @@ namespace OAS.HandTracking
     public class MRPassthroughToggle : MonoBehaviour
     {
         [SerializeField] private OVRPassthroughLayer passthroughLayer;
-        [SerializeField] private GameObject          virtualFloor;
-        [SerializeField] private float               fadeDuration = 0.4f;
+        [SerializeField] private GameObject virtualFloor;
+        [SerializeField] private float fadeDuration = 0.4f;
 
-        private bool      _active;
-        private Coroutine _fade;
+        private bool isActive;
+        private Coroutine fadeCoroutine;
 
         private void Awake()
         {
@@ -23,36 +23,39 @@ namespace OAS.HandTracking
 
         public void Toggle()
         {
-            _active = !_active;
+            isActive = !isActive;
 
             if (virtualFloor != null)
             {
-                var rend = virtualFloor.GetComponent<MeshRenderer>();
-                if (rend != null)
-                    rend.enabled = !_active;
+                MeshRenderer floorRenderer = virtualFloor.GetComponent<MeshRenderer>();
+                if (floorRenderer != null)
+                    floorRenderer.enabled = !isActive;
                 else
-                    virtualFloor.SetActive(!_active);
+                    virtualFloor.SetActive(!isActive);
             }
 
-            if (_fade != null) StopCoroutine(_fade);
-            _fade = StartCoroutine(Fade(_active ? 1f : 0f));
+            if (fadeCoroutine != null)
+                StopCoroutine(fadeCoroutine);
+
+            float targetOpacity = isActive ? 1f : 0f;
+            fadeCoroutine = StartCoroutine(FadePassthrough(targetOpacity));
         }
 
-        private IEnumerator Fade(float target)
+        private IEnumerator FadePassthrough(float targetOpacity)
         {
             if (passthroughLayer == null) yield break;
 
-            float start   = passthroughLayer.textureOpacity;
+            float startOpacity = passthroughLayer.textureOpacity;
             float elapsed = 0f;
 
             while (elapsed < fadeDuration)
             {
                 elapsed += Time.deltaTime;
-                passthroughLayer.textureOpacity = Mathf.Lerp(start, target, elapsed / fadeDuration);
+                passthroughLayer.textureOpacity = Mathf.Lerp(startOpacity, targetOpacity, elapsed / fadeDuration);
                 yield return null;
             }
 
-            passthroughLayer.textureOpacity = target;
+            passthroughLayer.textureOpacity = targetOpacity;
         }
     }
 }

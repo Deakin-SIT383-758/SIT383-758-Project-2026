@@ -5,44 +5,49 @@ namespace OAS.HandTracking
 {
     public class HandMenuController : MonoBehaviour
     {
-        [SerializeField] private OVRHand     leftHand;
+        [SerializeField] private OVRHand leftHand;
         [SerializeField] private OVRSkeleton leftSkeleton;
 
-        [SerializeField] private OVRHand     rightHand;
+        [SerializeField] private OVRHand rightHand;
         [SerializeField] private OVRSkeleton rightSkeleton;
 
-        [SerializeField] private GameObject           triggerButton;
-        [SerializeField] private GameObject           overlayMenu;
-        [SerializeField] private TabletopHandPointer  handPointer;
-        [SerializeField] private GameObject           teleportInteractor;
-        [SerializeField] private MRPassthroughToggle  passthroughToggle;
+        [SerializeField] private GameObject          triggerButton;
+        [SerializeField] private GameObject          overlayMenu;
+        [SerializeField] private TabletopHandPointer handPointer;
+        [SerializeField] private GameObject          teleportInteractor;
+        [SerializeField] private MRPassthroughToggle passthroughToggle;
 
-        [SerializeField] private Vector3 palmNormalAxis  = Vector3.down;
+        [SerializeField] private Vector3 palmNormalAxis   = Vector3.down;
         [SerializeField] private bool    invertPalmNormal = false;
         [SerializeField, Range(0f, 1f)] private float palmThreshold = 0.55f;
 
-        [SerializeField] private float touchRadius     = 0.025f;
-        [SerializeField] private float dwellSeconds    = 0.4f;
-        [SerializeField] private float menuRayDistance = 0.8f;
+        [SerializeField] private float        touchRadius     = 0.025f;
+        [SerializeField] private float        dwellSeconds    = 0.4f;
+        [SerializeField] private float        menuRayDistance = 0.8f;
         [SerializeField] private LineRenderer menuRayLine;
 
-        private Camera _cam;
+        private Camera mainCamera;
 
-        private Transform _lWrist,  _lIndex3;
-        private Transform _rIndex2, _rIndex3;
+        private Transform leftWrist;
+        private Transform leftIndexTip;
+        private Transform rightIndexMid;
+        private Transform rightIndexTip;
 
-        private bool  _menuOpen;
-        private bool  _rWasPinching;
-        private float _triggerCooldown;
+        private bool  isMenuOpen;
+        private bool  rightWasPinching;
+        private float triggerCooldown;
 
-        private HandMenuButton _rayHovered;
-        private HandMenuButton _rTouchHov, _lTouchHov;
-        private float          _rDwell,    _lDwell;
-        private bool           _rFired,    _lFired;
+        private HandMenuButton rayHoveredButton;
+        private HandMenuButton rightTouchHovered;
+        private HandMenuButton leftTouchHovered;
+        private float          rightDwellTimer;
+        private float          leftDwellTimer;
+        private bool           rightFired;
+        private bool           leftFired;
 
-        private readonly Collider[] _hits = new Collider[8];
+        private readonly Collider[] overlapBuffer = new Collider[8];
 
-        private void Awake() => _cam = Camera.main;
+        private void Awake() => mainCamera = Camera.main;
 
         private void Start()
         {
@@ -55,39 +60,39 @@ namespace OAS.HandTracking
                 menuRayLine.enabled       = false;
             }
 
-            if (leftSkeleton  != null) StartCoroutine(WaitBones(leftSkeleton,  isLeft: true));
-            if (rightSkeleton != null) StartCoroutine(WaitBones(rightSkeleton, isLeft: false));
+            if (leftSkeleton  != null) StartCoroutine(WaitForBones(leftSkeleton,  isLeft: true));
+            if (rightSkeleton != null) StartCoroutine(WaitForBones(rightSkeleton, isLeft: false));
         }
 
-        private IEnumerator WaitBones(OVRSkeleton sk, bool isLeft)
+        private IEnumerator WaitForBones(OVRSkeleton skeleton, bool isLeft)
         {
-            while (!sk.IsInitialized) yield return null;
-            foreach (var b in sk.Bones)
+            while (!skeleton.IsInitialized) yield return null;
+            foreach (var bone in skeleton.Bones)
             {
                 if (isLeft)
                 {
-                    if (b.Id == OVRSkeleton.BoneId.Hand_WristRoot) _lWrist  = b.Transform;
-                    if (b.Id == OVRSkeleton.BoneId.Hand_Index3)    _lIndex3 = b.Transform;
+                    if (bone.Id == OVRSkeleton.BoneId.Hand_WristRoot) leftWrist    = bone.Transform;
+                    if (bone.Id == OVRSkeleton.BoneId.Hand_Index3)    leftIndexTip = bone.Transform;
                 }
                 else
                 {
-                    if (b.Id == OVRSkeleton.BoneId.Hand_Index2) _rIndex2 = b.Transform;
-                    if (b.Id == OVRSkeleton.BoneId.Hand_Index3) _rIndex3 = b.Transform;
+                    if (bone.Id == OVRSkeleton.BoneId.Hand_Index2) rightIndexMid = bone.Transform;
+                    if (bone.Id == OVRSkeleton.BoneId.Hand_Index3) rightIndexTip = bone.Transform;
                 }
             }
         }
 
         private void Update()
         {
-            _triggerCooldown -= Time.deltaTime;
+            triggerCooldown -= Time.deltaTime;
 
             FollowHand();
             GestureUpdate();
 
-            if (!_menuOpen && triggerButton != null && triggerButton.activeSelf)
+            if (!isMenuOpen && triggerButton != null && triggerButton.activeSelf)
                 TriggerTouchCheck();
 
-            if (_menuOpen)
+            if (isMenuOpen)
             {
                 RayUpdate();
                 TouchUpdate();
@@ -99,176 +104,167 @@ namespace OAS.HandTracking
             }
         }
 
-        // Hand follow
-
         private void FollowHand()
         {
-            if (_lWrist == null) return;
+            if (leftWrist == null) return;
 
-            Vector3 palmNorm = PalmNormal();
+            Vector3 palmNormal = GetPalmNormal();
 
             if (overlayMenu != null)
             {
-                overlayMenu.transform.position = _lWrist.position + palmNorm * 0.05f;
-                if (_cam != null)
+                overlayMenu.transform.position = leftWrist.position + palmNormal * 0.05f;
+                if (mainCamera != null)
                 {
-                    // Z+ points away from camera so canvas X-axis aligns with world +X → text not mirrored
-                    Vector3 awayFromCam = (overlayMenu.transform.position - _cam.transform.position).normalized;
-                    overlayMenu.transform.rotation = Quaternion.LookRotation(awayFromCam, Vector3.up);
+                    Vector3 awayFromCamera = (overlayMenu.transform.position - mainCamera.transform.position).normalized;
+                    overlayMenu.transform.rotation = Quaternion.LookRotation(awayFromCamera, Vector3.up);
                 }
             }
 
             if (triggerButton != null)
-            {
-                triggerButton.transform.position = _lWrist.position + palmNorm * 0.03f;
-            }
+                triggerButton.transform.position = leftWrist.position + palmNormal * 0.03f;
         }
-
-        // Gesture
 
         private void GestureUpdate()
         {
-            if (_menuOpen) { triggerButton?.SetActive(false); return; }
+            if (isMenuOpen) { triggerButton?.SetActive(false); return; }
 
-            bool canDetect = _lWrist != null && leftHand != null
-                          && leftHand.IsTracked && _cam != null;
+            bool canDetect = leftWrist != null && leftHand != null
+                          && leftHand.IsTracked && mainCamera != null;
 
             if (!canDetect) { triggerButton?.SetActive(false); return; }
 
-            Vector3 toCamera = (_cam.transform.position - _lWrist.position).normalized;
-            bool    facing   = Vector3.Dot(PalmNormal(), toCamera) > palmThreshold;
+            Vector3 toCamera = (mainCamera.transform.position - leftWrist.position).normalized;
+            bool    facing   = Vector3.Dot(GetPalmNormal(), toCamera) > palmThreshold;
             triggerButton?.SetActive(facing);
         }
 
-        private Vector3 PalmNormal()
+        private Vector3 GetPalmNormal()
         {
-            var axis = invertPalmNormal ? -palmNormalAxis : palmNormalAxis;
-            return _lWrist.TransformDirection(axis).normalized;
+            Vector3 axis = invertPalmNormal ? -palmNormalAxis : palmNormalAxis;
+            return leftWrist.TransformDirection(axis).normalized;
         }
-
-        // Trigger button
 
         private void TriggerTouchCheck()
         {
-            if (_triggerCooldown > 0f || triggerButton == null) return;
+            if (triggerCooldown > 0f || triggerButton == null) return;
 
-            if (HitsObject(_rIndex3, triggerButton) || HitsObject(_lIndex3, triggerButton))
+            if (HitsObject(rightIndexTip, triggerButton) || HitsObject(leftIndexTip, triggerButton))
                 OpenMenu();
         }
 
         private bool HitsObject(Transform probe, GameObject target)
         {
             if (probe == null) return false;
-            int n = Physics.OverlapSphereNonAlloc(probe.position, touchRadius, _hits);
-            for (int i = 0; i < n; i++)
-                if (_hits[i].gameObject == target) return true;
+            int hitCount = Physics.OverlapSphereNonAlloc(probe.position, touchRadius, overlapBuffer);
+            for (int i = 0; i < hitCount; i++)
+                if (overlapBuffer[i].gameObject == target) return true;
             return false;
         }
-
-        // Ray interaction (right hand, menu open)
 
         private void RayUpdate()
         {
             HandMenuButton hit       = null;
             bool           pinchStart = false;
 
-            bool rReady = rightHand != null && rightHand.IsTracked
-                       && _rIndex2  != null && _rIndex3 != null;
+            bool rightHandReady = rightHand != null && rightHand.IsTracked
+                               && rightIndexMid != null && rightIndexTip != null;
 
-            if (rReady)
+            if (rightHandReady)
             {
-                var dir = (_rIndex3.position - _rIndex2.position).normalized;
-                var ray = new Ray(_rIndex3.position, dir);
+                Vector3 rayDirection = (rightIndexTip.position - rightIndexMid.position).normalized;
+                Ray     ray          = new Ray(rightIndexTip.position, rayDirection);
 
-                if (Physics.Raycast(ray, out RaycastHit rh, menuRayDistance))
-                    hit = rh.collider.GetComponent<HandMenuButton>();
+                if (Physics.Raycast(ray, out RaycastHit rayHit, menuRayDistance))
+                    hit = rayHit.collider.GetComponent<HandMenuButton>();
 
                 if (menuRayLine != null)
                 {
                     menuRayLine.enabled = true;
                     menuRayLine.SetPosition(0, ray.origin);
-                    menuRayLine.SetPosition(1, ray.origin + dir * menuRayDistance);
+                    menuRayLine.SetPosition(1, ray.origin + rayDirection * menuRayDistance);
                 }
 
-                bool pinching = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
-                pinchStart    = pinching && !_rWasPinching;
-                _rWasPinching = pinching;
+                bool pinching    = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
+                pinchStart       = pinching && !rightWasPinching;
+                rightWasPinching = pinching;
             }
             else
             {
                 if (menuRayLine != null) menuRayLine.enabled = false;
-                _rWasPinching = false;
+                rightWasPinching = false;
             }
 
-            if (hit != _rayHovered)
+            if (hit != rayHoveredButton)
             {
-                _rayHovered?.OnHoverExit();
-                _rayHovered = hit;
-                _rayHovered?.OnHoverEnter();
+                rayHoveredButton?.OnHoverExit();
+                rayHoveredButton = hit;
+                rayHoveredButton?.OnHoverEnter();
             }
 
-            if (pinchStart && _rayHovered != null) _rayHovered.Press();
+            if (pinchStart && rayHoveredButton != null) rayHoveredButton.Press();
         }
 
         private void ClearRayHover()
         {
-            if (_rayHovered == null) return;
-            _rayHovered.OnHoverExit();
-            _rayHovered = null;
+            if (rayHoveredButton == null) return;
+            rayHoveredButton.OnHoverExit();
+            rayHoveredButton = null;
         }
-
-        // Touch interaction (both hands, menu open)
 
         private void TouchUpdate()
         {
-            bool rT = rightHand != null && rightHand.IsTracked && _rIndex3 != null;
+            bool rightTracked = rightHand != null && rightHand.IsTracked && rightIndexTip != null;
 
-            DoTouch(rT,    _rIndex3, ref _rTouchHov, ref _rDwell, ref _rFired);
-            DoTouch(false, null,    ref _lTouchHov, ref _lDwell, ref _lFired);
+            DoTouch(rightTracked, rightIndexTip, ref rightTouchHovered, ref rightDwellTimer, ref rightFired);
+            DoTouch(false,        null,          ref leftTouchHovered,  ref leftDwellTimer,  ref leftFired);
         }
 
         private void DoTouch(bool tracked, Transform probe,
-                              ref HandMenuButton hov, ref float dwell, ref bool fired)
+                              ref HandMenuButton hoveredButton, ref float dwellTimer, ref bool hasFired)
         {
             HandMenuButton found = null;
             if (tracked)
             {
-                int n = Physics.OverlapSphereNonAlloc(probe.position, touchRadius, _hits);
-                for (int i = 0; i < n; i++)
+                int hitCount = Physics.OverlapSphereNonAlloc(probe.position, touchRadius, overlapBuffer);
+                for (int i = 0; i < hitCount; i++)
                 {
-                    found = _hits[i].GetComponent<HandMenuButton>();
+                    found = overlapBuffer[i].GetComponent<HandMenuButton>();
                     if (found != null) break;
                 }
             }
 
-            if (found != hov)
+            if (found != hoveredButton)
             {
-                hov?.OnHoverExit();
-                hov   = found;
-                dwell = 0f;
-                fired = false;
-                hov?.OnHoverEnter();
+                hoveredButton?.OnHoverExit();
+                hoveredButton = found;
+                dwellTimer    = 0f;
+                hasFired      = false;
+                hoveredButton?.OnHoverEnter();
             }
 
-            if (hov != null)
+            if (hoveredButton != null)
             {
-                dwell += Time.deltaTime;
-                if (!fired && dwell >= dwellSeconds) { fired = true; hov.Press(); }
+                dwellTimer += Time.deltaTime;
+                if (!hasFired && dwellTimer >= dwellSeconds)
+                {
+                    hasFired = true;
+                    hoveredButton.Press();
+                }
             }
         }
 
         public void OpenMenu()
         {
-            if (_menuOpen) return;
-            _menuOpen        = true;
-            _triggerCooldown = 1f;
+            if (isMenuOpen) return;
+            isMenuOpen      = true;
+            triggerCooldown = 1f;
             triggerButton?.SetActive(false);
             overlayMenu?.SetActive(true);
         }
 
         public void CloseMenu()
         {
-            _menuOpen = false;
+            isMenuOpen = false;
             overlayMenu?.SetActive(false);
             ClearRayHover();
         }
@@ -279,7 +275,9 @@ namespace OAS.HandTracking
                 handPointer.enabled = !handPointer.enabled;
             CloseMenu();
         }
+
         public void OnOption2Pressed() => Debug.Log("[HandMenu] Option 2 pressed.");
+
         public void OnOption3Pressed()
         {
             if (teleportInteractor != null)

@@ -6,25 +6,28 @@ namespace OAS.HandTracking
 {
     public class TabletopFingerTouch : MonoBehaviour
     {
-        [SerializeField] private OVRHand     rightHand;
+        [SerializeField] private OVRHand rightHand;
         [SerializeField] private OVRSkeleton rightSkeleton;
 
-        [SerializeField] private OVRHand     leftHand;
+        [SerializeField] private OVRHand leftHand;
         [SerializeField] private OVRSkeleton leftSkeleton;
 
-        [SerializeField, Min(0.005f)] private float touchRadius  = 0.03f;
-
-        [SerializeField, Min(0f)]    private float dwellSeconds  = 0.4f;
+        [SerializeField, Min(0.005f)] private float touchRadius = 0.03f;
+        [SerializeField, Min(0f)]     private float dwellSeconds = 0.4f;
 
         public event Action<TabletopHotspot> OnHotspotSelected;
 
-        private Transform _rIndex3, _lIndex3;
+        private Transform rightIndexTip;
+        private Transform leftIndexTip;
 
-        private TabletopHotspot _rHovered, _lHovered;
-        private float _rDwellTimer, _lDwellTimer;
-        private bool  _rFired, _lFired;
+        private TabletopHotspot rightHovered;
+        private TabletopHotspot leftHovered;
+        private float rightDwellTimer;
+        private float leftDwellTimer;
+        private bool rightFired;
+        private bool leftFired;
 
-        private readonly Collider[] _overlapBuffer = new Collider[8];
+        private readonly Collider[] overlapBuffer = new Collider[8];
 
         private void Start()
         {
@@ -52,33 +55,34 @@ namespace OAS.HandTracking
                 Debug.LogWarning($"[FingerTouch] {side} Index3 not found. Bones: {skeleton.Bones.Count}");
                 yield break;
             }
-            if (isRight) _rIndex3 = found;
-            else         _lIndex3 = found;
+
+            if (isRight) rightIndexTip = found;
+            else         leftIndexTip  = found;
             Debug.Log($"[FingerTouch] {side} Index3 found.");
         }
 
         private void Update()
         {
-            ProcessHand(rightHand, _rIndex3, ref _rHovered, ref _rDwellTimer, ref _rFired);
-            ProcessHand(leftHand,  _lIndex3, ref _lHovered, ref _lDwellTimer, ref _lFired);
+            ProcessHand(rightHand, rightIndexTip, ref rightHovered, ref rightDwellTimer, ref rightFired);
+            ProcessHand(leftHand,  leftIndexTip,  ref leftHovered,  ref leftDwellTimer,  ref leftFired);
         }
 
         private void ProcessHand(
-            OVRHand hand, Transform index3,
+            OVRHand hand, Transform indexTip,
             ref TabletopHotspot hovered, ref float dwellTimer, ref bool fired)
         {
-            bool tracked = hand != null && hand.IsTracked && index3 != null;
+            bool tracked = hand != null && hand.IsTracked && indexTip != null;
             if (!tracked)
             {
                 SetHovered(ref hovered, ref dwellTimer, ref fired, null);
                 return;
             }
 
-            int count = Physics.OverlapSphereNonAlloc(index3.position, touchRadius, _overlapBuffer);
+            int count = Physics.OverlapSphereNonAlloc(indexTip.position, touchRadius, overlapBuffer);
             TabletopHotspot found = null;
             for (int i = 0; i < count; i++)
             {
-                found = _overlapBuffer[i].GetComponent<TabletopHotspot>();
+                found = overlapBuffer[i].GetComponent<TabletopHotspot>();
                 if (found != null) break;
             }
 
