@@ -23,7 +23,7 @@ public class Airport
 
 public class MockPlaneDataProvider : MonoBehaviour, IPlaneDataProvider
 {
-    // -------- Inspector ------------------------------------------------------
+    // Inspector
 
     [Header("Flight Plans")]
     [SerializeField] private List<MockFlightPlan> flightPlans = new();
@@ -99,7 +99,7 @@ public class MockPlaneDataProvider : MonoBehaviour, IPlaneDataProvider
         public float speedJitterKnots;
     }
 
-    // -------- IPlaneDataProvider --------------------------------------------
+    // IPlaneDataProvider
 
     public IReadOnlyDictionary<string, PlaneData> ActivePlanes => _planes;
     public event Action<PlaneData> OnPlaneUpdated;
@@ -120,7 +120,7 @@ public class MockPlaneDataProvider : MonoBehaviour, IPlaneDataProvider
         return world;
     }
 
-    // -------- Lifecycle ------------------------------------------------------
+    // Lifecycle 
 
     private void Start() => InitializePlanes();
     private void Update() => Tick(Time.deltaTime);
@@ -146,7 +146,7 @@ public class MockPlaneDataProvider : MonoBehaviour, IPlaneDataProvider
         }
     }
 
-    // -------- Init -----------------------------------------------------------
+    // Init
 
     private void InitializePlanes()
     {
@@ -295,13 +295,14 @@ public class MockPlaneDataProvider : MonoBehaviour, IPlaneDataProvider
         {
             var state = _states[id];
             var phase = state.path != null ? state.path.PhaseAt(state.s) : FlightPhase.Arrived;
+            
             Debug.Log($"[FlightDebug][{id}] s={state.s:F1}/{state.path?.TotalLength:F1} " +
                       $"phase={phase} alt={plane.ASL:F0}ft track={plane.track:F1}° gs={plane.gs:F1}kt " +
                       $"baroRate={plane.baroRate:F0}fpm turnRate={plane.turnRateDegPerSec:F2}°/s");
         }
     }
 
-    // -------- Per-frame stepping --------------------------------------------
+    // Per-frame stepping
 
     private void StepPlane(PlaneData plane, FlightState state, float deltaTime)
     {
@@ -345,7 +346,7 @@ public class MockPlaneDataProvider : MonoBehaviour, IPlaneDataProvider
         plane.baroRate = ftPerRealSec / simMinPerReal;
     }
 
-    // -------- Interior waypoint generation ----------------------------------
+    // Interior waypoint generation 
 
     private int PickInteriorCount(System.Random rng)
     {
@@ -409,7 +410,7 @@ public class MockPlaneDataProvider : MonoBehaviour, IPlaneDataProvider
         return result;
     }
 
-    // -------- Airport pair selection ----------------------------------------
+    // Airport pair selection
 
     private (int origin, int dest) PickAirportPair(
         System.Random rng,
@@ -470,7 +471,6 @@ public class MockPlaneDataProvider : MonoBehaviour, IPlaneDataProvider
         return false;
     }
 
-    // -------- Helpers --------------------------------------------------------
 
     private static (Vector3 rollStart, Vector3 rotation) PickTakeoffEnds(Airport ap, Vector3 toward)
     {

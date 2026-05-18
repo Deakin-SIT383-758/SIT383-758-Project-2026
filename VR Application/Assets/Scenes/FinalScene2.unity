@@ -596,7 +596,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FlightOverlayManager
   planeManager: {fileID: 1532678880}
   planePrefab: {fileID: 160799157056991206, guid: ebbc67040bd434b48b98d338cfd78b9f, type: 3}
-  mapRoot: {fileID: 0}
+  mapRoot: {fileID: 1246871102}
 --- !u!1 &116273425
 GameObject:
   m_ObjectHideFlags: 0
@@ -1429,23 +1429,23 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 536ed938e97584ff1aa5f457854379c3, type: 2}
   airports:
   - name: Airport 1
-    runwayEndA: {x: -0.6297, y: 1.5, z: -0.4}
-    runwayEndB: {x: -0.58, y: 1.5, z: -0.4}
+    runwayEndA: {x: -0.6297, y: 0, z: -1.53}
+    runwayEndB: {x: -0.58, y: 0, z: -1.53}
   - name: Airport 2
-    runwayEndA: {x: -0.6278, y: 1.4, z: 0.5}
-    runwayEndB: {x: -0.58482, y: 1.4, z: 0.5}
+    runwayEndA: {x: -0.6278, y: 0, z: -2.5}
+    runwayEndB: {x: -0.58482, y: 0, z: -2.5}
   - name: Airport 3
-    runwayEndA: {x: 0.62, y: 1.27, z: 0.5}
-    runwayEndB: {x: 0.56, y: 1.27, z: 0.5}
+    runwayEndA: {x: 0.62, y: 0, z: -2.5}
+    runwayEndB: {x: 0.56, y: 0, z: -2.5}
   - name: Airport 4
-    runwayEndA: {x: 0.62, y: 1.4, z: -0.36}
-    runwayEndB: {x: 0.56, y: 1.4, z: -0.36}
+    runwayEndA: {x: 0.62, y: 0, z: -1.53}
+    runwayEndB: {x: 0.56, y: 0, z: -1.53}
   interiorWaypointRange: {x: 2, y: 5}
   lateralJitter: 0.008
   minWaypointSpacing: 0.008
   randomSeed: 0
   baseAltitudeFeet: 50000
-  verticalSeparationFeet: 4000
+  verticalSeparationFeet: 6000
   cruiseAltJitterFeet: {x: -200, y: 200}
   climbDistance: 0.06
   descentDistance: 0.08
@@ -1453,7 +1453,7 @@ MonoBehaviour:
   cruiseWobbleCyclesPerUnit: 0.02
   feetPerWorldUnit: 328100
   horizontalScale: 1
-  worldYOffset: 1.24
+  worldYOffset: 1.01
   knotsToUnitsPerSecond: 0.000514
   simTimeMultiplier: 1
   climbSpeedFactor: 0.4
