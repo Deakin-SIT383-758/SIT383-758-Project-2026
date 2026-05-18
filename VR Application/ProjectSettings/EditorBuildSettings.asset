@@ -5,8 +5,14 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/FinalScene.unity
+    guid: 24478297439e2d546a168c328bae3896
   - enabled: 0
-    path: Assets/Scenes/MainScene.unity
+    path: Assets/Scenes/FinalScene.unity
+    guid: 6ee68fc5571d568418bc09a0cdb37233
+  - enabled: 0
+    path: Assets/Scenes/(Old) MainScene.unity
     guid: 9a12a757479a6354586026a3d1d765f9
   - enabled: 0
     path: Assets/Scenes/AnishsScene.unity
@@ -20,9 +26,6 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/UrvashisScene.unity
     guid: 3a47701d6799fd44e9b3d3eea7f04856
-  - enabled: 1
-    path: Assets/Scenes/FinalScene.unity
-    guid: 6ee68fc5571d568418bc09a0cdb37233
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: f734edaafeaed484c88d3c38e6e46ab4, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

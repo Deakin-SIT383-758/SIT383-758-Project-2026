@@ -513,4 +513,3 @@ public class MockPlaneDataProvider : MonoBehaviour, IPlaneDataProvider
         return value.ToString("X6");
     }
 }
-

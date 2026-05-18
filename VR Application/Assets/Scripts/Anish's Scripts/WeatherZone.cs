@@ -15,16 +15,32 @@ public class WeatherZone : MonoBehaviour
     [Header("Current Weather")]
     public WeatherType currentWeather;
 
+    [Header("Current Weather Values")]
+    [Range(0f, 1f)] public float currentCloudiness;
+    [Range(0f, 1f)] public float currentRainStrength;
+    [Range(0f, 1f)] public float currentWindStrength;
+
+    public float CurrentCloudiness => currentCloudiness;
+    public float CurrentRainStrength => currentRainStrength;
+    public float CurrentWindStrength => currentWindStrength;
+
     [Header("Visuals")]
     public ParticleSystem rainParticles;
     public GameObject cloudVisual;
     public ParticleSystem windParticles;
 
-    [Header("Rain Settings")]
-    public float heavyRainRate = 200f;
+    [Header("Rain Strength")]
+    [Range(0f, 1f)] public float minRainStrength = 0.4f;
+    [Range(0f, 1f)] public float maxRainStrength = 1f;
+    public float maxRainEmissionRate = 200f;
 
-    [Header("Wind Settings")]
-    public float windRate = 80f;
+    [Header("Wind Strength")]
+    [Range(0f, 1f)] public float minWindStrength = 0.4f;
+    [Range(0f, 1f)] public float maxWindStrength = 1f;
+    public float maxWindEmissionRate = 80f;
+
+    [Header("Cloud Strength")]
+    [Range(0f, 1f)] public float cloudStrengthWhenActive = 1f;
 
     public void SetWeather(WeatherType weather)
     {
@@ -45,19 +61,22 @@ public class WeatherZone : MonoBehaviour
             weather == WeatherType.CloudAndWind ||
             weather == WeatherType.RainCloudAndWind;
 
-        SetRain(hasRain);
-        SetCloud(hasCloud);
-        SetWind(hasWind);
+        currentCloudiness = hasCloud ? cloudStrengthWhenActive : 0f;
+        currentRainStrength = hasRain ? Random.Range(minRainStrength, maxRainStrength) : 0f;
+        currentWindStrength = hasWind ? Random.Range(minWindStrength, maxWindStrength) : 0f;
 
-        Debug.Log($"{gameObject.name} weather: {weather}");
+        SetRain(hasRain, currentRainStrength);
+        SetCloud(hasCloud);
+        SetWind(hasWind, currentWindStrength);
     }
 
-    void SetRain(bool active)
+    void SetRain(bool active, float strength)
     {
-        if (rainParticles == null) return;
+        if (rainParticles == null)
+            return;
 
         var emission = rainParticles.emission;
-        emission.rateOverTime = active ? heavyRainRate : 0f;
+        emission.rateOverTime = active ? maxRainEmissionRate * strength : 0f;
 
         if (active)
         {
@@ -74,17 +93,16 @@ public class WeatherZone : MonoBehaviour
     void SetCloud(bool active)
     {
         if (cloudVisual != null)
-        {
             cloudVisual.SetActive(active);
-        }
     }
 
-    void SetWind(bool active)
+    void SetWind(bool active, float strength)
     {
-        if (windParticles == null) return;
+        if (windParticles == null)
+            return;
 
         var emission = windParticles.emission;
-        emission.rateOverTime = active ? windRate : 0f;
+        emission.rateOverTime = active ? maxWindEmissionRate * strength : 0f;
 
         if (active)
         {
@@ -103,5 +121,14 @@ public class WeatherZone : MonoBehaviour
         int count = System.Enum.GetValues(typeof(WeatherType)).Length;
         WeatherType randomWeather = (WeatherType)Random.Range(0, count);
         SetWeather(randomWeather);
+    }
+
+    public Vector3 GetWeatherValues()
+    {
+        return new Vector3(
+            currentCloudiness,
+            currentRainStrength,
+            currentWindStrength
+        );
     }
 }
