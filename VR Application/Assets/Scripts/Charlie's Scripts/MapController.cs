@@ -1,42 +1,52 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Fusion;
 
-public class MapController : MonoBehaviour
+public class MapController : NetworkBehaviour
 {
-    [Header("References")]
-    public Transform targetCube;      // Drag your Cube here
+    public Transform targetCube;
     public Button moveUpButton;
-    public Button moveDownButton;     // Optional second button
-
-    [Header("Settings")]
+    public Button moveDownButton;
     public float moveAmount = 0.5f;
 
-    void Start()
+    public override void Spawned()
     {
         if (moveUpButton != null)
+        {
             moveUpButton.onClick.AddListener(MoveCubeUp);
+        }
 
         if (moveDownButton != null)
+        {
             moveDownButton.onClick.AddListener(MoveCubeDown);
+        }
     }
 
     public void MoveCubeUp()
     {
-        if (targetCube != null)
-        {
-            Vector3 pos = targetCube.position;
-            pos.y += moveAmount;
-            targetCube.position = pos;
-        }
+        RequestAndMove(moveAmount);
     }
 
     public void MoveCubeDown()
     {
-        if (targetCube != null)
+        RequestAndMove(-moveAmount);
+    }
+
+    private void RequestAndMove(float amount)
+    {
+        Object.RequestStateAuthority();
+        MoveMap(amount);
+    }
+
+    private void MoveMap(float amount)
+    {
+        if (targetCube == null)
         {
-            Vector3 pos = targetCube.position;
-            pos.y -= moveAmount;
-            targetCube.position = pos;
+            Debug.LogError("targetCube is NULL in MoveMap");
+            return;
         }
+        Vector3 pos = targetCube.position;
+        pos.y += amount;
+        targetCube.position = pos;
     }
 }
