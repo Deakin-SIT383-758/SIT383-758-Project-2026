@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using TMPro;
 
 public class AlertManager : MonoBehaviour
@@ -10,47 +11,80 @@ public class AlertManager : MonoBehaviour
     [Header("Audio")]
     public AudioSource alertAudio;
 
-    void Start()
+    [Header("OpenXR / XRI Input")]
+    public InputActionProperty weatherAlertAction;
+    public InputActionProperty lowFuelAlertAction;
+    public InputActionProperty hideAlertAction;
+
+    private void OnEnable()
+    {
+        RegisterAction(weatherAlertAction, OnWeatherAlertPressed);
+        RegisterAction(lowFuelAlertAction, OnLowFuelAlertPressed);
+        RegisterAction(hideAlertAction, OnHideAlertPressed);
+    }
+
+    private void OnDisable()
+    {
+        UnregisterAction(weatherAlertAction, OnWeatherAlertPressed);
+        UnregisterAction(lowFuelAlertAction, OnLowFuelAlertPressed);
+        UnregisterAction(hideAlertAction, OnHideAlertPressed);
+    }
+
+    private void Start()
     {
         HideAlert();
     }
 
-    void Update()
+    private void Update()
     {
-        // KEYBOARD TESTING IN UNITY EDITOR
-        if (Input.GetKeyDown(KeyCode.T))
+        // Keyboard testing in Unity Editor using the new Input System
+        if (Keyboard.current == null) return;
+
+        if (Keyboard.current.tKey.wasPressedThisFrame)
         {
             TriggerWeatherAlert();
         }
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Keyboard.current.fKey.wasPressedThisFrame)
         {
             TriggerLowFuelAlert();
         }
 
-        if (Input.GetKeyDown(KeyCode.Y))
+        if (Keyboard.current.yKey.wasPressedThisFrame)
         {
             HideAlert();
         }
+    }
 
-        // QUEST CONTROLLER TESTING
-        // A button = weather warning
-        if (OVRInput.GetDown(OVRInput.RawButton.A))
-        {
-            TriggerWeatherAlert();
-        }
+    private void RegisterAction(InputActionProperty actionProperty, System.Action<InputAction.CallbackContext> callback)
+    {
+        if (actionProperty.action == null) return;
 
-        // B button = low fuel warning
-        if (OVRInput.GetDown(OVRInput.RawButton.B))
-        {
-            TriggerLowFuelAlert();
-        }
+        actionProperty.action.Enable();
+        actionProperty.action.performed += callback;
+    }
 
-        // Y button = hide warning
-        if (OVRInput.GetDown(OVRInput.RawButton.Y))
-        {
-            HideAlert();
-        }
+    private void UnregisterAction(InputActionProperty actionProperty, System.Action<InputAction.CallbackContext> callback)
+    {
+        if (actionProperty.action == null) return;
+
+        actionProperty.action.performed -= callback;
+        actionProperty.action.Disable();
+    }
+
+    private void OnWeatherAlertPressed(InputAction.CallbackContext context)
+    {
+        TriggerWeatherAlert();
+    }
+
+    private void OnLowFuelAlertPressed(InputAction.CallbackContext context)
+    {
+        TriggerLowFuelAlert();
+    }
+
+    private void OnHideAlertPressed(InputAction.CallbackContext context)
+    {
+        HideAlert();
     }
 
     public void TriggerWeatherAlert()

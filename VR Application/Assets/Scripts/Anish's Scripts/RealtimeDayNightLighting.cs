@@ -31,6 +31,8 @@ public class RealtimeDayNightLighting : MonoBehaviour
 
     void Start()
     {
+        useManualTime = false;
+
         if (timeSlider != null)
         {
             timeSlider.minValue = 0f;

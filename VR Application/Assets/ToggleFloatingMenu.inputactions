@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "name": "ToggleFloatingMenu",
+    "maps": [
+        {
+            "name": "XR Menu",
+            "id": "71ada5df-2792-49eb-8fc3-c4bc116e4227",
+            "actions": [
+                {
+                    "name": "Toggle Menu",
+                    "type": "Button",
+                    "id": "e5f61a20-288f-4140-a0da-95b3999ac367",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "62611b34-dfc8-4cd3-b927-d67b613cdd65",
+                    "path": "<XRController>{LeftHand}/{SecondaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
