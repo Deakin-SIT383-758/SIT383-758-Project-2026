@@ -872,10 +872,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 139c89714128ebc428acccba15c25ff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapController
-  targetCube: {fileID: 443414042}
-  moveUpButton: {fileID: 118717804}
-  moveDownButton: {fileID: 371717031}
-  moveAmount: 0.1
+  targetCube: {fileID: 0}
+  moveUpButton: {fileID: 0}
+  moveDownButton: {fileID: 0}
+  moveAmount: 0.5
 --- !u!1001 &693572667
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1723,7 +1723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f01c569de04dd549bd87505fc05967f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WorldSpaceMenu
-  cameraTransform: {fileID: 1936314273}
+  cameraTransform: {fileID: 0}
   offset: {x: 0, y: -0.2, z: 0.6}
   followSpeed: 5
   rotationSpeed: 5
@@ -2458,11 +2458,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!4 &1936314273 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 657184242118504721, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
-  m_PrefabInstance: {fileID: 693572667}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1985079281
 GameObject:
   m_ObjectHideFlags: 0
@@ -2617,7 +2612,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2025060822
 MonoBehaviour:
   m_ObjectHideFlags: 0

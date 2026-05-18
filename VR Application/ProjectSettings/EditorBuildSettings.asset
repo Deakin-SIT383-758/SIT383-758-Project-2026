@@ -5,13 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainScene.unity
     guid: 9a12a757479a6354586026a3d1d765f9
   - enabled: 0
     path: Assets/Scenes/AnishsScene.unity
     guid: 1466b0c12cb304646811887b8fd0d5ac
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/CharliesScene.unity
     guid: 8b5fc5649f0faa446b332cea7039d99d
   - enabled: 0
@@ -20,7 +20,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/UrvashisScene.unity
     guid: 3a47701d6799fd44e9b3d3eea7f04856
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/FinalScene.unity
     guid: 6ee68fc5571d568418bc09a0cdb37233
   m_configObjects:
