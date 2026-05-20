@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/CharliesScene.unity
     guid: 8b5fc5649f0faa446b332cea7039d99d
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/AnishsScene.unity
     guid: 1466b0c12cb304646811887b8fd0d5ac
   - enabled: 1
